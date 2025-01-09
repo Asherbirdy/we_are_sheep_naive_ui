@@ -6,22 +6,32 @@ import type {
 	FormRules
 } from 'naive-ui'
 
+import { useAuthApi } from '@/hook/apis/useAuthApi'
+
+enum FormKey {
+	email = 'email',
+	password = 'password'
+}
+
 const state = ref({
 	data: {
-		username: null,
-		password: null
+		[FormKey.email]: '',
+		[FormKey.password]: ''
+	},
+	loading: {
+		submit: false
 	}
 })
 
 const rules: FormRules = {
-	username: [
+	[FormKey.email]: [
 		{
 			required: true,
 			message: '請輸入帳號',
 			trigger: ['input', 'blur']
 		}
 	],
-	password: [
+	[FormKey.password]: [
 		{
 			required: true,
 			message: '請輸入密碼',
@@ -30,8 +40,20 @@ const rules: FormRules = {
 	]
 }
 
-const handleLogin = () => {
-	console.log('handleLogin')
+const handleLogin = async () => {
+	const { data, loading } = state.value
+	loading.submit = true
+	try {
+		const res = await useAuthApi.login({
+			email: data.email,
+			password: data.password
+		})
+		console.log(res)
+	} catch (error) {
+		console.error(error)
+	} finally {
+		loading.submit = false
+	}
 }
 </script>
 <template>
@@ -41,17 +63,17 @@ const handleLogin = () => {
     :rules="rules"
   >
     <n-form-item
-      path="username"
+      :path="FormKey.email"
       label="帳號"
     >
       <n-input
-        v-model:value="state.data.username"
+        v-model:value="state.data.email"
         placeholder="請輸入帳號"
         @keydown.enter.prevent
       />
     </n-form-item>
     <n-form-item
-      path="password"
+      :path="FormKey.password"
       label="密碼"
       class="mb-20"
     >
