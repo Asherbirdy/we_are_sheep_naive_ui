@@ -8,9 +8,11 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     LocalePopselectComponent: typeof import('./components/common/LocalePopselectComponent.vue')['default']
+    LoginFormComponent: typeof import('./components/app/Index/LoginFormComponent.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SidebarComponent: typeof import('./components/Layouts/SidebarComponent.vue')['default']
+    SignUpComponent: typeof import('./components/app/Index/SignUpComponent.vue')['default']
     ThemeSwichComponent: typeof import('./components/common/ThemeSwichComponent.vue')['default']
   }
 }
