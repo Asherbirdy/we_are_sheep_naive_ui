@@ -24,7 +24,6 @@ const router = useRouter()
   >
     <n-image
       width="150"
-      src="https://imageapi.click2.travel/upload/enterpriseLogoImage/43/L1T6T8HLNFA6.png?v=2024-07-02"
     />
     <n-result
       title="404 Not Found"

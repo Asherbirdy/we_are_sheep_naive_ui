@@ -3,12 +3,11 @@ import { Menu2 as MenuIcon } from '@vicons/tabler'
 import {
 	NLayout,
 	NLayoutHeader,
-	NImage,
 	NSpace,
 	NFlex,
 	NDropdown,
-	NIcon
-
+	NIcon,
+	NP
 } from 'naive-ui'
 import type { DropdownProps } from 'naive-ui'
 
@@ -50,10 +49,9 @@ const dropdownLabel: DropdownProps['renderLabel'] = (dropdownOptions) => {
           justify="space-between"
           align="center"
         >
-          <n-image
+          <n-p
             width="150"
-            src="https://imageapi.click2.travel/upload/enterpriseLogoImage/43/L1T6T8HLNFA6.png?v=2024-07-02"
-          />
+          >LOGO</n-p>
           <n-flex
             justify="space-between"
             align="center"
@@ -78,7 +76,10 @@ const dropdownLabel: DropdownProps['renderLabel'] = (dropdownOptions) => {
         </n-space>
       </n-layout-header>
     </n-layout>
-    <n-layout has-sider>
+    <n-layout
+      has-sider
+      class="md:block hidden"
+    >
       <SidebarComponent />
       <router-view
         v-slot="{ Component }"
