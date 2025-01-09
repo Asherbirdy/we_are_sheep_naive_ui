@@ -1,2 +1,3 @@
-export * from './i18n'
-export * from './routes'
+export * from './i18nEnum'
+export * from './RoutesEnum'
+export * from './CookieEnum'

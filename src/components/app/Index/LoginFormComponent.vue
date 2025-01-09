@@ -7,15 +7,18 @@ import type {
 	FormRules
 } from 'naive-ui'
 
+import { CookieEnum, DashboardRoutes } from '@/enums'
 import { useAuthApi } from '@/hook'
+import { useUserStore } from '@/stores/common/UserStore'
 import type { LoginResponse } from '@/types'
 import { setToken } from '@/utils'
-
 enum FormKey {
 	email = 'email',
 	password = 'password'
 }
 
+const userStore = useUserStore()
+const router = useRouter()
 const state = ref({
 	data: {
 		[FormKey.email]: '',
@@ -23,6 +26,9 @@ const state = ref({
 	},
 	loading: {
 		submit: false
+	},
+	disabled: {
+		submit: true
 	}
 })
 
@@ -47,13 +53,23 @@ const { mutate, isPending } = useMutation({
 		email: state.value.data.email,
 		password: state.value.data.password
 	}),
-	onSuccess: (data: LoginResponse) => {
-		setToken('accessToken', data.token.accessTokenJWT)
-		setToken('refreshToken', data.token.accessTokenJWT)
+	onSuccess: async (data: LoginResponse) => {
+		setToken(CookieEnum.accessToken, data.token.accessTokenJWT)
+		setToken(CookieEnum.refreshToken, data.token.refreshTokenJWT)
+		userStore.setUser(data.user)
+
+		await new Promise(resolve => setTimeout(resolve, 2000))
+		router.push(DashboardRoutes.home)
 	}
 })
 
-// })
+/*
+  * 監聽表單資料 來決定是否 disabled 登入按鈕
+*/
+watch(state.value.data, (newVal) => {
+	const check = Boolean(newVal.email &&	newVal.password)
+	state.value.disabled.submit = !check
+})
 </script>
 <template>
   <n-form
@@ -87,6 +103,7 @@ const { mutate, isPending } = useMutation({
         round
         type="primary"
         :loading="isPending"
+        :disabled="state.disabled.submit"
         @click="mutate()"
       >
         登入
