@@ -1,0 +1,10 @@
+  // 登入頁
+export enum Routes {
+  'login' = '/',
+}
+
+// Dashboard
+export enum DashboardRoutes {
+  'home' = '/dashboard',
+  'secondFirst' = '/dashboard/second/first'
+}
