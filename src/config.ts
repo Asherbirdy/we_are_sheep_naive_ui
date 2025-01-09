@@ -4,6 +4,6 @@ interface Config {
 }
 
 export const config: Config = {
-  apiUrl: import.meta.env.VITE_API_URL,
+  apiUrl: import.meta.env.VITE_SERVER,
   baseUrl: import.meta.env.VITE_BASE
 }
