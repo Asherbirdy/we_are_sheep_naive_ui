@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useMutation } from '@tanstack/vue-query'
 import {
 	NSpace, NForm, NFormItem, NInput, NButton
 } from 'naive-ui'
@@ -6,7 +7,9 @@ import type {
 	FormRules
 } from 'naive-ui'
 
-import { useAuthApi } from '@/hook/apis/useAuthApi'
+import { useAuthApi } from '@/hook'
+import type { LoginResponse } from '@/types'
+import { setToken } from '@/utils'
 
 enum FormKey {
 	email = 'email',
@@ -24,37 +27,33 @@ const state = ref({
 })
 
 const rules: FormRules = {
-	[FormKey.email]: [
-		{
-			required: true,
-			message: '請輸入帳號',
-			trigger: ['input', 'blur']
-		}
-	],
-	[FormKey.password]: [
-		{
-			required: true,
-			message: '請輸入密碼',
-			trigger: ['input', 'blur']
-		}
-	]
+	[FormKey.email]: [{
+		required: true,
+		message: '請輸入帳號',
+		trigger: ['input', 'blur']
+	}],
+	[FormKey.password]: [{
+		required: true,
+		message: '請輸入密碼',
+		trigger: ['input', 'blur']
+	}]
 }
 
-const handleLogin = async () => {
-	const { data, loading } = state.value
-	loading.submit = true
-	try {
-		const res = await useAuthApi.login({
-			email: data.email,
-			password: data.password
-		})
-		console.log(res)
-	} catch (error) {
-		console.error(error)
-	} finally {
-		loading.submit = false
+/*
+  * Login api
+*/
+const { mutate, isPending } = useMutation({
+	mutationFn: () => useAuthApi.login({
+		email: state.value.data.email,
+		password: state.value.data.password
+	}),
+	onSuccess: (data: LoginResponse) => {
+		setToken('accessToken', data.token.accessTokenJWT)
+		setToken('refreshToken', data.token.accessTokenJWT)
 	}
-}
+})
+
+// })
 </script>
 <template>
   <n-form
@@ -67,7 +66,7 @@ const handleLogin = async () => {
       label="帳號"
     >
       <n-input
-        v-model:value="state.data.email"
+        v-model:value="state.data[FormKey.email]"
         placeholder="請輸入帳號"
         @keydown.enter.prevent
       />
@@ -78,7 +77,7 @@ const handleLogin = async () => {
       class="mb-20"
     >
       <n-input
-        v-model:value="state.data.password"
+        v-model:value="state.data[FormKey.password]"
         type="password"
         placeholder="請輸入密碼"
       />
@@ -87,7 +86,8 @@ const handleLogin = async () => {
       <n-button
         round
         type="primary"
-        @click="handleLogin"
+        :loading="isPending"
+        @click="mutate()"
       >
         登入
       </n-button>
