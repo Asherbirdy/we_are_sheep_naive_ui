@@ -1,4 +1,4 @@
-import useRequest from "../http"
+import useRequest from '../http'
 
 export const useDataApi = {
   get: async () => await useRequest.get({
@@ -9,8 +9,8 @@ export const useDataApi = {
       data: {
         message: 'POST'
       }
-    }), 
+    }),
   retryGet: async () => await useRequest.get({
       url: '/c'
-    }),
+    })
 }

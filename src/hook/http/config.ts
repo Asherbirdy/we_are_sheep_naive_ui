@@ -1,4 +1,6 @@
-const baseUrl = 'http://localhost:3080'
+import { config } from '@/config'
+
+const baseUrl = config.apiUrl
 
 export default {
   baseUrl
