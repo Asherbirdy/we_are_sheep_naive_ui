@@ -1,17 +1,12 @@
 <script setup lang='ts'>
+import { storeToRefs } from 'pinia'
 
-import { useQuery } from '@tanstack/vue-query'
+import { useUserStore } from '@/stores/common/UserStore'
 
-import { QueryKeyEnum } from '@/enums'
-import { useUserApi } from '@/hook'
-
-const { data, isLoading } = useQuery({
-	queryKey: [QueryKeyEnum.userShowMe],
-	queryFn: () => useUserApi.showMe()
-})
-
+const userStore = useUserStore()
+const { getUser } = storeToRefs(userStore)
 </script>
 
 <template>
-  <div>{{ isLoading ? 'loading' : data }}</div>
+  <div>{{ getUser }}</div>
 </template>

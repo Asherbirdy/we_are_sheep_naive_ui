@@ -8,7 +8,7 @@ import type {
 } from 'naive-ui'
 
 import { CookieEnum, DashboardRoutes } from '@/enums'
-import { useAuthApi } from '@/hook'
+import { useAuthApi, useUserApi } from '@/hook'
 import { useUserStore } from '@/stores/common/UserStore'
 import type { LoginResponse } from '@/types'
 import { setToken } from '@/utils'
@@ -56,7 +56,9 @@ const { mutate, isPending } = useMutation({
 	onSuccess: async (data: LoginResponse) => {
 		setToken(CookieEnum.accessToken, data.token.accessTokenJWT)
 		setToken(CookieEnum.refreshToken, data.token.refreshTokenJWT)
-		userStore.setUser(data.user)
+
+		const response = await useUserApi.showMe()
+		userStore.setUser(response.user)
 
 		await new Promise(resolve => setTimeout(resolve, 2000))
 		router.push(DashboardRoutes.home)
