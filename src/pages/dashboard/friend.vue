@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { DataTableColumns } from 'naive-ui'
-import { NButton, NDataTable, NSpace, NDrawer, NDrawerContent, NInput, NTabs, NTabPane, NCard } from 'naive-ui'
+import { NButton, NDataTable, NDrawer, NDrawerContent, NInput, NTabs, NTabPane, NCard } from 'naive-ui'
 import { storeToRefs } from 'pinia'
 
 import { useUserStore } from '@/stores'
@@ -60,26 +60,41 @@ const onCopyId = () => {
 
 <template>
   <div>
-    <n-space
-      justify="space-between"
-      align="center"
-      class="mb-4"
-      :pagination="true"
+    <n-tabs
+      type="segment"
+      animated
     >
-      <div>名單</div>
-      <n-button
-        type="primary"
-        size="small"
-        @click="state.status.drawer = true"
+      <n-tab-pane
+        name="friend"
+        tab="好友"
       >
-        +
-      </n-button>
-    </n-space>
-    <n-data-table
-      :columns="createColumns()"
-      :data="data"
-      :bordered="false"
-    />
+        <n-space
+          vertical
+          justify="space-between"
+          align="center"
+        >
+          <n-data-table
+            :columns="createColumns()"
+            :data="data"
+            :bordered="false"
+            class="h-[calc(100dvh-250px)]"
+          />
+          <n-button
+            type="primary"
+            block
+            @click="state.status.drawer = true"
+          >
+            新增好友
+          </n-button>
+        </n-space>
+      </n-tab-pane>
+      <n-tab-pane
+        name="request"
+        tab="請求中"
+      >
+        Hey Jude
+      </n-tab-pane>
+    </n-tabs>
     <n-drawer
       v-model:show="state.status.drawer"
       :width="502"
