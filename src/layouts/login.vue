@@ -2,7 +2,6 @@
 import { Menu2 as MenuIcon } from '@vicons/tabler'
 import {
 	NLayout,
-	NLayoutHeader,
 	NLayoutContent,
 	NSpace,
 	NDropdown,
@@ -48,32 +47,30 @@ const dropdownLabel: DropdownProps['renderLabel'] = (dropdownOptions) => {
       margin: auto;
       max-width: 1200px;"
   >
-    <n-layout-header>
-      <n-space
-        justify="space-between"
-        align="center"
-      >
-        <n-p>Logo</n-p>
-        <n-space align="center">
-          <LocalePopselectComponent />
-          <n-dropdown
-            :show="state.dropdown.show"
-            :options="dropdownOptions"
-            placement="bottom-start"
-            :render-label="dropdownLabel"
+    <n-space
+      justify="space-between"
+      align="center"
+    >
+      <n-p>Logo</n-p>
+      <n-space align="center">
+        <LocalePopselectComponent />
+        <n-dropdown
+          :show="state.dropdown.show"
+          :options="dropdownOptions"
+          placement="bottom-start"
+          :render-label="dropdownLabel"
+        >
+          <n-icon
+            :size="30"
+            color="gray"
+            cursor="pointer"
+            @click="state.dropdown.show = !state.dropdown.show"
           >
-            <n-icon
-              :size="30"
-              color="gray"
-              cursor="pointer"
-              @click="state.dropdown.show = !state.dropdown.show"
-            >
-              <MenuIcon mt-2 />
-            </n-icon>
-          </n-dropdown>
-        </n-space>
+            <MenuIcon mt-2 />
+          </n-icon>
+        </n-dropdown>
       </n-space>
-    </n-layout-header>
+    </n-space>
     <n-layout>
       <n-layout-content
         content-style="
