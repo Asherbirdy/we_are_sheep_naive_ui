@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useMutation } from '@tanstack/vue-query'
 import {
 	NSpace, NForm, NFormItem, NInput, NButton
 } from 'naive-ui'
@@ -6,6 +7,7 @@ import type {
 	FormRules
 } from 'naive-ui'
 
+import { useAuthApi } from '@/hook'
 import { regex } from '@/utils'
 
 enum FormKey {
@@ -93,6 +95,27 @@ watch(state.value.data, (newVal) => {
 const handleSignUp = () => {
 	console.log('handleSignUp')
 }
+
+const { mutate, isPending } = useMutation({
+	mutationFn: () => useAuthApi.userRegister({
+		name: state.value.data.name,
+		email: state.value.data.email,
+		password: state.value.data.password,
+		serialNumber: state.value.data.serialNumber
+	}),
+	onSuccess: async (data: any) => {
+		console.log('data', data)
+	},
+	onError: async (error, variables, context) => {
+		console.log('error', error)
+	},
+	onSettled: (data, error, variables, context) => {
+		console.log('data', data)
+		console.log('error', error)
+		console.log('variables', variables)
+		console.log('context', context)
+	}
+})
 
 </script>
 <template>

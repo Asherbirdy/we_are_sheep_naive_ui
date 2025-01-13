@@ -55,19 +55,34 @@ const rules: FormRules = {
   * Login api
 */
 const { mutate, isPending } = useMutation({
-	mutationFn: () => useAuthApi.login({
+	mutationFn: async () => await useAuthApi.login({
 		email: state.value.data.email,
 		password: state.value.data.password
 	}),
-	onSuccess: async (data: LoginResponse) => {
+	onSuccess: async (data: LoginResponse, variables, context) => {
+		console.log('data onSuccess', data)
+		console.log('variables onSuccess', variables)
+		console.log('context onSuccess', context)
 		setToken(CookieEnum.accessToken, data.token.accessTokenJWT)
 		setToken(CookieEnum.refreshToken, data.token.refreshTokenJWT)
 
 		const response = await useUserApi.showMe()
 		userStore.setUser(response.user)
+		console.log('response', response)
 
 		await new Promise(resolve => setTimeout(resolve, 2000))
 		router.push(DashboardRoutes.home)
+	},
+	onError: async (error, variables, context) => {
+		console.log('error', error)
+		console.log('variables', variables)
+		console.log('context', context)
+	},
+	onSettled: (data, error, variables, context) => {
+		console.log('data', data)
+		console.log('error', error)
+		console.log('variables', variables)
+		console.log('context', context)
 	}
 })
 

@@ -24,7 +24,7 @@ const _RequstInterceptors: RequstInterceptors = {
     handleErrorStatus((err as AxiosError).response?.status, message, (message) => console.log(message))
 
      // 響應錯誤 實現 重連功能
-    return
+    return err
   }
 }
 
