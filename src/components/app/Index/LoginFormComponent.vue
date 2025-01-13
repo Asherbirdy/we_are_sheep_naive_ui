@@ -33,15 +33,17 @@ const state = ref({
 })
 
 const rules: FormRules = {
-	[FormKey.email]: [{
-		required: true,
-		message: '請輸入帳號',
-		trigger: ['input', 'blur']
-	}, {
-		validator: (rule, value) => regex.email.test(value),
-		message: '請輸入有效的電子信箱格式',
-		trigger: ['input', 'blur']
-	}],
+	[FormKey.email]: [
+		{
+			required: true,
+			message: '請輸入帳號',
+			trigger: ['input', 'blur']
+		}, {
+			validator: (rule, value) => regex.email.test(value),
+			message: '請輸入有效的電子信箱格式',
+			trigger: ['input', 'blur']
+		}
+	],
 	[FormKey.password]: [{
 		required: true,
 		message: '請輸入密碼',
