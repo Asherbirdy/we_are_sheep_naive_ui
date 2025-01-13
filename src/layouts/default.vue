@@ -78,15 +78,22 @@ const dropdownLabel: DropdownProps['renderLabel'] = (dropdownOptions) => {
     </n-layout>
     <n-layout has-sider>
       <SidebarComponent class="md:block hidden" />
-      <router-view
-        v-slot="{ Component }"
+      <n-space
+        vertical
         class="w-full m-4"
-        style="height: calc(100dvh - 138px)"
       >
-        <transition name="pagefade">
-          <component :is="Component" />
-        </transition>
-      </router-view>
+        <router-view
+          v-slot="{ Component }"
+          style="height: calc(100dvh - 160px);"
+        >
+          <transition
+            name="pagefade"
+            mode="out-in"
+          >
+            <component :is="Component" />
+          </transition>
+        </router-view>
+      </n-space>
     </n-layout>
   </div>
 </template>
