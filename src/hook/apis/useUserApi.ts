@@ -1,20 +1,12 @@
 import useRequest from '../http'
+import type { ShowUserResponse } from '@/types'
 
-export interface ShowUserResponse {
-  msg: string
-  user: User
-}
-
-export interface User {
-  _id: string
-  name: string
-  email: string
-  emailVerified: boolean
-  role: string
+enum UserApi {
+  showMe = '/users/showMe'
 }
 
 export const useUserApi = {
-  show: async (): Promise<ShowUserResponse> => await useRequest.get({
-    url: '/users/showMe'
+  showMe: async (): Promise<ShowUserResponse> => await useRequest.get({
+    url: UserApi.showMe
   })
 }

@@ -49,9 +49,9 @@ const dropdownLabel: DropdownProps['renderLabel'] = (dropdownOptions) => {
           justify="space-between"
           align="center"
         >
-          <n-p
-            width="150"
-          >LOGO</n-p>
+          <n-p width="150">
+            LOGO
+          </n-p>
           <n-flex
             justify="space-between"
             align="center"
@@ -76,11 +76,8 @@ const dropdownLabel: DropdownProps['renderLabel'] = (dropdownOptions) => {
         </n-space>
       </n-layout-header>
     </n-layout>
-    <n-layout
-      has-sider
-      class="md:block hidden"
-    >
-      <SidebarComponent />
+    <n-layout has-sider>
+      <SidebarComponent class="md:block hidden" />
       <router-view
         v-slot="{ Component }"
         class="w-full m-4"
