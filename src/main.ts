@@ -1,6 +1,7 @@
 import type { VueQueryPluginOptions } from '@tanstack/vue-query'
 import { VueQueryPlugin  } from '@tanstack/vue-query'
 import { createPinia } from 'pinia'
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import { createApp } from 'vue'
 
 import App from './App.vue'
@@ -21,8 +22,12 @@ const queryClientConfig: VueQueryPluginOptions = {
     }
   }
 }
-app.use(createPinia())
 app.use(router)
+
+const pinia = createPinia()
+pinia.use(piniaPluginPersistedstate)
+
+app.use(pinia)
 app.use(VueQueryPlugin, queryClientConfig)
 app.use(createI18n)
 
