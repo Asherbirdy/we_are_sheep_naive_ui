@@ -22,23 +22,20 @@ const { t } = useI18n()
 
 <template>
   <n-space
-    mt-15
     justify="center"
     align="center"
   >
     <n-image
-      class="md:block hidden"
+      class="lg:block hidden"
       width="400"
       :src="WelcomeImage"
     />
     <n-card :title="t('login.title')">
       <n-tabs
-        class="w-350px h-400px px-2"
+        class="w-250px md:w-450px md:h-450px"
         default-value="登入"
         size="large"
         animated
-        pane-wrapper-style="margin: 0 -4px"
-        pane-style="padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
       >
         <n-tab-pane
           name="登入"

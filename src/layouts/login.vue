@@ -77,7 +77,11 @@ const dropdownLabel: DropdownProps['renderLabel'] = (dropdownOptions) => {
     <n-layout>
       <n-layout-content
         content-style="
-          height: calc(100dvh - 106px)"
+          height: calc(100dvh - 92px);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          "
       >
         <router-view />
       </n-layout-content>

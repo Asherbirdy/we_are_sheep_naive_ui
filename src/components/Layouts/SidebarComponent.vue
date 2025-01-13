@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { BookOutline, HomeOutline, LogOutOutline } from '@vicons/ionicons5'
+import { HomeOutline, LogOutOutline } from '@vicons/ionicons5'
 import { NLayoutSider, NMenu } from 'naive-ui'
 import type { MenuOption } from 'naive-ui'
 import type { Component } from 'vue'
@@ -30,18 +30,24 @@ const menu: Menu[] = [
 		icon: HomeOutline,
 		route: DashboardRoutes.home
 	},
+	// {
+	// 	label: '第二頁',
+	// 	key: '第二頁',
+	// 	icon: BookOutline,
+	// 	children: [
+	// 		{
+	// 			label: '第二頁裡面',
+	// 			key: DashboardRoutes.secondFirst,
+	// 			icon: HomeOutline,
+	// 			route: DashboardRoutes.secondFirst
+	// 		}
+	// 	]
+	// },
 	{
-		label: '第二頁',
-		key: '第二頁',
-		icon: BookOutline,
-		children: [
-			{
-				label: '第二頁裡面',
-				key: DashboardRoutes.secondFirst,
-				icon: HomeOutline,
-				route: DashboardRoutes.secondFirst
-			}
-		]
+		label: '朋友',
+		key: DashboardRoutes.friend,
+		icon: HomeOutline,
+		route: DashboardRoutes.friend
 	},
 	{
 		label: '登出',
@@ -57,7 +63,7 @@ const transformMenu = (menu: Menu[]): MenuOption[] =>
 			label: item.label,
 			icon: renderIcon(item.icon),
 			key: item.key,
-			onClick: item.route ? () => router.push(item.route) : undefined
+			onClick: item.route ? () => router.push(item.route as any) : undefined
 		}
 
 		if (item.children) {

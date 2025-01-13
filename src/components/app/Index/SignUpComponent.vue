@@ -6,24 +6,31 @@ import type {
 	FormRules
 } from 'naive-ui'
 
+enum FormKey {
+	name = 'name',
+	email = 'email',
+	password = 'password',
+	serialNumber = 'serialNumber'
+}
+
 const state = ref({
 	data: {
-		name: '',
-		email: null,
-		password: null,
-		serialNumber: ''
+		[FormKey.name]: '',
+		[FormKey.email]: '',
+		[FormKey.password]: '',
+		[FormKey.serialNumber]: ''
 	}
 })
 
 const rules: FormRules = {
-	name: [
+	[FormKey.name]: [
 		{
 			required: true,
 			message: '請輸入帳號',
 			trigger: ['input', 'blur']
 		}
 	],
-	password: [
+	[FormKey.password]: [
 		{
 			required: true,
 			message: '請輸入密碼',
@@ -32,8 +39,8 @@ const rules: FormRules = {
 	]
 }
 
-const handleLogin = () => {
-	console.log('handleLogin')
+const handleSignUp = () => {
+	console.log('handleSignUp')
 }
 </script>
 <template>
@@ -43,18 +50,23 @@ const handleLogin = () => {
     :rules="rules"
   >
     <n-form-item
-      path="password"
-      label="電子信箱 / 姓名"
+      path="name"
+      label="姓名"
     >
       <n-input
-        :style="{ width: '70%' }"
-        placeholder="請輸入電子信箱"
-      />
-      <n-input
-        :style="{ width: '30%' }"
         placeholder="請輸入姓名"
       />
     </n-form-item>
+    <n-form-item
+      path="email"
+      label="電子信箱 / 姓名"
+    >
+      <n-input
+
+        placeholder="請輸入電子信箱"
+      />
+    </n-form-item>
+    <!-- </n-form-item> -->
     <n-input-group>
     </n-input-group>
     <n-form-item
@@ -81,7 +93,7 @@ const handleLogin = () => {
       <n-button
         round
         type="primary"
-        @click="handleLogin"
+        @click="handleSignUp"
       >
         註冊
       </n-button>

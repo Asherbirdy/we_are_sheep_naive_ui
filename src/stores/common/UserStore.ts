@@ -13,10 +13,15 @@ export const useUserStore = defineStore('userStore', () => {
     state.value = user
   }
 
+  const clearUser = () => {
+    state.value = null
+  }
+
   return {
     state,
     getUser,
-    setUser
+    setUser,
+    clearUser
   }
 }, {
   persist: {
