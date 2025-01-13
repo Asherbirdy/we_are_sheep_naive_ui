@@ -30,9 +30,9 @@ const { t } = useI18n()
       width="400"
       :src="WelcomeImage"
     />
-    <n-card :title="t('login.title')">
+    <n-card>
       <n-tabs
-        class="w-250px md:w-450px md:h-450px"
+        class="w-250px md:w-450px"
         default-value="登入"
         size="large"
         animated

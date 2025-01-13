@@ -10,6 +10,7 @@ enum FormKey {
 	name = 'name',
 	email = 'email',
 	password = 'password',
+	confirmPassword = 'confirmPassword',
 	serialNumber = 'serialNumber'
 }
 
@@ -18,7 +19,11 @@ const state = ref({
 		[FormKey.name]: '',
 		[FormKey.email]: '',
 		[FormKey.password]: '',
+		[FormKey.confirmPassword]: '',
 		[FormKey.serialNumber]: ''
+	},
+	disabled: {
+		signUp: true
 	}
 })
 
@@ -26,7 +31,14 @@ const rules: FormRules = {
 	[FormKey.name]: [
 		{
 			required: true,
-			message: '請輸入帳號',
+			message: '請輸入姓名',
+			trigger: ['input', 'blur']
+		}
+	],
+	[FormKey.email]: [
+		{
+			required: true,
+			message: '請輸入電子信箱',
 			trigger: ['input', 'blur']
 		}
 	],
@@ -36,12 +48,38 @@ const rules: FormRules = {
 			message: '請輸入密碼',
 			trigger: ['input', 'blur']
 		}
+	],
+	[FormKey.confirmPassword]: [
+		{
+			required: true,
+			message: '請再次輸入密碼',
+			trigger: ['input', 'blur']
+		}
+	],
+	[FormKey.serialNumber]: [
+		{
+			required: true,
+			message: '請輸入序號',
+			trigger: ['input', 'blur']
+		}
 	]
 }
+
+watch(state.value.data, (newVal) => {
+	const check = Boolean(
+		newVal.name &&
+			newVal.email &&
+			newVal.password &&
+			newVal.confirmPassword &&
+			newVal.serialNumber
+	)
+	state.value.disabled.signUp = !check
+})
 
 const handleSignUp = () => {
 	console.log('handleSignUp')
 }
+
 </script>
 <template>
   <n-form
@@ -50,27 +88,25 @@ const handleSignUp = () => {
     :rules="rules"
   >
     <n-form-item
-      path="name"
+      :path="FormKey.name"
       label="姓名"
     >
       <n-input
+        v-model:value="state.data.name"
         placeholder="請輸入姓名"
       />
     </n-form-item>
     <n-form-item
-      path="email"
-      label="電子信箱 / 姓名"
+      :path="FormKey.email"
+      label="電子信箱"
     >
       <n-input
-
+        v-model:value="state.data.email"
         placeholder="請輸入電子信箱"
       />
     </n-form-item>
-    <!-- </n-form-item> -->
-    <n-input-group>
-    </n-input-group>
     <n-form-item
-      path="password"
+      :path="FormKey.password"
       label="密碼"
     >
       <n-input
@@ -80,19 +116,29 @@ const handleSignUp = () => {
       />
     </n-form-item>
     <n-form-item
-      path="password"
+      :path="FormKey.confirmPassword"
+      label="確認密碼"
+    >
+      <n-input
+        v-model:value="state.data.confirmPassword"
+        type="password"
+        placeholder="請再次輸入密碼"
+      />
+    </n-form-item>
+    <n-form-item
+      :path="FormKey.serialNumber"
       label="序號"
     >
       <n-input
-        v-model:value="state.data.password"
-        type="password"
-        placeholder="請輸入密碼"
+        v-model:value="state.data.serialNumber"
+        placeholder="請輸入序號"
       />
     </n-form-item>
     <n-space justify="end">
       <n-button
         round
         type="primary"
+        :disabled="state.disabled.signUp"
         @click="handleSignUp"
       >
         註冊
