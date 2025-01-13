@@ -33,7 +33,7 @@ class Axios {
     // 掛載請求攔截器
     this.axiosInstance.interceptors.request.use((config: InternalAxiosRequestConfig) => {
       // 是否清除重複請求
-      const abortRepetitiveRequest = (config as unknown as any)?.abortRepetitiveRequest ?? this.options.abortRepetitiveRequest
+      const abortRepetitiveRequest = (config as unknown as any)?.abortRepetitiveRequest
 
       // 儲存請求標示
       if (abortRepetitiveRequest) {

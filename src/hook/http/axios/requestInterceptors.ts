@@ -2,7 +2,7 @@
 import type { AxiosError } from 'axios'
 import axios from 'axios'
 
-import { retry } from './axiosRetry'
+// import { retry } from './axiosRetry'
 import { handleErrorStatus } from './handleErrorStatus'
 import { RequstInterceptors } from './type'
 
@@ -24,7 +24,7 @@ const _RequstInterceptors: RequstInterceptors = {
     handleErrorStatus((err as AxiosError).response?.status, message, (message) => console.log(message))
 
      // 響應錯誤 實現 重連功能
-    return retry(axiosInstance, err as AxiosError)
+    return
   }
 }
 
