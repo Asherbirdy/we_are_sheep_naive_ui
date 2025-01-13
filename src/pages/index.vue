@@ -22,7 +22,6 @@ const { t } = useI18n()
 
 <template>
   <n-space
-    mt-8
     justify="center"
     align="center"
   >
