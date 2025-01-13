@@ -11,7 +11,7 @@ import { CookieEnum, DashboardRoutes } from '@/enums'
 import { useAuthApi, useUserApi } from '@/hook'
 import { useUserStore } from '@/stores/common/UserStore'
 import type { LoginResponse } from '@/types'
-import { setToken } from '@/utils'
+import { regex, setToken } from '@/utils'
 enum FormKey {
 	email = 'email',
 	password = 'password'
@@ -36,6 +36,10 @@ const rules: FormRules = {
 	[FormKey.email]: [{
 		required: true,
 		message: '請輸入帳號',
+		trigger: ['input', 'blur']
+	}, {
+		validator: (rule, value) => regex.email.test(value),
+		message: '請輸入有效的電子信箱格式',
 		trigger: ['input', 'blur']
 	}],
 	[FormKey.password]: [{
@@ -69,7 +73,11 @@ const { mutate, isPending } = useMutation({
   * 監聽表單資料 來決定是否 disabled 登入按鈕
 */
 watch(state.value.data, (newVal) => {
-	const check = Boolean(newVal.email &&	newVal.password)
+	const check = Boolean(
+		newVal.email &&
+			newVal.password &&
+			regex.email.test(newVal.email)
+	)
 	state.value.disabled.submit = !check
 })
 </script>

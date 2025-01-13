@@ -6,6 +6,8 @@ import type {
 	FormRules
 } from 'naive-ui'
 
+import { regex } from '@/utils'
+
 enum FormKey {
 	name = 'name',
 	email = 'email',
@@ -31,14 +33,19 @@ const rules: FormRules = {
 	[FormKey.name]: [
 		{
 			required: true,
-			message: '請輸入姓名',
+			message: '請輸入帳號',
 			trigger: ['input', 'blur']
 		}
 	],
 	[FormKey.email]: [
 		{
 			required: true,
-			message: '請輸入電子信箱',
+			message: '電子信箱為必填項目',
+			trigger: ['input', 'blur']
+		},
+		{
+			validator: (rule, value) => regex.email.test(value),
+			message: '請輸入有效的電子信箱格式',
 			trigger: ['input', 'blur']
 		}
 	],
@@ -53,6 +60,11 @@ const rules: FormRules = {
 		{
 			required: true,
 			message: '請再次輸入密碼',
+			trigger: ['input', 'blur']
+		},
+		{
+			validator: (rule, value) => value === state.value.data.password,
+			message: '密碼不一致',
 			trigger: ['input', 'blur']
 		}
 	],
@@ -71,7 +83,9 @@ watch(state.value.data, (newVal) => {
 			newVal.email &&
 			newVal.password &&
 			newVal.confirmPassword &&
-			newVal.serialNumber
+			newVal.serialNumber &&
+			regex.email.test(newVal.email) &&
+			newVal.password === newVal.confirmPassword
 	)
 	state.value.disabled.signUp = !check
 })
