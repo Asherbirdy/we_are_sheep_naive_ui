@@ -1,7 +1,12 @@
 <script setup lang='ts'>
+import { storeToRefs } from 'pinia'
 
+import { useUserStore } from '@/stores/common/UserStore'
+
+const userStore = useUserStore()
+const { getUser } = storeToRefs(userStore)
 </script>
 
 <template>
-  <div>asdasdsas</div>
+  <div>{{ getUser }}</div>
 </template>
