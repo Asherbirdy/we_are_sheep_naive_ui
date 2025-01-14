@@ -19,13 +19,13 @@ export const useAuthApi = {
   /*
     * Send Verify Email
   */
-  sendVerifyEmail: async (): Promise<any> => await useRequest.get({
+  sendVerifyEmail: async () => await useRequest.get({
     url: '/auth/sendOTP'
   }),
   /*
     * Verify Email
   */
-  verifyEmail: async (payload: any): Promise<any> => await useRequest.post({
+  verifyEmail: async (payload: { OTP: string }) => await useRequest.post({
     url: '/auth/bindOTPEmail',
     data: payload
   })

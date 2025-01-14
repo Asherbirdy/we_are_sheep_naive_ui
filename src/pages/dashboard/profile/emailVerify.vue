@@ -1,13 +1,19 @@
 <script setup lang='ts'>
+import { useMutation } from '@tanstack/vue-query'
 import { NCard, NButton, NSpace, NInput, NInputGroup, NText } from 'naive-ui'
 import { storeToRefs } from 'pinia'
 
 import EmailVerifyComponent from '@/components/app/dashboard/profile/EmailVerifyComponent.vue'
+import { Routes } from '@/enums'
+import { useAuthApi } from '@/hook'
 import { useUserStore } from '@/stores'
+import { clearToken } from '@/utils'
 
 const userStore = useUserStore()
 const { getUser } = storeToRefs(userStore)
 const router = useRouter()
+const dialog = useDialog()
+const notification = useNotification()
 
 enum Page {
 	emailVerify = 'emailVerify',
@@ -36,6 +42,34 @@ const checkEmailVerify = async () => {
 		state.value.page.current = Page.emailAlreadyVerify
 	}
 }
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const { mutate, isPending } = useMutation({
+	mutationFn: async () => await useAuthApi.verifyEmail({
+		OTP: state.value.data.verifyCode
+	}),
+	onSuccess: () => {
+		clearToken()
+		// 打開 modal 並回首頁 登入 清掉 token
+		dialog.success({
+			title: '綁定成功',
+			content: '再請回首頁重新登入',
+			positiveText: '回首頁',
+			closable: false,
+			onPositiveClick: () => {
+				router.push(Routes.login)
+			}
+		})
+	},
+	onError: () => {
+		state.value.data.verifyCode = ''
+		notification.error({
+			title: '驗證失敗',
+			content: '請重新輸入驗證碼',
+			duration: 3000
+		})
+	}
+})
 
 onMounted(() => checkEmailVerify())
 </script>
@@ -69,6 +103,8 @@ onMounted(() => checkEmailVerify())
             block
             type="primary"
             :disabled="state.disabled.emailVerify"
+            :loading="isPending"
+            @click="mutate()"
           >
             驗證
           </n-button>
