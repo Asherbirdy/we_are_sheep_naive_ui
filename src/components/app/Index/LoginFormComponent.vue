@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useMutation } from '@tanstack/vue-query'
-import { NSpace, NForm, NFormItem, NInput, NButton } from 'naive-ui'
+import { NSpace, NForm, NFormItem, NInput, NButton, NA } from 'naive-ui'
 import type { FormRules } from 'naive-ui'
 
 import { CookieEnum, DashboardRoutes } from '@/enums'
@@ -136,7 +136,22 @@ watch(state.value.data, (newVal) => {
         placeholder="請輸入密碼"
       />
     </n-form-item>
-    <n-space justify="end">
+    <n-space
+      justify="space-between"
+      align="baseline"
+    >
+      <router-link
+        to="/"
+        #="{ navigate, href }"
+        custom
+      >
+        <n-a
+          :href="href"
+          @click="navigate"
+        >
+          忘記密碼
+        </n-a>
+      </router-link>
       <n-button
         round
         type="primary"
