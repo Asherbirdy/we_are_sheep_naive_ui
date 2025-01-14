@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { useMutation } from '@tanstack/vue-query'
-import type { AxiosError } from 'axios'
 import { NSpace, NForm, NFormItem, NInput, NButton } from 'naive-ui'
 import type { FormRules } from 'naive-ui'
 
-import { CookieEnum } from '@/enums'
+import { CookieEnum, DashboardRoutes } from '@/enums'
 import { useAuthApi, useUserApi } from '@/hook'
 import { useUserStore } from '@/stores'
 import type { UserRegisterResponse } from '@/types'
@@ -12,6 +11,7 @@ import { regex, setToken } from '@/utils'
 
 const router = useRouter()
 const userStore = useUserStore()
+const notification = useNotification()
 
 /*
 	* 表單資料名稱
@@ -96,10 +96,10 @@ const rules: FormRules = {
 */
 const { mutate, isPending } = useMutation({
 	mutationFn: () => useAuthApi.userRegister({
-		name: state.value.data.name,
-		email: state.value.data.email,
-		password: state.value.data.password,
-		serialNumber: state.value.data.serialNumber
+		name: state.value.data[FormKey.name],
+		email: state.value.data[FormKey.email],
+		password: state.value.data[FormKey.password],
+		serialNumber: state.value.data[FormKey.serialNumber]
 	}),
 	onSuccess: async (data: UserRegisterResponse) => {
 		// 存 token
@@ -111,10 +111,13 @@ const { mutate, isPending } = useMutation({
 		userStore.setUser(response.user)
 
 		await new Promise(resolve => setTimeout(resolve, 4000))
-		router.push('error')
+		router.push(DashboardRoutes.home)
 	},
-	onError: async (error: AxiosError) => {
-		console.log('error', error)
+	onError: async () => {
+		notification.error({
+			title: '註冊失敗',
+			content: '請輸入正確的資料'
+		})
 	}
 })
 
