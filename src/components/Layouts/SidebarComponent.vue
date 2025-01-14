@@ -1,11 +1,15 @@
 <script setup lang='ts'>
-import { HomeOutline, LogOutOutline } from '@vicons/ionicons5'
 import { NLayoutSider, NMenu } from 'naive-ui'
 import type { MenuOption } from 'naive-ui'
+import { storeToRefs } from 'pinia'
 import type { Component } from 'vue'
 
 import { DashboardRoutes, Routes } from '@/enums'
+import { useMenuStore } from '@/stores'
 import { renderIcon } from '@/utils'
+
+const menuStore = useMenuStore()
+const { menu } = storeToRefs(menuStore)
 const router = useRouter()
 const route = useRoute()
 
@@ -23,46 +27,6 @@ interface Menu {
 	children?: Menu[]
 }
 
-const menu: Menu[] = [
-	{
-		label: '主頁',
-		key: DashboardRoutes.home,
-		icon: HomeOutline,
-		route: DashboardRoutes.home
-	},
-	// {
-	// 	label: '第二頁',
-	// 	key: '第二頁',
-	// 	icon: BookOutline,
-	// 	children: [
-	// 		{
-	// 			label: '第二頁裡面',
-	// 			key: DashboardRoutes.secondFirst,
-	// 			icon: HomeOutline,
-	// 			route: DashboardRoutes.secondFirst
-	// 		}
-	// 	]
-	// },
-	{
-		label: '朋友',
-		key: DashboardRoutes.friend,
-		icon: HomeOutline,
-		route: DashboardRoutes.friend
-	},
-	{
-		label: '個人資料',
-		key: DashboardRoutes.profile,
-		icon: HomeOutline,
-		route: DashboardRoutes.profile
-	},
-	{
-		label: '登出',
-		key: Routes.login,
-		icon: LogOutOutline,
-		route: Routes.login
-	}
-]
-
 const transformMenu = (menu: Menu[]): MenuOption[] =>
 	menu.map(item => {
 		const menuItem: MenuOption = {
@@ -79,7 +43,7 @@ const transformMenu = (menu: Menu[]): MenuOption[] =>
 		return menuItem
 	})
 
-const menuOptions = transformMenu(menu)
+const menuOptions = transformMenu(menu.value)
 
 // 監聽路由變化，更新 selectedKey
 watch(() => route.path,
