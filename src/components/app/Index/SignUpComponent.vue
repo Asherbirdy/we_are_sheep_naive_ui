@@ -1,15 +1,21 @@
 <script setup lang="ts">
 import { useMutation } from '@tanstack/vue-query'
-import {
-	NSpace, NForm, NFormItem, NInput, NButton
-} from 'naive-ui'
-import type {
-	FormRules
-} from 'naive-ui'
+import type { AxiosError } from 'axios'
+import { NSpace, NForm, NFormItem, NInput, NButton } from 'naive-ui'
+import type { FormRules } from 'naive-ui'
 
-import { useAuthApi } from '@/hook'
-import { regex } from '@/utils'
+import { CookieEnum } from '@/enums'
+import { useAuthApi, useUserApi } from '@/hook'
+import { useUserStore } from '@/stores'
+import type { UserRegisterResponse } from '@/types'
+import { regex, setToken } from '@/utils'
 
+const router = useRouter()
+const userStore = useUserStore()
+
+/*
+	* 表單資料名稱
+*/
 enum FormKey {
 	name = 'name',
 	email = 'email',
@@ -18,6 +24,9 @@ enum FormKey {
 	serialNumber = 'serialNumber'
 }
 
+/*
+	* 頁面資料
+*/
 const state = ref({
 	data: {
 		[FormKey.name]: '',
@@ -31,6 +40,9 @@ const state = ref({
 	}
 })
 
+/*
+	* 表單驗證規則
+*/
 const rules: FormRules = {
 	[FormKey.name]: [
 		{
@@ -48,7 +60,7 @@ const rules: FormRules = {
 		{
 			validator: (rule, value) => regex.email.test(value),
 			message: '請輸入有效的電子信箱格式',
-			trigger: ['input', 'blur']
+			trigger: ['blur']
 		}
 	],
 	[FormKey.password]: [
@@ -79,6 +91,36 @@ const rules: FormRules = {
 	]
 }
 
+/*
+	* 註冊API
+*/
+const { mutate, isPending } = useMutation({
+	mutationFn: () => useAuthApi.userRegister({
+		name: state.value.data.name,
+		email: state.value.data.email,
+		password: state.value.data.password,
+		serialNumber: state.value.data.serialNumber
+	}),
+	onSuccess: async (data: UserRegisterResponse) => {
+		// 存 token
+		setToken(CookieEnum.accessToken, data.token.accessTokenJWT)
+		setToken(CookieEnum.refreshToken, data.token.refreshTokenJWT)
+
+		// 存使用者資料
+		const response = await useUserApi.showMe()
+		userStore.setUser(response.user)
+
+		await new Promise(resolve => setTimeout(resolve, 4000))
+		router.push('error')
+	},
+	onError: async (error: AxiosError) => {
+		console.log('error', error)
+	}
+})
+
+/*
+	* 按鈕是否可點擊(disabled)
+*/
 watch(state.value.data, (newVal) => {
 	const check = Boolean(
 		newVal.name &&
@@ -90,31 +132,6 @@ watch(state.value.data, (newVal) => {
 			newVal.password === newVal.confirmPassword
 	)
 	state.value.disabled.signUp = !check
-})
-
-const handleSignUp = () => {
-	console.log('handleSignUp')
-}
-
-const { mutate, isPending } = useMutation({
-	mutationFn: () => useAuthApi.userRegister({
-		name: state.value.data.name,
-		email: state.value.data.email,
-		password: state.value.data.password,
-		serialNumber: state.value.data.serialNumber
-	}),
-	onSuccess: async (data: any) => {
-		console.log('data', data)
-	},
-	onError: async (error, variables, context) => {
-		console.log('error', error)
-	},
-	onSettled: (data, error, variables, context) => {
-		console.log('data', data)
-		console.log('error', error)
-		console.log('variables', variables)
-		console.log('context', context)
-	}
 })
 
 </script>
@@ -176,7 +193,8 @@ const { mutate, isPending } = useMutation({
         round
         type="primary"
         :disabled="state.disabled.signUp"
-        @click="handleSignUp"
+        :loading="isPending"
+        @click="mutate()"
       >
         註冊
       </n-button>
