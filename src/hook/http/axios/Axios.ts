@@ -8,8 +8,7 @@ import type {
 } from 'axios'
 
 import AbortAxios from './AbortAxios'
-import type { AxiosOptions, RequstInterceptors } from './type'
-import { config } from '@/config'
+import type { AxiosOptions, RequstInterceptors, Response } from './type'
 import { getToken, setToken, removeToken } from '@/utils'
 
 class Axios {
@@ -43,7 +42,7 @@ class Axios {
     try {
       // 嘗試刷新 accessToken
       const response = await axios.get(
-        `${config.apiUrl}/auth/refreshToken`,
+        `${import.meta.env.VITE_SERVER}auth/refreshToken`,
         {
           headers: {
             Authorization: `Bearer ${refreshToken}`
@@ -80,7 +79,8 @@ class Axios {
     this.axiosInstance.interceptors.request.use(
       async (config: InternalAxiosRequestConfig) => {
         const abortRepetitiveRequest =
-          (config as unknown as any)?.abortRepetitiveRequest
+          (config as unknown as any)?.abortRepetitiveRequest ??
+          this.options.abortRepetitiveRequest
 
         let token = getToken('accessToken')
 

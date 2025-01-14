@@ -1,5 +1,5 @@
 import useRequest from '../http'
-import type { LoginPayload, LoginResponse } from '@/types'
+import type { LoginPayload, LoginResponse, UserRegisterPayload, UserRegisterResponse } from '@/types'
 
 export const useAuthApi = {
   /*
@@ -7,6 +7,13 @@ export const useAuthApi = {
   */
   login: async (payload: LoginPayload): Promise<LoginResponse> => await useRequest.post({
     url: '/auth/login',
+    data: payload
+  }),
+  /*
+    * Register
+  */
+  userRegister: async (payload: UserRegisterPayload): Promise<UserRegisterResponse> => await useRequest.post({
+    url: '/auth/userRegister',
     data: payload
   })
 }

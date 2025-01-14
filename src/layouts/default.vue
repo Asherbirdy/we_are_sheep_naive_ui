@@ -84,7 +84,7 @@ const dropdownLabel: DropdownProps['renderLabel'] = (dropdownOptions) => {
       >
         <router-view
           v-slot="{ Component }"
-          style="height: calc(100dvh - 160px);"
+          style="height: calc(100dvh - 114px);"
         >
           <transition
             name="pagefade"
