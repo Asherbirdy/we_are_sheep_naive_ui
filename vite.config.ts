@@ -12,7 +12,6 @@ import Layouts from 'vite-plugin-vue-layouts'
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd())
-  console.log('env', env.VITE_BASE)
   return {
     base: env.VITE_BASE || '/',
     plugins: [

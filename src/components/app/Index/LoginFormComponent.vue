@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useMutation } from '@tanstack/vue-query'
-import { NSpace, NForm, NFormItem, NInput, NButton } from 'naive-ui'
+import { NSpace, NForm, NFormItem, NInput, NButton, NA, NPopover, NP } from 'naive-ui'
 import type { FormRules } from 'naive-ui'
 
 import { CookieEnum, DashboardRoutes } from '@/enums'
@@ -136,7 +136,22 @@ watch(state.value.data, (newVal) => {
         placeholder="請輸入密碼"
       />
     </n-form-item>
-    <n-space justify="end">
+    <n-space
+      justify="space-between"
+      align="baseline"
+    >
+      <n-popover trigger="hover">
+        <template #trigger>
+          <n-a>
+            忘記密碼
+          </n-a>
+        </template>
+        <n-p>
+          聯絡開發者並給他您帳號的Email，<br>
+          他幫您處理
+        </n-p>
+      </n-popover>
+
       <n-button
         round
         type="primary"
