@@ -1,24 +1,26 @@
 <script setup lang="ts">
 import { useMutation } from '@tanstack/vue-query'
-import {
-	NSpace, NForm, NFormItem, NInput, NButton
-} from 'naive-ui'
-import type {
-	FormRules
-} from 'naive-ui'
+import { NSpace, NForm, NFormItem, NInput, NButton } from 'naive-ui'
+import type { FormRules } from 'naive-ui'
 
 import { CookieEnum, DashboardRoutes } from '@/enums'
 import { useAuthApi, useUserApi } from '@/hook'
 import { useUserStore } from '@/stores/common/UserStore'
 import type { LoginResponse } from '@/types'
 import { regex, setToken } from '@/utils'
+
 enum FormKey {
 	email = 'email',
 	password = 'password'
 }
 
-const userStore = useUserStore()
 const router = useRouter()
+const userStore = useUserStore()
+const notification = useNotification()
+
+/*
+	* 表單資料
+*/
 const state = ref({
 	data: {
 		[FormKey.email]: '',
@@ -32,23 +34,29 @@ const state = ref({
 	}
 })
 
+/*
+	* 表單驗證規則
+*/
 const rules: FormRules = {
 	[FormKey.email]: [
 		{
 			required: true,
 			message: '請輸入帳號',
 			trigger: ['input', 'blur']
-		}, {
+		},
+		{
 			validator: (rule, value) => regex.email.test(value),
 			message: '請輸入有效的電子信箱格式',
-			trigger: ['input', 'blur']
+			trigger: ['blur']
 		}
 	],
-	[FormKey.password]: [{
-		required: true,
-		message: '請輸入密碼',
-		trigger: ['input', 'blur']
-	}]
+	[FormKey.password]: [
+		{
+			required: true,
+			message: '請輸入密碼',
+			trigger: ['input', 'blur']
+		}
+	]
 }
 
 /*
@@ -59,30 +67,27 @@ const { mutate, isPending } = useMutation({
 		email: state.value.data.email,
 		password: state.value.data.password
 	}),
-	onSuccess: async (data: LoginResponse, variables, context) => {
-		console.log('data onSuccess', data)
-		console.log('variables onSuccess', variables)
-		console.log('context onSuccess', context)
+	onSuccess: async (data: LoginResponse) => {
+		// 存 token
 		setToken(CookieEnum.accessToken, data.token.accessTokenJWT)
 		setToken(CookieEnum.refreshToken, data.token.refreshTokenJWT)
 
+		// 存使用者資料
 		const response = await useUserApi.showMe()
 		userStore.setUser(response.user)
-		console.log('response', response)
 
-		await new Promise(resolve => setTimeout(resolve, 2000))
+		await new Promise(resolve => setTimeout(resolve, 4000))
 		router.push(DashboardRoutes.home)
 	},
-	onError: async (error, variables, context) => {
-		console.log('error', error)
-		console.log('variables', variables)
-		console.log('context', context)
-	},
-	onSettled: (data, error, variables, context) => {
-		console.log('data', data)
-		console.log('error', error)
-		console.log('variables', variables)
-		console.log('context', context)
+	onError: async () => {
+		const { data } = state.value
+		await new Promise(resolve => setTimeout(resolve, 2000))
+		notification.error({
+			title: '登入失敗',
+			content: '帳號或密碼錯誤'
+		})
+		data.password = ''
+		data.email = ''
 	}
 })
 
@@ -97,6 +102,7 @@ watch(state.value.data, (newVal) => {
 	)
 	state.value.disabled.submit = !check
 })
+
 </script>
 <template>
   <n-form
