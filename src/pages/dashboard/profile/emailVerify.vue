@@ -12,9 +12,6 @@ import { NCard } from 'naive-ui'
         title="驗證Email"
         class="min-w-[290px]"
       >
-        <template #header-extra>
-          #header-extra
-        </template>
         Card Content
         <template #footer>
           #footer
