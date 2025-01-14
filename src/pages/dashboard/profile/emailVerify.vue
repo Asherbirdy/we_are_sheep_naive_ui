@@ -31,11 +31,13 @@ watch(state.value.data, (newVal) => {
 	state.value.disabled.emailVerify = !check
 })
 
-onMounted(() => {
+const checkEmailVerify = async () => {
 	if (getUser.value?.emailVerified) {
 		state.value.page.current = Page.emailAlreadyVerify
 	}
-})
+}
+
+onMounted(() => checkEmailVerify())
 </script>
 
 <template>
