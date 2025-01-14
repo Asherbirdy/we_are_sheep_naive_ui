@@ -9,4 +9,5 @@ export enum DashboardRoutes {
   'secondFirst' = '/dashboard/second/first',
   'friend' = '/dashboard/friend',
   'profile' = '/dashboard/profile',
+  'profileEmailVerify' = '/dashboard/profile/emailVerify',
 }

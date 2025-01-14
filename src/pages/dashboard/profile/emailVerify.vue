@@ -25,7 +25,7 @@ const state = ref({
 const router = useRouter()
 
 onMounted(() => {
-	if (getUser.value?.email) {
+	if (getUser.value?.emailVerified) {
 		state.value.page.current = Page.emailAlreadyVerify
 	}
 })
@@ -46,7 +46,7 @@ onMounted(() => {
         class="min-w-[290px]"
       >
         <n-text>
-          {{ `請前往您的Email信箱${getUser?.email}，輸入驗證碼以完成驗證。` }}
+          {{ `請點擊「傳送驗證碼」，並前往您的Email信箱${getUser?.email}，輸入驗證碼以完成驗證。` }}
         </n-text>
         <n-input-group class="mt-2">
           <n-input
