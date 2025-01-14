@@ -15,5 +15,18 @@ export const useAuthApi = {
   userRegister: async (payload: UserRegisterPayload): Promise<UserRegisterResponse> => await useRequest.post({
     url: '/auth/userRegister',
     data: payload
+  }),
+  /*
+    * Send Verify Email
+  */
+  sendVerifyEmail: async () => await useRequest.get({
+    url: '/auth/sendOTP'
+  }),
+  /*
+    * Verify Email
+  */
+  verifyEmail: async (payload: { OTP: string }) => await useRequest.post({
+    url: '/auth/bindOTPEmail',
+    data: payload
   })
 }

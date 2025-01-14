@@ -111,7 +111,7 @@ const { mutate, isPending } = useMutation({
 		userStore.setUser(response.user)
 
 		await new Promise(resolve => setTimeout(resolve, 4000))
-		router.push(DashboardRoutes.home)
+		router.push(DashboardRoutes.profile)
 	},
 	onError: async () => {
 		notification.error({

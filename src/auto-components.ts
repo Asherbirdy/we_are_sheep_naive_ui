@@ -7,6 +7,8 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    EmailVerifyComponent: typeof import('./components/app/dashboard/profile/EmailVerifyComponent.vue')['default']
+    EmailVerifyComponentCopy: typeof import('./components/app/dashboard/profile/EmailVerifyComponent-copy.vue')['default']
     LocalePopselectComponent: typeof import('./components/common/LocalePopselectComponent.vue')['default']
     LoginFormComponent: typeof import('./components/app/Index/LoginFormComponent.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

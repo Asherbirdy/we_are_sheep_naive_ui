@@ -50,6 +50,12 @@ const menu: Menu[] = [
 		route: DashboardRoutes.friend
 	},
 	{
+		label: '個人資料',
+		key: DashboardRoutes.profile,
+		icon: HomeOutline,
+		route: DashboardRoutes.profile
+	},
+	{
 		label: '登出',
 		key: Routes.login,
 		icon: LogOutOutline,
