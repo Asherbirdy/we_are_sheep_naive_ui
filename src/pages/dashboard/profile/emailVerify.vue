@@ -25,12 +25,9 @@ const state = ref({
 const router = useRouter()
 
 onMounted(() => {
-	console.log(getUser.value)
-
 	if (getUser.value?.email) {
 		state.value.page.current = Page.emailAlreadyVerify
 	}
-
 })
 </script>
 
