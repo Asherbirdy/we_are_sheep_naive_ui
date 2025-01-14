@@ -1,22 +1,25 @@
 import { HomeOutline, LogOutOutline } from '@vicons/ionicons5'
+import type { MenuOption } from 'naive-ui'
 import { defineStore } from 'pinia'
 import type { Component, ComputedRef } from 'vue'
 
 import { DashboardRoutes, Routes } from '@/enums'
-  interface Menu {
-    label: string
-    key: string
-    icon: Component
-    route?: DashboardRoutes | Routes
-    children?: Menu[]
-  }
+import { renderIcon } from '@/utils'
+interface Menu {
+  label: string
+  key: string
+  icon: Component
+  route?: DashboardRoutes | Routes
+  children?: Menu[]
+}
 
 interface MenuStore {
-  menu: ComputedRef<Menu[]>
+  menu: ComputedRef<MenuOption[]>
 }
 
 export const useMenuStore = defineStore<string, MenuStore>('menuStore', () => {
-  //  State
+  const router = useRouter()
+  // **  State
   const state = ref<Menu[]>([
     {
       label: '主頁',
@@ -56,9 +59,23 @@ export const useMenuStore = defineStore<string, MenuStore>('menuStore', () => {
       route: Routes.login
     }
   ])
-  //  Getters
 
-  const menu = computed(() => state.value)
+  const transformToNaiveUIMenu = (menu: Menu[]): MenuOption[] => menu.map(item => {
+    const menuItem: MenuOption = {
+      label: item.label,
+      icon: renderIcon(item.icon),
+      key: item.key,
+      onClick: item.route ? () => router.push(item.route as any) : undefined
+    }
+
+    if (item.children) {
+      menuItem.children = transformToNaiveUIMenu(item.children)
+    }
+
+    return menuItem
+  })
+  // **  Getters
+  const menu = computed(() => transformToNaiveUIMenu(state.value))
   // Actions
 
   return {
