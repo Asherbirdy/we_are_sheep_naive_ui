@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useMutation } from '@tanstack/vue-query'
-import { NSpace, NForm, NFormItem, NInput, NButton, NA } from 'naive-ui'
+import { NSpace, NForm, NFormItem, NInput, NButton, NA, NPopover, NP } from 'naive-ui'
 import type { FormRules } from 'naive-ui'
 
 import { CookieEnum, DashboardRoutes } from '@/enums'
@@ -140,18 +140,18 @@ watch(state.value.data, (newVal) => {
       justify="space-between"
       align="baseline"
     >
-      <router-link
-        to="/"
-        #="{ navigate, href }"
-        custom
-      >
-        <n-a
-          :href="href"
-          @click="navigate"
-        >
-          忘記密碼
-        </n-a>
-      </router-link>
+      <n-popover trigger="hover">
+        <template #trigger>
+          <n-a>
+            忘記密碼
+          </n-a>
+        </template>
+        <n-p>
+          聯絡開發者並給他您帳號的Email，<br>
+          他幫您處理
+        </n-p>
+      </n-popover>
+
       <n-button
         round
         type="primary"
