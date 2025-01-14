@@ -77,6 +77,11 @@ const { mutate, isPending } = useMutation({
 		userStore.setUser(response.user)
 
 		await new Promise(resolve => setTimeout(resolve, 4000))
+		// 如果未驗證 跳到 profile
+		if (!response.user.emailVerified) {
+			router.push(DashboardRoutes.profile)
+			return
+		}
 		router.push(DashboardRoutes.home)
 	},
 	onError: async () => {
