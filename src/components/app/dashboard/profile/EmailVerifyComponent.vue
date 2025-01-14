@@ -3,6 +3,8 @@ import { useStorage } from '@vueuse/core'
 import { useIntervalFn } from '@vueuse/core'
 import { NButton } from 'naive-ui'
 
+import { useAuthApi } from '@/hook'
+
 // 設定倒數時間
 const state = ref({
 	countDownTime: 60, // 設定倒數時間
@@ -23,6 +25,7 @@ const { pause, resume } = useIntervalFn(() => {
 
 // 發送驗證碼
 const sendEmailVerification = async (sec: number) => {
+	await useAuthApi.sendVerifyEmail()
 	state.value.countDown = sec
 	countdownInLocalStorage.value = sec
 	resume()

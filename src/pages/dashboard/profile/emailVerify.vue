@@ -7,6 +7,7 @@ import { useUserStore } from '@/stores'
 
 const userStore = useUserStore()
 const { getUser } = storeToRefs(userStore)
+const router = useRouter()
 
 enum Page {
 	emailVerify = 'emailVerify',
@@ -19,10 +20,16 @@ const state = ref({
 	},
 	page: {
 		current: Page.emailVerify
+	},
+	disabled: {
+		emailVerify: true
 	}
 })
 
-const router = useRouter()
+watch(state.value.data, (newVal) => {
+	const check = Boolean(newVal.verifyCode)
+	state.value.disabled.emailVerify = !check
+})
 
 onMounted(() => {
 	if (getUser.value?.emailVerified) {
@@ -59,6 +66,7 @@ onMounted(() => {
           <n-button
             block
             type="primary"
+            :disabled="state.disabled.emailVerify"
           >
             驗證
           </n-button>
