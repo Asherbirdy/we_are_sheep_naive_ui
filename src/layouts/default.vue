@@ -1,13 +1,10 @@
 <script setup lang="ts">
-import {
-	BookOutline as BookIcon,
-	PersonOutline as PersonIcon,
-	WineOutline as WineIcon
-} from '@vicons/ionicons5'
-import { Menu2 as MenuIcon } from '@vicons/tabler'
-import { NLayout, NLayoutHeader, NSpace, NFlex, NDropdown, NIcon, NP, NDrawer, NDrawerContent, NMenu } from 'naive-ui'
-import type { DropdownProps, MenuOption } from 'naive-ui'
 
+import { Menu2 as MenuIcon } from '@vicons/tabler'
+import { NLayout, NLayoutHeader, NSpace, NFlex, NDropdown, NIcon, NP } from 'naive-ui'
+import type { DropdownProps } from 'naive-ui'
+
+import MenubarComponent from '@/components/common/MenubarComponent.vue'
 import ThemeSwichComponent from '@/components/common/ThemeSwichComponent.vue'
 
 const state = ref({
@@ -37,87 +34,6 @@ const dropdownLabel: DropdownProps['renderLabel'] = (dropdownOptions) => {
 	}
 }
 
-function renderIcon (icon: Component) {
-	return () => h(NIcon, null, { default: () => h(icon) })
-}
-
-const menuOptions: MenuOption[] = [
-	{
-		label: 'Hear the Wind Sing',
-		key: 'hear-the-wind-sing',
-		icon: renderIcon(BookIcon)
-	},
-	{
-		label: 'Pinball 1973',
-		key: 'pinball-1973',
-		icon: renderIcon(BookIcon),
-		disabled: true,
-		children: [
-			{
-				label: 'Rat',
-				key: 'rat'
-			}
-		]
-	},
-	{
-		label: 'A Wild Sheep Chase',
-		key: 'a-wild-sheep-chase',
-		disabled: true,
-		icon: renderIcon(BookIcon)
-	},
-	{
-		label: 'Dance Dance Dance',
-		key: 'Dance Dance Dance',
-		icon: renderIcon(BookIcon),
-		children: [
-			{
-				type: 'group',
-				label: 'People',
-				key: 'people',
-				children: [
-					{
-						label: 'Narrator',
-						key: 'narrator',
-						icon: renderIcon(PersonIcon)
-					},
-					{
-						label: 'Sheep Man',
-						key: 'sheep-man',
-						icon: renderIcon(PersonIcon)
-					}
-				]
-			},
-			{
-				label: 'Beverage',
-				key: 'beverage',
-				icon: renderIcon(WineIcon),
-				children: [
-					{
-						label: 'Whisky',
-						key: 'whisky'
-					}
-				]
-			},
-			{
-				label: 'Food',
-				key: 'food',
-				children: [
-					{
-						label: 'Sandwich',
-						key: 'sandwich'
-					}
-				]
-			},
-			{
-				label: 'The past increases. The future recedes.',
-				key: 'the-past-increases-the-future-recedes'
-			}
-		]
-	}
-]
-
-const activeKey = ref('')
-const active = ref(false)
 </script>
 
 <template>
@@ -151,14 +67,7 @@ const active = ref(false)
                 <MenuIcon />
               </n-icon>
             </n-dropdown>
-            <n-icon
-              :size="30"
-              color="gray"
-              cursor="pointer"
-              @click="active = true"
-            >
-              <MenuIcon />
-            </n-icon>
+            <MenubarComponent />
           </n-flex>
         </n-space>
       </n-layout-header>
@@ -182,19 +91,5 @@ const active = ref(false)
         </router-view>
       </n-space>
     </n-layout>
-    <n-drawer
-      v-model:show="active"
-      placement="right"
-    >
-      <n-drawer-content title="Stoner">
-        <ThemeSwichComponent />
-        <n-menu
-          v-model:value="activeKey"
-          :root-indent="36"
-          :indent="12"
-          :options="menuOptions"
-        />
-      </n-drawer-content>
-    </n-drawer>
   </div>
 </template>

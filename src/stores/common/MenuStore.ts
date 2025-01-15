@@ -60,6 +60,7 @@ export const useMenuStore = defineStore<string, MenuStore>('menuStore', () => {
     }
   ])
 
+  // 將 menu 轉換為 NaiveUI 的 MenuOption
   const transformToNaiveUIMenu = (menu: Menu[]): MenuOption[] => menu.map(item => {
     const menuItem: MenuOption = {
       label: item.label,
