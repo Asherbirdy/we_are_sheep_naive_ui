@@ -2,6 +2,7 @@ import { HomeOutline, LogOutOutline } from '@vicons/ionicons5'
 import type { MenuOption } from 'naive-ui'
 import { defineStore } from 'pinia'
 import type { Component, ComputedRef } from 'vue'
+import { markRaw } from 'vue'
 
 import { DashboardRoutes, Routes } from '@/enums'
 import { renderIcon } from '@/utils'
@@ -24,7 +25,7 @@ export const useMenuStore = defineStore<string, MenuStore>('menuStore', () => {
     {
       label: '主頁',
       key: DashboardRoutes.home,
-      icon: HomeOutline,
+      icon: markRaw(HomeOutline),
       route: DashboardRoutes.home
     },
     // {
@@ -43,19 +44,19 @@ export const useMenuStore = defineStore<string, MenuStore>('menuStore', () => {
     {
       label: '朋友',
       key: DashboardRoutes.friend,
-      icon: HomeOutline,
+      icon: markRaw(HomeOutline),
       route: DashboardRoutes.friend
     },
     {
       label: '個人資料',
       key: DashboardRoutes.profile,
-      icon: HomeOutline,
+      icon: markRaw(HomeOutline),
       route: DashboardRoutes.profile
     },
     {
       label: '登出',
       key: Routes.login,
-      icon: LogOutOutline,
+      icon: markRaw(LogOutOutline),
       route: Routes.login
     }
   ])
