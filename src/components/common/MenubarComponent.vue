@@ -5,10 +5,17 @@ import {
 	WineOutline as WineIcon
 } from '@vicons/ionicons5'
 import { Menu2 as MenuIcon } from '@vicons/tabler'
-import { NIcon, NDrawer, NDrawerContent, NMenu } from 'naive-ui'
-import type { MenuOption } from 'naive-ui'
+import { NIcon, NDrawer, NDrawerContent, NMenu, NDropdown } from 'naive-ui'
+import type { DropdownProps, MenuOption } from 'naive-ui'
 
+import ThemeSwichComponent from './ThemeSwichComponent.vue'
 import { renderIcon } from '@/utils'
+
+const state = ref({
+	dropdown: {
+		show: false
+	}
+})
 
 const active = ref(false)
 const activeKey = ref('')
@@ -86,10 +93,35 @@ const menuOptions: MenuOption[] = [
 		]
 	}
 ]
+
+const dropdownOptions = [
+	{
+		label: 'Theme',
+		key: 'Theme'
+	},
+	{
+		label: '登出',
+		key: '登出'
+	}
+]
+
+// 如果是 theme 顯示 主題 switch 回傳 ThemeSwichComponent組件 其他都傳 label
+const dropdownLabel: DropdownProps['renderLabel'] = (dropdownOptions) => {
+	switch (dropdownOptions.key) {
+		case 'Theme':
+			return h(ThemeSwichComponent)
+		default:
+			return dropdownOptions.label as string
+	}
+}
+
 </script>
 
 <template>
   <div>
+    <!--
+			手機版 menu icon
+		-->
     <n-icon
       :size="30"
       color="gray"
@@ -98,6 +130,24 @@ const menuOptions: MenuOption[] = [
     >
       <MenuIcon />
     </n-icon>
+    <!--
+			網頁版 menu dropdown
+		-->
+    <n-dropdown
+      :show="state.dropdown.show"
+      :options="dropdownOptions"
+      placement="bottom-start"
+      :render-label="dropdownLabel"
+    >
+      <n-icon
+        :size="30"
+        color="gray"
+        cursor="pointer"
+        @click="state.dropdown.show = !state.dropdown.show"
+      >
+        <MenuIcon />
+      </n-icon>
+    </n-dropdown>
     <n-drawer
       v-model:show="active"
       placement="right"
