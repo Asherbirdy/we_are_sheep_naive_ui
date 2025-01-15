@@ -126,6 +126,7 @@ const dropdownLabel: DropdownProps['renderLabel'] = (dropdownOptions) => {
       :size="30"
       color="gray"
       cursor="pointer"
+      class="block md:hidden"
       @click="active = true"
     >
       <MenuIcon />
@@ -140,6 +141,7 @@ const dropdownLabel: DropdownProps['renderLabel'] = (dropdownOptions) => {
       :render-label="dropdownLabel"
     >
       <n-icon
+        class="hidden md:block"
         :size="30"
         color="gray"
         cursor="pointer"
