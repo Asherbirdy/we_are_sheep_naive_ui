@@ -1,9 +1,11 @@
 <script setup lang='ts'>
 import { useQuery } from '@tanstack/vue-query'
+import { ArrowBack } from '@vicons/ionicons5'
 import type { DataTableColumns } from 'naive-ui'
-import { NButton, NTag, NDataTable, NTabPane, NTabs, NSpace } from 'naive-ui'
+import { NButton, NTag, NDataTable, NTabPane, NTabs, NSpace, NFlex, NP, NCard, NIcon } from 'naive-ui'
 
 import { QueryKeyEnum } from '@/enums'
+import { AgeRange, ageRangeToText } from '@/enums/AgeRangeEnum'
 import { useSheepApi } from '@/hook'
 
 export interface RowData {
@@ -133,8 +135,37 @@ const createColumns = (): DataTableColumns<RowData> => {
     <n-space
       v-else
       vertical
+      justify="space-between"
+      class="h-[calc(100vh-100px)]"
     >
-      {{ state.data.details }}
+      <n-flex vertical>
+        <n-icon
+          size="26"
+          @click="state.page.current = Page.home"
+        >
+          <ArrowBack />
+        </n-icon>
+        <n-card :title="`${state.data.details?.name}${ageRangeToText(state.data.details?.ageRange as AgeRange)}`">
+          <div>
+            狀態:<n-tag>{{ state.data.details?.personStatus }}</n-tag>
+          </div>
+          <div>
+            <n-tag>標籤</n-tag>
+            <n-tag>{{ state.data.details?.tags }}</n-tag>
+          </div>
+        </n-card>
+        <n-p>
+          備註:
+          {{ state.data.details?.note || '無備註' }}
+        </n-p>
+      </n-flex>
+      <n-button
+        block
+        type="primary"
+        @click="state.page.current = Page.home"
+      >
+        編輯
+      </n-button>
     </n-space>
   </div>
 </template>
