@@ -1,6 +1,10 @@
 <script setup lang='ts'>
+import { useQuery } from '@tanstack/vue-query'
 import type { DataTableColumns } from 'naive-ui'
 import { NButton, NTag, useMessage, NDataTable, NTabPane, NTabs } from 'naive-ui'
+
+import { QueryKeyEnum } from '@/enums'
+import { useSheepApi } from '@/hook'
 
 interface RowData {
 	_id: string
@@ -8,16 +12,24 @@ interface RowData {
 	tags: string[]
 }
 
+// 取得牧養名單
+const { data: handleSheepList } = useQuery({
+	queryKey: [QueryKeyEnum.sheepList],
+	queryFn: () => useSheepApi.getSheepList()
+})
+
 const message = useMessage()
 
+// 建立表格欄位
 const createColumns = (): DataTableColumns<RowData> => {
 	return [
 		{
-			title: 'Name',
-			key: 'name'
+			title: '姓名',
+			key: 'name',
+			width: '20%'
 		},
 		{
-			title: 'Tags',
+			title: '標籤',
 			key: 'tags',
 			render (row) {
 				const tags = row.tags.map((tagKey) => {
@@ -40,37 +52,19 @@ const createColumns = (): DataTableColumns<RowData> => {
 			}
 		},
 		{
-			title: 'Action',
+			title: '',
 			key: 'actions',
+			width: '30%',
 			render (row) {
 				return h(
 					NButton,
 					{
 						size: 'small',
-						onClick: () => message.info(`send mail to ${row.name}`)
+						onClick: () => message.info(`info ${row.name}`)
 					},
-					{ default: () => 'Send Email' }
+					{ default: () => '詳細形況' }
 				)
 			}
-		}
-	]
-}
-const createData = (): RowData[] => {
-	return [
-		{
-			name: 'John Brown',
-			tags: ['nice', 'developer'],
-			_id: '123'
-		},
-		{
-			name: 'Jim Green',
-			tags: ['wow'],
-			_id: '123'
-		},
-		{
-			name: 'Joe Black',
-			tags: ['cool', 'teacher'],
-			_id: '123'
 		}
 	]
 }
@@ -85,20 +79,25 @@ const createData = (): RowData[] => {
     >
       <n-tab-pane
         name="focus"
-        tab="Focus"
+        tab="重點牧養"
       >
         <n-data-table
           :bordered="false"
           :single-line="false"
           :columns="createColumns()"
-          :data="createData()"
+          :data="handleSheepList?.list.focusPersonList"
         />
       </n-tab-pane>
       <n-tab-pane
         name="non-focus"
-        tab="Non-Focus"
+        tab="其他名單"
       >
-        Non-Focus
+        <n-data-table
+          :bordered="false"
+          :single-line="false"
+          :columns="createColumns()"
+          :data="handleSheepList?.list.nonFocusPersonList"
+        />
       </n-tab-pane>
     </n-tabs>
   </div>
