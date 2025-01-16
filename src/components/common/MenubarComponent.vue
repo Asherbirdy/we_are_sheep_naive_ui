@@ -82,14 +82,16 @@ const dropdownLabel: DropdownProps['renderLabel'] = (dropdownOptions) => {
     >
       <n-drawer-content
         title="目錄"
+        body-content-style="padding: 0;"
       >
-        <n-space justify="center">
-          <ThemeSwichComponent class="mb-2" />
+        <n-space
+          justify="center"
+          class="my-2"
+        >
+          <ThemeSwichComponent />
         </n-space>
         <n-menu
           v-model:value="activeKey"
-          :root-indent="36"
-          :indent="12"
           :options="menu"
         />
 
