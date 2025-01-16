@@ -9,16 +9,19 @@ import ThemeSwichComponent from './ThemeSwichComponent.vue'
 import { useMenuStore } from '@/stores'
 const menuStore = useMenuStore()
 const { menu } = storeToRefs(menuStore)
+
+// 狀態
 const state = ref({
+	data: {
+		menuKey: '' // 選中的 menu key
+	},
 	status: {
-		dropdown: false,
-		drawer: false
+		dropdown: false, // 是否顯示 dropdown
+		drawer: false // 是否顯示 drawer
 	}
 })
 
-const active = ref(false)
-const activeKey = ref('')
-
+// 下拉選單選項 網站才會出現
 const dropdownOptions = [
 	{
 		label: 'Theme',
@@ -45,18 +48,6 @@ const dropdownLabel: DropdownProps['renderLabel'] = (dropdownOptions) => {
 <template>
   <div>
     <!--
-			手機版 menu icon
-		-->
-    <n-icon
-      :size="30"
-      color="gray"
-      cursor="pointer"
-      class="block md:hidden"
-      @click="active = true"
-    >
-      <MenuIcon />
-    </n-icon>
-    <!--
 			網頁版 menu dropdown
 		-->
     <n-dropdown
@@ -75,8 +66,23 @@ const dropdownLabel: DropdownProps['renderLabel'] = (dropdownOptions) => {
         <MenuIcon />
       </n-icon>
     </n-dropdown>
+    <!--
+			手機版 menu
+		-->
+    <n-icon
+      :size="30"
+      color="gray"
+      cursor="pointer"
+      class="block md:hidden"
+      @click="state.status.drawer = true"
+    >
+      <MenuIcon />
+    </n-icon>
+    <!--
+			手機版 menu drawer
+		-->
     <n-drawer
-      v-model:show="active"
+      v-model:show="state.status.drawer"
       placement="right"
       default-width="180"
     >
@@ -91,8 +97,9 @@ const dropdownLabel: DropdownProps['renderLabel'] = (dropdownOptions) => {
           <ThemeSwichComponent />
         </n-space>
         <n-menu
-          v-model:value="activeKey"
+          v-model:value="state.data.menuKey"
           :options="menu"
+          :on-update:value="() => state.status.drawer = false"
         />
       </n-drawer-content>
     </n-drawer>
