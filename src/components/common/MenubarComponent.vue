@@ -1,7 +1,7 @@
 <script setup lang='ts'>
 
 import { Menu2 as MenuIcon } from '@vicons/tabler'
-import { NIcon, NDrawer, NDrawerContent, NMenu, NDropdown } from 'naive-ui'
+import { NIcon, NDrawer, NDrawerContent, NMenu, NDropdown, NSpace } from 'naive-ui'
 import type { DropdownProps } from 'naive-ui'
 import { storeToRefs } from 'pinia'
 
@@ -78,15 +78,21 @@ const dropdownLabel: DropdownProps['renderLabel'] = (dropdownOptions) => {
     <n-drawer
       v-model:show="active"
       placement="right"
+      default-width="180"
     >
-      <n-drawer-content title="Menu">
-        <ThemeSwichComponent />
+      <n-drawer-content
+        title="目錄"
+      >
+        <n-space justify="center">
+          <ThemeSwichComponent class="mb-2" />
+        </n-space>
         <n-menu
           v-model:value="activeKey"
           :root-indent="36"
           :indent="12"
           :options="menu"
         />
+
       </n-drawer-content>
     </n-drawer>
   </div>
