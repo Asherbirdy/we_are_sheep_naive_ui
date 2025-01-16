@@ -1,15 +1,23 @@
 <script setup lang='ts'>
 import { useQuery } from '@tanstack/vue-query'
 import type { DataTableColumns } from 'naive-ui'
-import { NButton, NTag, useMessage, NDataTable, NTabPane, NTabs, NSpace } from 'naive-ui'
+import { NButton, NTag, NDataTable, NTabPane, NTabs, NSpace } from 'naive-ui'
 
 import { QueryKeyEnum } from '@/enums'
 import { useSheepApi } from '@/hook'
 
-interface RowData {
+export interface RowData {
 	_id: string
 	name: string
-	tags: string[]
+	ageRange: string
+	tags: any[]
+	focusPerson: boolean
+	userId: string
+	personStatus: string
+	note: string
+	createdAt: string
+	updatedAt: string
+	__v: number
 }
 
 enum Page {
@@ -17,24 +25,23 @@ enum Page {
 	details = 'details',
 }
 
+// * 頁面狀態
 const state = ref({
 	data: {
-		details: null
+		details: null as RowData | null
 	},
 	page: {
 		current: Page.home
 	}
 })
 
-// 取得牧養名單
+// * 取得牧養名單
 const { data: handleSheepList } = useQuery({
 	queryKey: [QueryKeyEnum.sheepList],
 	queryFn: () => useSheepApi.getSheepList()
 })
 
-const message = useMessage()
-
-// 建立表格欄位
+// * 建立表格欄位
 const createColumns = (): DataTableColumns<RowData> => {
 	return [
 		{
@@ -74,7 +81,11 @@ const createColumns = (): DataTableColumns<RowData> => {
 					NButton,
 					{
 						size: 'small',
-						onClick: () => message.info(`info ${row.name}`)
+						onClick: () => {
+							state.value.page.current = Page.details
+							state.value.data.details = row
+							console.log(state.value.data.details)
+						}
 					},
 					{ default: () => '詳細形況' }
 				)
@@ -123,7 +134,7 @@ const createColumns = (): DataTableColumns<RowData> => {
       v-else
       vertical
     >
-      Edit
+      {{ state.data.details }}
     </n-space>
   </div>
 </template>
