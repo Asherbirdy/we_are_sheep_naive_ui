@@ -3,7 +3,7 @@ import { useMutation } from '@tanstack/vue-query'
 import { NSpace, NForm, NFormItem, NInput, NButton } from 'naive-ui'
 import type { FormRules } from 'naive-ui'
 
-import { CookieEnum, DashboardRoutes } from '@/enums'
+import { CookieEnum, ClientRoutes } from '@/enums'
 import { useAuthApi, useUserApi } from '@/hook'
 import { useUserStore } from '@/stores'
 import type { UserRegisterResponse } from '@/types'
@@ -111,7 +111,7 @@ const { mutate, isPending } = useMutation({
 		userStore.setUser(response.user)
 
 		await new Promise(resolve => setTimeout(resolve, 4000))
-		router.push(DashboardRoutes.profile)
+		router.push(ClientRoutes.profile)
 	},
 	onError: async () => {
 		notification.error({

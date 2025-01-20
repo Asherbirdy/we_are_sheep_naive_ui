@@ -3,7 +3,7 @@ import { MailOutline, PersonOutline } from '@vicons/ionicons5'
 import { NH2, NCard, NText, NButton, NSpace, NIcon, NFlex } from 'naive-ui'
 import { storeToRefs } from 'pinia'
 
-import { DashboardRoutes } from '@/enums'
+import { ClientRoutes } from '@/enums'
 import { useUserStore } from '@/stores'
 
 const userStore = useUserStore()
@@ -43,7 +43,7 @@ const router = useRouter()
           secondary
           block
           size="small"
-          @click="router.push(DashboardRoutes.profileEmailVerify)"
+          @click="router.push(ClientRoutes.profileEmailVerify)"
         >
           前往驗證
         </n-button>

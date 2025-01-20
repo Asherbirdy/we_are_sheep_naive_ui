@@ -4,13 +4,13 @@ import { defineStore } from 'pinia'
 import type { Component, ComputedRef } from 'vue'
 import { markRaw } from 'vue'
 
-import { DashboardRoutes, Routes } from '@/enums'
+import { ClientRoutes, Routes } from '@/enums'
 import { renderIcon } from '@/utils'
 interface Menu {
   label: string
   key: string
   icon: Component
-  route?: DashboardRoutes | Routes
+  route?: ClientRoutes | Routes
   children?: Menu[]
 }
 
@@ -24,9 +24,9 @@ export const useMenuStore = defineStore<string, MenuStore>('menuStore', () => {
   const state = ref<Menu[]>([
     {
       label: '動態牆',
-      key: DashboardRoutes.home,
+      key: ClientRoutes.home,
       icon: markRaw(NewspaperOutline),
-      route: DashboardRoutes.home
+      route: ClientRoutes.home
     },
     // {
     // 	label: '第二頁',
@@ -43,21 +43,21 @@ export const useMenuStore = defineStore<string, MenuStore>('menuStore', () => {
     // },
     {
       label: '牧養名單',
-      key: DashboardRoutes.sheep,
+      key: ClientRoutes.sheep,
       icon: markRaw(IdCardOutline),
-      route: DashboardRoutes.sheep
+      route: ClientRoutes.sheep
     },
     {
       label: '好友',
-      key: DashboardRoutes.friend,
+      key: ClientRoutes.friend,
       icon: markRaw(PeopleOutline),
-      route: DashboardRoutes.friend
+      route: ClientRoutes.friend
     },
     {
       label: '個人資料',
-      key: DashboardRoutes.profile,
+      key: ClientRoutes.profile,
       icon: markRaw(PersonCircleOutline),
-      route: DashboardRoutes.profile
+      route: ClientRoutes.profile
     },
     {
       label: '登出',

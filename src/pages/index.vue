@@ -16,6 +16,7 @@ import { useI18n } from 'vue-i18n'
 
 import WelcomeImage from '@/assets/image/login/welcome.png'
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const { t } = useI18n()
 
 </script>

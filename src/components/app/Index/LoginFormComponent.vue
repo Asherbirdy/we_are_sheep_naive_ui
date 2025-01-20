@@ -3,7 +3,7 @@ import { useMutation } from '@tanstack/vue-query'
 import { NSpace, NForm, NFormItem, NInput, NButton, NA, NPopover, NP } from 'naive-ui'
 import type { FormRules } from 'naive-ui'
 
-import { CookieEnum, DashboardRoutes } from '@/enums'
+import { CookieEnum, ClientRoutes } from '@/enums'
 import { useAuthApi, useUserApi } from '@/hook'
 import { useUserStore } from '@/stores/common/UserStore'
 import type { LoginResponse } from '@/types'
@@ -79,10 +79,10 @@ const { mutate, isPending } = useMutation({
 		await new Promise(resolve => setTimeout(resolve, 4000))
 		// 如果未驗證 跳到 profile
 		if (!response.user.emailVerified) {
-			router.push(DashboardRoutes.profile)
+			router.push(ClientRoutes.profile)
 			return
 		}
-		router.push(DashboardRoutes.home)
+		router.push(ClientRoutes.home)
 	},
 	onError: async () => {
 		const { data } = state.value

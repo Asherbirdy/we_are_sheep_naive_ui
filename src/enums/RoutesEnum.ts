@@ -1,14 +1,15 @@
-  // 登入頁
+// 登入頁
+const client = '/C'
+
 export enum Routes {
   'login' = '/',
 }
 
 // Dashboard
-export enum DashboardRoutes {
-  'home' = '/dashboard',
-  'sheep' = '/dashboard/sheep',
-  'friend' = '/dashboard/friend',
-  // 個人資料
-  'profile' = '/dashboard/profile',
-  'profileEmailVerify' = '/dashboard/profile/emailVerify',
+export enum ClientRoutes {
+  'home' = client,
+  'sheep' = `${client}/sheep`,
+  'friend' = `${client}/friend`,
+  'profile' = `${client}/profile`,
+  'profileEmailVerify' = `${client}/profile/emailVerify`,
 }
