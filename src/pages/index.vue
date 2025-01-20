@@ -17,7 +17,7 @@ import { useI18n } from 'vue-i18n'
 import WelcomeImage from '@/assets/image/login/welcome.png'
 
 const { t } = useI18n()
-
+console.log('test')
 </script>
 
 <template>
