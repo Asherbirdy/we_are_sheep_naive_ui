@@ -110,7 +110,7 @@ const { mutate, isPending } = useMutation({
 		const response = await useUserApi.showMe()
 		userStore.setUser(response.user)
 
-		await new Promise(resolve => setTimeout(resolve, 4000))
+		await new Promise(resolve => setTimeout(resolve, 2000))
 		router.push(ClientRoutes.profile)
 	},
 	onError: async () => {
