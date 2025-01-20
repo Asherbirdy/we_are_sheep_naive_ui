@@ -9,6 +9,8 @@ import type {
 
 import AbortAxios from './AbortAxios'
 import type { AxiosOptions, RequstInterceptors, Response } from './type'
+import config from '../config'
+import { CookieEnum } from '@/enums'
 import { getToken, setToken, removeToken } from '@/utils'
 
 class Axios {
@@ -24,7 +26,7 @@ class Axios {
   }
 
   private async refreshTokenIfNeeded (): Promise<boolean> {
-    const token = getToken('accessToken')
+    const token = getToken(CookieEnum.accessToken)
 
     // 如果已有 accessToken,則無需刷新
     if (token) {
@@ -32,7 +34,7 @@ class Axios {
     }
 
     // 檢查是否有 refreshToken
-    const refreshToken = getToken('refreshToken')
+    const refreshToken = getToken(CookieEnum.refreshToken)
     if (!refreshToken) {
       // 如果沒有 refreshToken,則直接導航到登入頁面
       // router.push("/login")
@@ -42,7 +44,7 @@ class Axios {
     try {
       // 嘗試刷新 accessToken
       const response = await axios.get(
-        `${import.meta.env.VITE_SERVER}auth/refreshToken`,
+        `${config.baseUrl}auth/refreshToken`,
         {
           headers: {
             Authorization: `Bearer ${refreshToken}`
@@ -51,12 +53,12 @@ class Axios {
       )
 
       const newAccessToken = response.data.jwtAccessToken.accessTokenJWT
-      setToken('accessToken', newAccessToken)
+      setToken(CookieEnum.accessToken, newAccessToken)
       return true // 刷新成功
     } catch (error) {
       console.error('Error refreshing token:', error)
-      removeToken('refreshToken')
-      removeToken('accessToken')
+      removeToken(CookieEnum.refreshToken)
+      removeToken(CookieEnum.accessToken)
       return false // 刷新失敗
     }
   }
@@ -79,10 +81,9 @@ class Axios {
     this.axiosInstance.interceptors.request.use(
       async (config: InternalAxiosRequestConfig) => {
         const abortRepetitiveRequest =
-          (config as unknown as any)?.abortRepetitiveRequest ??
-          this.options.abortRepetitiveRequest
+          (config as unknown as any)?.abortRepetitiveRequest
 
-        let token = getToken('accessToken')
+        let token = getToken(CookieEnum.accessToken)
 
         // 如果沒有 accessToken
         if (!token) {
@@ -92,7 +93,7 @@ class Axios {
             // 如果刷新失敗,直接返回config
             return config
           }
-          token = getToken('accessToken')
+          token = getToken(CookieEnum.accessToken)
         }
 
         if (token) {

@@ -1,4 +1,4 @@
-import useRequest from '../http'
+import useRequest from './http'
 import type { LoginPayload, LoginResponse, UserRegisterPayload, UserRegisterResponse } from '@/types'
 
 export const useAuthApi = {
