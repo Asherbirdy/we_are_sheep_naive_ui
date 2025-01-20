@@ -7,6 +7,7 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { defineConfig, loadEnv } from 'vite'
 import Pages from 'vite-plugin-pages'
+import { VitePWA } from 'vite-plugin-pwa'
 import Layouts from 'vite-plugin-vue-layouts'
 // https://vitejs.dev/config/
 
@@ -16,6 +17,7 @@ export default defineConfig(({ mode }) => {
     base: env.VITE_BASE || '/',
     plugins: [
       vue(),
+      VitePWA(),
       AutoImport({
         imports: [
           'vue',
