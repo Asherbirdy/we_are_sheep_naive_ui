@@ -1,4 +1,4 @@
-import useRequest from '../http'
+import useRequest from './http'
 
 export const useDevApi = {
   showMe: async () => await useRequest.get({

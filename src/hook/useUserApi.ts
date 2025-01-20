@@ -1,4 +1,4 @@
-import useRequest from '../http'
+import useRequest from './http'
 import type { ShowUserResponse } from '@/types'
 
 enum UserApi {

@@ -1,4 +1,4 @@
-import useRequest from '../http'
+import useRequest from './http'
 import type { CreateSheepPayload, GetSheepListResponse } from '@/types'
 
 export const useSheepApi = {

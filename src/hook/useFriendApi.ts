@@ -1,4 +1,4 @@
-import useRequest from '../http'
+import useRequest from './http'
 
 export const useFriendApi = {
   friendList: async () => await useRequest.get({

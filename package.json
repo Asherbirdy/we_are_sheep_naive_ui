@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "vite --host 0.0.0.0 --mode development",
-    "build": "vite build --mode production",
+    "build": "vue-tsc --noEmit -p tsconfig.app.json --composite false && vite build --mode production",
     "preview": "vite preview --port 8080 --mode production",
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit -p tsconfig.app.json --composite false",
