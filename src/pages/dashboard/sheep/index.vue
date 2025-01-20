@@ -95,7 +95,6 @@ const createColumns = (): DataTableColumns<PersonList> => {
 						onClick: () => {
 							state.value.page.current = Page.details
 							state.value.data.details = row
-							console.log(state.value.data.details)
 						}
 					},
 					{ default: () => '詳細形況' }
