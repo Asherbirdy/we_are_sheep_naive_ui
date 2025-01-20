@@ -1,7 +1,7 @@
 <script setup lang='ts'>
 import { useQuery } from '@tanstack/vue-query'
 import { ArrowBack } from '@vicons/ionicons5'
-import { NButton, NTag, NDataTable, NTabPane, NTabs, NSpace, NFlex, NP, NCard, NIcon, NDrawer, NDrawerContent, NForm, NFormItem, NInput } from 'naive-ui'
+import { NButton, NTag, NDataTable, NTabPane, NTabs, NSpace, NFlex, NP, NCard, NIcon, NDrawer, NDrawerContent, NForm, NFormItem, NInput, NSelect } from 'naive-ui'
 import type { DataTableColumns } from 'naive-ui'
 import type {
 	FormInst,
@@ -105,18 +105,18 @@ const createColumns = (): DataTableColumns<PersonList> => {
 }
 
 const rules: FormRules = {
-	age: [
+	[PersonListKey.name]: [
 		{
 			required: true,
 			validator (rule: FormItemRule, value: string) {
 				if (!value) {
-					return new Error('Age is required')
+					return new Error('姓名是必填')
 				}
 				else if (!/^\d*$/.test(value)) {
-					return new Error('Age should be an integer')
+					return new Error('姓名應為數字')
 				}
 				else if (Number(value) < 18) {
-					return new Error('Age should be above 18')
+					return new Error('姓名應為數字')
 				}
 				return true
 			},
@@ -124,6 +124,39 @@ const rules: FormRules = {
 		}
 	]
 }
+
+const value = ref(null)
+const options = [
+	{
+		label: 'Everybody\'s Got Something to Hide Except Me and My Monkey',
+		value: 'song0'
+	},
+	{
+		label: 'Drive My Car',
+		value: 'song1'
+	},
+	{
+		label: 'Norwegian Wood',
+		value: 'song2'
+	},
+	{
+		label: 'You Won\'t See',
+		value: 'song3',
+		disabled: true
+	},
+	{
+		label: 'Nowhere Man',
+		value: 'song4'
+	},
+	{
+		label: 'Think For Yourself',
+		value: 'song5'
+	},
+	{
+		label: 'The Word',
+		value: 'song6'
+	}
+]
 
 </script>
 
@@ -202,24 +235,55 @@ const rules: FormRules = {
       placement="bottom"
     >
       <n-drawer-content
-        title="Stoner"
+        :title="state.data.details?.name"
         closable
       >
         <n-form
           ref="formRef"
           :model="state.data.details"
           :rules="rules"
+          size="small"
         >
           <n-form-item
-            path="age"
-            label="Age"
+            :path="PersonListKey.ageRange"
+            label="年齡"
+          >
+            <n-select
+              v-model:value="value"
+              :options="options"
+            />
+          </n-form-item>
+          <n-form-item
+            :path="PersonListKey.focusPerson"
+            label="重點牧養"
+          >
+            <n-select
+              v-model:value="value"
+              :options="options"
+            />
+          </n-form-item>
+          <n-form-item
+            :path="PersonListKey.focusPerson"
+            label="狀態"
+          >
+            <n-select
+              v-model:value="value"
+              multiple
+              :options="options"
+            />
+          </n-form-item>
+          <n-form-item
+            :path="PersonListKey.focusPerson"
+            label="備註"
           >
             <n-input
-              v-model:value="state.data.details._id"
-              @keydown.enter.prevent
+              v-model:value="value"
+              type="textarea"
+              placeholder="Basic Textarea"
             />
           </n-form-item>
         </n-form>
+
       </n-drawer-content>
     </n-drawer>
   </div>
