@@ -1,4 +1,4 @@
-import { LogOutOutline, NewspaperOutline, IdCardOutline, PersonCircleOutline } from '@vicons/ionicons5'
+import { LogOutOutline, NewspaperOutline, IdCardOutline, PersonCircleOutline, PeopleOutline } from '@vicons/ionicons5'
 import type { MenuOption } from 'naive-ui'
 import { defineStore } from 'pinia'
 import type { Component, ComputedRef } from 'vue'
@@ -43,8 +43,14 @@ export const useMenuStore = defineStore<string, MenuStore>('menuStore', () => {
     // },
     {
       label: '牧養名單',
-      key: DashboardRoutes.friend,
+      key: DashboardRoutes.sheep,
       icon: markRaw(IdCardOutline),
+      route: DashboardRoutes.sheep
+    },
+    {
+      label: '好友',
+      key: DashboardRoutes.friend,
+      icon: markRaw(PeopleOutline),
       route: DashboardRoutes.friend
     },
     {

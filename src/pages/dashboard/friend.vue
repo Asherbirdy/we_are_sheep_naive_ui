@@ -49,7 +49,7 @@ const data: rowType[] = [
 ]
 
 const onCopyId = () => {
-	navigator.clipboard.writeText(getUser.value._id)
+	navigator.clipboard.writeText(getUser.value?._id || '')
 	notification.success({
 		content: '複製成功',
 		duration: 2500,
@@ -112,7 +112,7 @@ const onCopyId = () => {
             tab="My ID"
           >
             <n-card>
-              {{ getUser._id }}
+              {{ getUser?._id }}
             </n-card>
             <n-button
               block
