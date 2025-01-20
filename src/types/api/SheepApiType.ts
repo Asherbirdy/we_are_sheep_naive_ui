@@ -1,3 +1,5 @@
+import type { PersonListKey } from '@/enums'
+
 // * Create Sheep
 export interface CreateSheepPayload {
   name: string
@@ -11,34 +13,20 @@ export interface GetSheepListResponse {
 }
 
 export interface SheepList {
-  focusPersonList: FocusPersonList[]
-  nonFocusPersonList: NonFocusPersonList[]
+  focusPersonList: PersonList[]
+  nonFocusPersonList: PersonList[]
 }
 
-export interface FocusPersonList {
-  personStatus: string
-  _id: string
-  name: string
-  ageRange: string
-  tags: any[]
-  focusPerson: boolean
-  userId: string
-  note: string
+export interface PersonList {
+  [PersonListKey.personStatus]: string
+  [PersonListKey._id]: string
+  [PersonListKey.name]: string
+  [PersonListKey.ageRange]: string
+  [PersonListKey.tags]: string[]
+  [PersonListKey.focusPerson]: boolean
+  [PersonListKey.userId]: string
+  [PersonListKey.note]: string
   createdAt: string
   updatedAt: string
   __v: number
-}
-
-export interface NonFocusPersonList {
-  _id: string
-  name: string
-  ageRange: string
-  focusPerson: boolean
-  userId: string
-  createdAt: string
-  updatedAt: string
-  __v: number
-  note: string
-  personStatus: string
-  tags: string[]
 }
