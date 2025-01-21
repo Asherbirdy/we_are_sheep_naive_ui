@@ -25,7 +25,7 @@ export const useSheepApi = {
   /*
     * Delete Sheep
   */
-  deleteSheep: async (sheepId: string) => await useRequest.post({
+  deleteSheep: async (sheepId: string) => await useRequest.delete({
     url: `/sheep/delete?sheepId=${sheepId}`
   })
 }

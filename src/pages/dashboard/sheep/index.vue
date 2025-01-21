@@ -147,9 +147,18 @@ const { mutate: handleUpdateSheep } = useMutation({
 	})
 })
 
+const { mutate: handleDeleteSheep } = useMutation({
+	mutationFn: () => useSheepApi.deleteSheep(state.value.data.details._id),
+	onSuccess: () => state.value.status.drawer = false,
+	onSettled: async () => await queryClient.invalidateQueries({
+		queryKey: [QueryKeyEnum.sheepList]
+	})
+})
+
 const message = useMessage()
+
 const handlePositiveClick = () => {
-	message.info('Yes')
+	handleDeleteSheep()
 }
 const handleNegativeClick = () => {
 	message.info('No')
