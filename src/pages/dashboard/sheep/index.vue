@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { useMutation, useQuery } from '@tanstack/vue-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 import { NButton, NTag, NDataTable, NTabPane, NTabs, NSpace, NDrawer, NDrawerContent, NForm, NFormItem, NInput, NSelect, NRadioGroup, NRadio } from 'naive-ui'
 import type { DataTableColumns } from 'naive-ui'
 import type {
@@ -17,6 +17,7 @@ enum Page {
 }
 
 const formRef = ref<FormInst | null>(null)
+const queryClient = useQueryClient()
 
 // * 頁面狀態
 const state = ref({
@@ -98,6 +99,7 @@ const createColumns = (): DataTableColumns<PersonList> => {
 								details.tags = row.tags
 								details.focusPerson = row.focusPerson
 								details.note = row.note
+								details._id = row._id
 								state.value.status.drawer = true
 							})
 						}
@@ -189,7 +191,13 @@ const { mutate: handleUpdateSheep } = useMutation({
 			}
 		}
 		return useSheepApi.editSheep(payload)
-	}
+	},
+	onSuccess: () => {
+		state.value.status.drawer = false
+	},
+	onSettled: async () => await queryClient.invalidateQueries({
+		queryKey: [QueryKeyEnum.sheepList]
+	})
 })
 </script>
 
@@ -305,6 +313,12 @@ const { mutate: handleUpdateSheep } = useMutation({
             />
           </n-form-item>
         </n-form>
+        <n-button
+          type="primary"
+          @click="handleUpdateSheep()"
+        >
+          更新
+        </n-button>
       </n-drawer-content>
     </n-drawer>
   </div>

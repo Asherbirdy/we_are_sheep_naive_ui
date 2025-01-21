@@ -18,7 +18,7 @@ export const useSheepApi = {
   /*
     * Edit Sheep
   */
-  editSheep: async (payload: EditSheepPayload) => await useRequest.post({
+  editSheep: async (payload: EditSheepPayload) => await useRequest.patch({
     url: `/sheep/edit?sheepId=${payload.sheepId}`,
     data: payload.data
   }),
