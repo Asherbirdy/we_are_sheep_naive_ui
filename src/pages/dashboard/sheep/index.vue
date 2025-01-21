@@ -1,6 +1,7 @@
 <script setup lang='ts'>
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
-import { NButton, NTag, NDataTable, NTabPane, NTabs, NSpace, NDrawer, NDrawerContent, NForm, NFormItem, NInput, NSelect, NRadioGroup, NRadio } from 'naive-ui'
+import { Trash } from '@vicons/ionicons5'
+import { NButton, NIcon, NTag, NDataTable, NTabPane, NTabs, NSpace, NDrawer, NDrawerContent, NForm, NFormItem, NInput, NSelect, NRadioGroup, NRadio, NPopconfirm } from 'naive-ui'
 import type { DataTableColumns } from 'naive-ui'
 import type { FormInst,	FormItemRule, FormRules } from 'naive-ui'
 
@@ -152,6 +153,15 @@ const { mutate: handleUpdateSheep } = useMutation({
 		queryKey: [QueryKeyEnum.sheepList]
 	})
 })
+
+const message = useMessage()
+const handlePositiveClick = () => {
+	message.info('Yes')
+}
+const handleNegativeClick = () => {
+	message.info('No')
+}
+
 </script>
 
 <template>
@@ -266,12 +276,32 @@ const { mutate: handleUpdateSheep } = useMutation({
             />
           </n-form-item>
         </n-form>
-        <n-button
-          type="primary"
-          @click="handleUpdateSheep()"
+        <n-space
+          justify="space-between"
         >
-          更新
-        </n-button>
+          <n-button
+            type="primary"
+            @click="handleUpdateSheep()"
+          >
+            更新
+          </n-button>
+          <n-popconfirm
+            @positive-click="handlePositiveClick"
+            @negative-click="handleNegativeClick"
+          >
+            <template #trigger>
+              <n-button
+                quaternary
+                circle
+              >
+                <template #icon>
+                  <n-icon><Trash /></n-icon>
+                </template>
+              </n-button>
+            </template>
+            Things pass us by. Nobody can catch them. That's the way we live our lives.
+          </n-popconfirm>
+        </n-space>
       </n-drawer-content>
     </n-drawer>
     <AddSheepBtnComponent />
