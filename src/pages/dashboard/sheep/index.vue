@@ -159,6 +159,21 @@ const statusOptions = [
 		value: 'gospelfriend'
 	}
 ]
+
+const tagsOptions = [
+	{
+		label: '已邀主日',
+		value: '已邀主日'
+	},
+	{
+		label: '已邀家聚會',
+		value: '已邀家聚會'
+	},
+	{
+		label: '已邀加小排',
+		value: '已邀加小排'
+	}
+]
 </script>
 
 <template>
@@ -192,6 +207,12 @@ const statusOptions = [
             :columns="createColumns()"
             :data="handleSheepList?.list.nonFocusPersonList"
           />
+        </n-tab-pane>
+        <n-tab-pane
+          name="common"
+          tab="共同小羊"
+        >
+          開發中
         </n-tab-pane>
       </n-tabs>
     </n-space>
@@ -244,6 +265,16 @@ const statusOptions = [
             <n-select
               v-model:value="state.data.details[PersonListKey.personStatus]"
               :options="statusOptions"
+            />
+          </n-form-item>
+          <n-form-item
+            :path="PersonListKey.note"
+            label="這週邀約請形"
+          >
+            <n-select
+              v-model:value="state.data.details[PersonListKey.tags]"
+              multiple
+              :options="tagsOptions"
             />
           </n-form-item>
           <n-form-item
