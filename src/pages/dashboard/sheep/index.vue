@@ -2,16 +2,12 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 import { NButton, NTag, NDataTable, NTabPane, NTabs, NSpace, NDrawer, NDrawerContent, NForm, NFormItem, NInput, NSelect, NRadioGroup, NRadio } from 'naive-ui'
 import type { DataTableColumns } from 'naive-ui'
-import type {
-	FormInst,
-	FormItemRule,
-	FormRules
-} from 'naive-ui'
+import type { FormInst,	FormItemRule, FormRules } from 'naive-ui'
 
 import AddSheepBtnComponent from '@/components/app/sheep/AddSheepBtnComponent.vue'
-import { PersonListKey, QueryKeyEnum, ageRangeOptions  } from '@/enums'
+import { PersonListKey, QueryKeyEnum, ageRangeOptions, focusOptions, statusOptions, tagsOptions } from '@/enums'
 import { useSheepApi } from '@/hook'
-import type { PersonList } from '@/types'
+import type { EditSheepPayload, PersonList } from '@/types'
 
 enum Page {
 	home = 'home',
@@ -112,6 +108,7 @@ const createColumns = (): DataTableColumns<PersonList> => {
 	]
 }
 
+// * 驗證規則
 const rules: FormRules = {
 	[PersonListKey.name]: [
 		{
@@ -133,55 +130,10 @@ const rules: FormRules = {
 	]
 }
 
-const songs = [
-	{
-		label: '重點牧養',
-		value: 'isFocus'
-	},
-	{
-		label: '其他名單',
-		value: 'notFocus'
-	}
-]
-
-const statusOptions = [
-	{
-		label: '無設定',
-		value: 'none'
-	},
-	{
-		label: '正常聚會',
-		value: 'normal'
-	},
-	{
-		label: '久未聚會',
-		value: 'longTimeNoSee'
-	},
-	{
-		label: '福音朋友',
-		value: 'gospelfriend'
-	}
-]
-
-const tagsOptions = [
-	{
-		label: '已邀主日',
-		value: '已邀主日'
-	},
-	{
-		label: '已邀家聚會',
-		value: '已邀家聚會'
-	},
-	{
-		label: '已邀加小排',
-		value: '已邀加小排'
-	}
-]
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// * 更新
 const { mutate: handleUpdateSheep } = useMutation({
 	mutationFn: () => {
-		const payload = {
+		const payload: EditSheepPayload = {
 			sheepId: state.value.data.details._id,
 			data: {
 				ageRange: state.value.data.details.ageRange,
@@ -276,10 +228,10 @@ const { mutate: handleUpdateSheep } = useMutation({
             >
               <n-space>
                 <n-radio
-                  v-for="song in songs"
-                  :key="song.label"
-                  :value="song.value"
-                  :label="song.label"
+                  v-for="option in focusOptions"
+                  :key="option.label"
+                  :value="option.value"
+                  :label="option.label"
                 />
               </n-space>
             </n-radio-group>
