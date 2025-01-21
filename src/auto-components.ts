@@ -7,6 +7,7 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    AddSheepBtnComponent: typeof import('./components/app/sheep/AddSheepBtnComponent.vue')['default']
     EmailVerifyComponent: typeof import('./components/app/dashboard/profile/EmailVerifyComponent.vue')['default']
     LocalePopselectComponent: typeof import('./components/common/LocalePopselectComponent.vue')['default']
     LoginFormComponent: typeof import('./components/app/Index/LoginFormComponent.vue')['default']

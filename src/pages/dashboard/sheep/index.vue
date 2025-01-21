@@ -8,6 +8,7 @@ import type {
 	FormRules
 } from 'naive-ui'
 
+import AddSheepBtnComponent from '@/components/app/sheep/AddSheepBtnComponent.vue'
 import { PersonListKey, QueryKeyEnum, ageRangeOptions  } from '@/enums'
 import { useSheepApi } from '@/hook'
 import type { PersonList } from '@/types'
@@ -321,5 +322,6 @@ const { mutate: handleUpdateSheep } = useMutation({
         </n-button>
       </n-drawer-content>
     </n-drawer>
+    <AddSheepBtnComponent />
   </div>
 </template>
