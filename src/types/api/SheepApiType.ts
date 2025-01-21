@@ -23,10 +23,22 @@ export interface PersonList {
   [PersonListKey.name]: string
   [PersonListKey.ageRange]: string
   [PersonListKey.tags]: string[]
-  [PersonListKey.focusPerson]: string | null
+  [PersonListKey.focusPerson]: string
   [PersonListKey.userId]: string
   [PersonListKey.note]: string
   createdAt: string
   updatedAt: string
   __v: number
+}
+
+// * Edit Sheep
+export interface EditSheepPayload {
+  sheepId: string
+  data: {
+    ageRange: string
+    tags: string[]
+    focusPerson: string
+    personStatus: string
+    note: string
+  }
 }

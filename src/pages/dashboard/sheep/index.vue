@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { useQuery } from '@tanstack/vue-query'
+import { useMutation, useQuery } from '@tanstack/vue-query'
 import { NButton, NTag, NDataTable, NTabPane, NTabs, NSpace, NDrawer, NDrawerContent, NForm, NFormItem, NInput, NSelect, NRadioGroup, NRadio } from 'naive-ui'
 import type { DataTableColumns } from 'naive-ui'
 import type {
@@ -26,7 +26,7 @@ const state = ref({
 			[PersonListKey.name]: '',
 			[PersonListKey.ageRange]: '',
 			[PersonListKey.tags]: [],
-			[PersonListKey.focusPerson]: null,
+			[PersonListKey.focusPerson]: '',
 			[PersonListKey.userId]: '',
 			[PersonListKey.personStatus]: '',
 			[PersonListKey.note]: '',
@@ -174,6 +174,23 @@ const tagsOptions = [
 		value: '已邀加小排'
 	}
 ]
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const { mutate: handleUpdateSheep } = useMutation({
+	mutationFn: () => {
+		const payload = {
+			sheepId: state.value.data.details._id,
+			data: {
+				ageRange: state.value.data.details.ageRange,
+				tags: state.value.data.details.tags,
+				focusPerson: state.value.data.details.focusPerson,
+				personStatus: state.value.data.details.personStatus,
+				note: state.value.data.details.note
+			}
+		}
+		return useSheepApi.editSheep(payload)
+	}
+})
 </script>
 
 <template>

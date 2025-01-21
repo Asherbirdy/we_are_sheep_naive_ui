@@ -1,5 +1,5 @@
 import useRequest from './http'
-import type { CreateSheepPayload, GetSheepListResponse } from '@/types'
+import type { CreateSheepPayload, GetSheepListResponse, EditSheepPayload } from '@/types'
 
 export const useSheepApi = {
   /*
@@ -18,11 +18,9 @@ export const useSheepApi = {
   /*
     * Edit Sheep
   */
-  editSheep: async (sheepId: string) => await useRequest.post({
-    url: `/sheep/edit?sheepId=${sheepId}`,
-    data: {
-      name: 'test'
-    }
+  editSheep: async (payload: EditSheepPayload) => await useRequest.post({
+    url: `/sheep/edit?sheepId=${payload.sheepId}`,
+    data: payload.data
   }),
   /*
     * Delete Sheep
