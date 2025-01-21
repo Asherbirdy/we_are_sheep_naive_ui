@@ -90,9 +90,14 @@ const createColumns = (): DataTableColumns<PersonList> => {
 					{
 						size: 'small',
 						onClick: () => {
-							state.value.data.details = row
-							console.log('state.value.data.details', state.value.data.details)
+							const { details } = state.value.data
 							nextTick(() => {
+								details.name = row.name
+								details.ageRange = row.ageRange
+								details.personStatus = row.personStatus
+								details.tags = row.tags
+								details.focusPerson = row.focusPerson
+								details.note = row.note
 								state.value.status.drawer = true
 							})
 						}
@@ -128,29 +133,29 @@ const rules: FormRules = {
 const songs = [
 	{
 		label: '重點牧養',
-		value: true
+		value: 'isFocus'
 	},
 	{
 		label: '其他名單',
-		value: false
+		value: 'notFocus'
 	}
 ]
 
 const statusOptions = [
 	{
-		label: 'none',
+		label: '無設定',
 		value: 'none'
 	},
 	{
-		label: 'normal',
-		value: 'married'
+		label: '正常聚會',
+		value: 'normal'
 	},
 	{
-		label: 'longTimeNoSee',
+		label: '久未聚會',
 		value: 'longTimeNoSee'
 	},
 	{
-		label: 'gospelfriend',
+		label: '福音朋友',
 		value: 'gospelfriend'
 	}
 ]
@@ -219,6 +224,7 @@ const statusOptions = [
             label="分類"
           >
             <n-radio-group
+              v-model:value="state.data.details[PersonListKey.focusPerson]"
               name="radiogroup"
             >
               <n-space>
@@ -237,7 +243,6 @@ const statusOptions = [
           >
             <n-select
               v-model:value="state.data.details[PersonListKey.personStatus]"
-              multiple
               :options="statusOptions"
             />
           </n-form-item>
