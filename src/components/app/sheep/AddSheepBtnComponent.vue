@@ -1,7 +1,9 @@
 <script setup lang='ts'>
 import { CashOutline as CashIcon } from '@vicons/ionicons5'
-import { NFloatButton, NIcon, NForm, NFormItem, NSelect, NButton, NDrawer, NDrawerContent } from 'naive-ui'
+import { NFloatButton, NIcon, NForm, NFormItem, NInput, NButton, NDrawer, NDrawerContent, NSelect } from 'naive-ui'
 import type { FormInst, FormItemRule, FormRules } from 'naive-ui'
+
+import { ageRangeOptions } from '@/enums'
 
 const addFormRef = ref<FormInst | null>(null)
 const state = ref({
@@ -64,7 +66,13 @@ const rules: FormRules = {
           size="small"
         >
           <n-form-item
-            :path="ageRange"
+            path="name"
+            label="姓名"
+          >
+            <n-input v-model:value="state.data.name" />
+          </n-form-item>
+          <n-form-item
+            path="ageRange"
             label="年齡範圍"
           >
             <n-select
