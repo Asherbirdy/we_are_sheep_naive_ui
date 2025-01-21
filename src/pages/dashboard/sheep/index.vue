@@ -1,7 +1,6 @@
 <script setup lang='ts'>
 import { useQuery } from '@tanstack/vue-query'
-import { ArrowBack } from '@vicons/ionicons5'
-import { NButton, NTag, NDataTable, NTabPane, NTabs, NSpace, NFlex, NP, NCard, NIcon, NDrawer, NDrawerContent, NForm, NFormItem, NInput, NSelect } from 'naive-ui'
+import { NButton, NTag, NDataTable, NTabPane, NTabs, NSpace, NDrawer, NDrawerContent, NForm, NFormItem, NInput, NSelect, NRadioGroup, NRadio } from 'naive-ui'
 import type { DataTableColumns } from 'naive-ui'
 import type {
 	FormInst,
@@ -9,14 +8,12 @@ import type {
 	FormRules
 } from 'naive-ui'
 
-import { PersonListKey, QueryKeyEnum } from '@/enums'
-import { AgeRange, ageRangeToText } from '@/enums/AgeRangeEnum'
+import { PersonListKey, QueryKeyEnum, ageRangeOptions  } from '@/enums'
 import { useSheepApi } from '@/hook'
 import type { PersonList } from '@/types'
 
 enum Page {
 	home = 'home',
-	details = 'details',
 }
 
 const formRef = ref<FormInst | null>(null)
@@ -29,7 +26,7 @@ const state = ref({
 			[PersonListKey.name]: '',
 			[PersonListKey.ageRange]: '',
 			[PersonListKey.tags]: [],
-			[PersonListKey.focusPerson]: false,
+			[PersonListKey.focusPerson]: null,
 			[PersonListKey.userId]: '',
 			[PersonListKey.personStatus]: '',
 			[PersonListKey.note]: '',
@@ -93,8 +90,11 @@ const createColumns = (): DataTableColumns<PersonList> => {
 					{
 						size: 'small',
 						onClick: () => {
-							state.value.page.current = Page.details
 							state.value.data.details = row
+							console.log('state.value.data.details', state.value.data.details)
+							nextTick(() => {
+								state.value.status.drawer = true
+							})
 						}
 					},
 					{ default: () => '詳細形況' }
@@ -125,39 +125,35 @@ const rules: FormRules = {
 	]
 }
 
-const value = ref(null)
-const options = [
+const songs = [
 	{
-		label: 'Everybody\'s Got Something to Hide Except Me and My Monkey',
-		value: 'song0'
+		label: '重點牧養',
+		value: true
 	},
 	{
-		label: 'Drive My Car',
-		value: 'song1'
-	},
-	{
-		label: 'Norwegian Wood',
-		value: 'song2'
-	},
-	{
-		label: 'You Won\'t See',
-		value: 'song3',
-		disabled: true
-	},
-	{
-		label: 'Nowhere Man',
-		value: 'song4'
-	},
-	{
-		label: 'Think For Yourself',
-		value: 'song5'
-	},
-	{
-		label: 'The Word',
-		value: 'song6'
+		label: '其他名單',
+		value: false
 	}
 ]
 
+const statusOptions = [
+	{
+		label: 'none',
+		value: 'none'
+	},
+	{
+		label: 'normal',
+		value: 'married'
+	},
+	{
+		label: 'longTimeNoSee',
+		value: 'longTimeNoSee'
+	},
+	{
+		label: 'gospelfriend',
+		value: 'gospelfriend'
+	}
+]
 </script>
 
 <template>
@@ -194,41 +190,6 @@ const options = [
         </n-tab-pane>
       </n-tabs>
     </n-space>
-    <n-space
-      v-else
-      vertical
-      justify="space-between"
-      class="h-[calc(100vh-100px)]"
-    >
-      <n-flex vertical>
-        <n-icon
-          size="26"
-          @click="state.page.current = Page.home"
-        >
-          <ArrowBack />
-        </n-icon>
-        <n-card :title="`${state.data.details?.name}${ageRangeToText(state.data.details?.ageRange as AgeRange)}`">
-          <div>
-            狀態:<n-tag>{{ state.data.details?.personStatus }}</n-tag>
-          </div>
-          <div>
-            <n-tag>標籤</n-tag>
-            <n-tag>{{ state.data.details?.tags }}</n-tag>
-          </div>
-        </n-card>
-        <n-p>
-          備註:
-          {{ state.data.details?.note || '無備註' }}
-        </n-p>
-      </n-flex>
-      <n-button
-        block
-        type="primary"
-        @click="state.status.drawer = true"
-      >
-        編輯
-      </n-button>
-    </n-space>
     <n-drawer
       v-model:show="state.status.drawer"
       default-height="600px"
@@ -246,44 +207,51 @@ const options = [
         >
           <n-form-item
             :path="PersonListKey.ageRange"
-            label="年齡"
+            label="年齡範圍"
           >
             <n-select
-              v-model:value="value"
-              :options="options"
+              v-model:value="state.data.details[PersonListKey.ageRange]"
+              :options="ageRangeOptions"
             />
           </n-form-item>
           <n-form-item
             :path="PersonListKey.focusPerson"
-            label="重點牧養"
+            label="分類"
           >
-            <n-select
-              v-model:value="value"
-              :options="options"
-            />
+            <n-radio-group
+              name="radiogroup"
+            >
+              <n-space>
+                <n-radio
+                  v-for="song in songs"
+                  :key="song.label"
+                  :value="song.value"
+                  :label="song.label"
+                />
+              </n-space>
+            </n-radio-group>
           </n-form-item>
           <n-form-item
-            :path="PersonListKey.focusPerson"
+            :path="PersonListKey.personStatus"
             label="狀態"
           >
             <n-select
-              v-model:value="value"
+              v-model:value="state.data.details[PersonListKey.personStatus]"
               multiple
-              :options="options"
+              :options="statusOptions"
             />
           </n-form-item>
           <n-form-item
-            :path="PersonListKey.focusPerson"
+            :path="PersonListKey.note"
             label="備註"
           >
             <n-input
-              v-model:value="value"
+              v-model:value="state.data.details[PersonListKey.note]"
               type="textarea"
               placeholder="Basic Textarea"
             />
           </n-form-item>
         </n-form>
-
       </n-drawer-content>
     </n-drawer>
   </div>

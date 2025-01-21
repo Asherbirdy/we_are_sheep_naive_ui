@@ -23,7 +23,7 @@ export interface PersonList {
   [PersonListKey.name]: string
   [PersonListKey.ageRange]: string
   [PersonListKey.tags]: string[]
-  [PersonListKey.focusPerson]: boolean
+  [PersonListKey.focusPerson]: string | null
   [PersonListKey.userId]: string
   [PersonListKey.note]: string
   createdAt: string
