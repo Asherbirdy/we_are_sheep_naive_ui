@@ -10,10 +10,6 @@ import { PersonListKey, QueryKeyEnum, ageRangeOptions, focusOptions, statusOptio
 import { useSheepApi } from '@/hook'
 import type { EditSheepPayload, PersonList } from '@/types'
 
-enum Page {
-	home = 'home',
-}
-
 const formRef = ref<FormInst | null>(null)
 const queryClient = useQueryClient()
 
@@ -33,9 +29,6 @@ const state = ref({
 			updatedAt: '',
 			__v: 0
 		} as PersonList
-	},
-	page: {
-		current: Page.home
 	},
 	status: {
 		drawer: false
@@ -166,10 +159,7 @@ const handleNegativeClick = () => {
 
 <template>
   <div>
-    <n-space
-      v-if="state.page.current === Page.home"
-      vertical
-    >
+    <n-space vertical>
       <n-tabs
         type="segment"
         animated
@@ -276,9 +266,7 @@ const handleNegativeClick = () => {
             />
           </n-form-item>
         </n-form>
-        <n-space
-          justify="space-between"
-        >
+        <n-space justify="space-between">
           <n-button
             type="primary"
             @click="handleUpdateSheep()"
@@ -299,7 +287,7 @@ const handleNegativeClick = () => {
                 </template>
               </n-button>
             </template>
-            Things pass us by. Nobody can catch them. That's the way we live our lives.
+            確定要刪除嗎？
           </n-popconfirm>
         </n-space>
       </n-drawer-content>

@@ -4,7 +4,7 @@ import { Add } from '@vicons/ionicons5'
 import { NFloatButton, NIcon, NForm, NFormItem, NInput, NButton, NDrawer, NDrawerContent, NSelect } from 'naive-ui'
 import type { FormInst, FormItemRule, FormRules } from 'naive-ui'
 
-import { QueryKeyEnum, ageRangeOptions } from '@/enums'
+import { AgeRange, QueryKeyEnum, ageRangeOptions } from '@/enums'
 import { useSheepApi } from '@/hook'
 
 const queryClient = useQueryClient()
@@ -13,7 +13,7 @@ const addFormRef = ref<FormInst | null>(null)
 const state = ref({
 	data: {
 		name: '',
-		ageRange: ''
+		ageRange: AgeRange.teenager
 	},
 	status: {
 		drawer: false
