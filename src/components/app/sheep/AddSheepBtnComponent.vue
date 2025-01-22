@@ -41,7 +41,10 @@ const rules: FormRules = {
 	]
 }
 
-const { mutate: handelAddSheep, isPending: isAddSheepPending } = useMutation({
+const {
+	mutate: handelAddSheep,
+	isPending: isAddSheepPending
+} = useMutation({
 	mutationFn: () => useSheepApi.createSheep(state.value.data),
 	onSuccess: () => state.value.status.drawer = false,
 	onSettled: async () => await queryClient.invalidateQueries({
@@ -50,7 +53,6 @@ const { mutate: handelAddSheep, isPending: isAddSheepPending } = useMutation({
 })
 
 </script>
-
 <template>
   <div>
     <n-float-button
