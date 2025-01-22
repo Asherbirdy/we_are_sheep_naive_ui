@@ -14,7 +14,7 @@ import MenubarComponent from '@/components/common/MenubarComponent.vue'
           align="center"
         >
           <n-p width="150">
-            LOGO
+            測試環境
           </n-p>
           <n-flex
             justify="space-between"

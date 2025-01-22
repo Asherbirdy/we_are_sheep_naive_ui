@@ -3,6 +3,7 @@ import { MailOutline, PersonOutline } from '@vicons/ionicons5'
 import { NH2, NCard, NText, NButton, NSpace, NIcon, NFlex } from 'naive-ui'
 import { storeToRefs } from 'pinia'
 
+import UpdateProfileBtnComponent from '@/components/app/profile/UpdateProfileBtnComponent.vue'
 import { DashboardRoutes } from '@/enums'
 import { useUserStore } from '@/stores'
 
@@ -13,7 +14,10 @@ const router = useRouter()
 </script>
 
 <template>
-  <div>
+  <n-space
+    vertical
+    justify="space-between"
+  >
     <n-card title="個人資料">
       <template #header-extra>
         {{ getUser?.emailVerified ? '已驗證' : '未驗證' }}
@@ -49,5 +53,6 @@ const router = useRouter()
         </n-button>
       </template>
     </n-card>
-  </div>
+    <UpdateProfileBtnComponent />
+  </n-space>
 </template>

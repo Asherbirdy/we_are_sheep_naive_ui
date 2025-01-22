@@ -17,5 +17,6 @@ declare module 'vue' {
     SidebarComponent: typeof import('./components/Layouts/SidebarComponent.vue')['default']
     SignUpComponent: typeof import('./components/app/Index/SignUpComponent.vue')['default']
     ThemeSwichComponent: typeof import('./components/common/ThemeSwichComponent.vue')['default']
+    UpdateProfileBtnComponent: typeof import('./components/app/profile/UpdateProfileBtnComponent.vue')['default']
   }
 }

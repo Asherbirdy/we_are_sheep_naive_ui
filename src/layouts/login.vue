@@ -51,7 +51,7 @@ const dropdownLabel: DropdownProps['renderLabel'] = (dropdownOptions) => {
       justify="space-between"
       align="center"
     >
-      <n-p>Logo</n-p>
+      <n-p>測試環境</n-p>
       <n-space align="center">
         <LocalePopselectComponent />
         <n-dropdown
