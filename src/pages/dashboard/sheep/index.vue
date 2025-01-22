@@ -47,10 +47,10 @@ const createColumns = (): DataTableColumns<PersonList> => {
 		{
 			title: '姓名',
 			key: 'name',
-			width: '20%'
+			width: '30%'
 		},
 		{
-			title: '標籤',
+			title: '此週邀約',
 			key: 'tags',
 			render (row) {
 				const tags = row.tags.map((tagKey) => {
@@ -75,12 +75,12 @@ const createColumns = (): DataTableColumns<PersonList> => {
 		{
 			title: '',
 			key: 'actions',
-			width: '30%',
+			width: '5%',
 			render (row) {
 				return h(
 					NButton,
 					{
-						size: 'small',
+						size: 'tiny',
 						onClick: () => {
 							const { details } = state.value.data
 							nextTick(() => {
@@ -95,7 +95,7 @@ const createColumns = (): DataTableColumns<PersonList> => {
 							})
 						}
 					},
-					{ default: () => '詳細形況' }
+					{ default: () => '詳細' }
 				)
 			}
 		}
@@ -159,9 +159,10 @@ const message = useMessage()
 
 const handlePositiveClick = () => {
 	handleDeleteSheep()
+	message.info('刪除成功')
 }
 const handleNegativeClick = () => {
-	message.info('No')
+	message.info('取消刪除')
 }
 
 </script>
