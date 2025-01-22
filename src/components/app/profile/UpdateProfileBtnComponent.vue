@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useMutation } from '@tanstack/vue-query'
+import { AxiosError } from 'axios'
 import type { FormInst, FormRules } from 'naive-ui'
 import { NButton, NDrawer, NDrawerContent, NTabs, NTabPane, NForm, NFormItem, NInput } from 'naive-ui'
 
@@ -59,16 +60,28 @@ const rules: FormRules = {
 	]
 }
 
-const { mutate: handleUpdatePassword } = useMutation({
+interface UpdatePasswordResponse {
+	msg: string
+}
+
+const { mutate: handleUpdatePassword, isPending } = useMutation({
 	mutationFn: async () => await useUserApi.updatePassword({
 		oldPassword: state.value.data.changePassword.currentPassword,
 		newPassword: state.value.data.changePassword.newPassword
 	}),
-	onSuccess: async () => {
-		message.success('更新密碼成功')
-	},
-	onError: async () => {
-		message.error('更新密碼失敗')
+	onSuccess: async (data) => {
+		if ((data as UpdatePasswordResponse).msg === 'Sucess! Password Updated') {
+			message.success('更新密碼成功')
+			return
+		}
+
+		if (data instanceof AxiosError && (
+			data.response?.status === 400 ||
+			data.response?.status === 403 ||
+			data.response?.status === 401
+		)) {
+			message.error('更新密碼失敗')
+		}
 	}
 })
 
@@ -128,6 +141,7 @@ watch(state.value.data.changePassword, () => {
                 <n-input
                   v-model:value="state.data.changePassword.currentPassword"
                   type="password"
+                  show-password-on="click"
                   @keydown.enter.prevent
                 />
               </n-form-item>
@@ -138,6 +152,7 @@ watch(state.value.data.changePassword, () => {
                 <n-input
                   v-model:value="state.data.changePassword.newPassword"
                   type="password"
+                  show-password-on="click"
                   @keydown.enter.prevent
                 />
               </n-form-item>
@@ -148,6 +163,7 @@ watch(state.value.data.changePassword, () => {
                 <n-input
                   v-model:value="state.data.changePassword.reenteredNewPassword"
                   type="password"
+                  show-password-on="click"
                   @keydown.enter.prevent
                 />
               </n-form-item>
@@ -155,6 +171,7 @@ watch(state.value.data.changePassword, () => {
                 round
                 type="primary"
                 :disabled="state.disabled.updatePasswordBtn"
+                :loading="isPending"
                 @click="handleUpdatePassword()"
               >
                 更新密碼
