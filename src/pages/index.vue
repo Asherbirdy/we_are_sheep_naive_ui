@@ -5,17 +5,12 @@
 </route>
 
 <script setup lang='ts'>
-import {
-	NSpace,
-	NImage,
-	NCard,
-	NTabPane,
-	NTabs
-} from 'naive-ui'
+import { NSpace, NImage, NCard, NTabPane, NTabs } from 'naive-ui'
 import { useI18n } from 'vue-i18n'
 
 import WelcomeImage from '@/assets/image/login/welcome.png'
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars, unused-imports/no-unused-vars
 const { t } = useI18n()
 
 </script>
@@ -30,9 +25,9 @@ const { t } = useI18n()
       width="400"
       :src="WelcomeImage"
     />
-    <n-card>
+    <n-card title="登入">
       <n-tabs
-        class="w-250px md:w-450px"
+        class="w-full md:w-450px"
         default-value="登入"
         size="large"
         animated
