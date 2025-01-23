@@ -38,7 +38,7 @@ const state = ref({
 // * 取得牧養名單
 const { data: handleSheepList } = useQuery({
 	queryKey: [QueryKeyEnum.sheepList],
-	queryFn: () => useSheepApi.getSheepList()
+	queryFn: () => useSheepApi.getSheepList.api()
 })
 
 // * 建立表格欄位
@@ -137,7 +137,7 @@ const { mutate: handleUpdateSheep } = useMutation({
 				note: state.value.data.details.note
 			}
 		}
-		return useSheepApi.editSheep(payload)
+		return useSheepApi.editSheep.api(payload)
 	},
 	onSuccess: () => {
 		state.value.status.drawer = false
@@ -148,7 +148,7 @@ const { mutate: handleUpdateSheep } = useMutation({
 })
 
 const { mutate: handleDeleteSheep } = useMutation({
-	mutationFn: () => useSheepApi.deleteSheep(state.value.data.details._id),
+	mutationFn: () => useSheepApi.deleteSheep.api(state.value.data.details._id),
 	onSuccess: () => state.value.status.drawer = false,
 	onSettled: async () => await queryClient.invalidateQueries({
 		queryKey: [QueryKeyEnum.sheepList]

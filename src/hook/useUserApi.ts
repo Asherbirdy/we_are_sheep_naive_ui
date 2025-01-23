@@ -1,12 +1,21 @@
 import useRequest from './http'
-import type { ShowUserResponse, UpdatePasswordPayload } from '@/types'
+import type { RequestSchema, ShowUserResponse, UpdatePasswordPayload } from '@/types'
 
-export const useUserApi = {
-  showMe: async (): Promise<ShowUserResponse> => await useRequest.get({
-    url: '/users/showMe'
-  }),
-  updatePassword: async (payload: UpdatePasswordPayload) => await useRequest.patch({
-    url: '/users/updateUserPassword',
-    data: payload
-  })
+enum UserRequestURL {
+  showMe = '/users/showMe',
+  updatePassword = '/users/updateUserPassword'
+}
+
+export const useUserApi: RequestSchema = {
+  showMe: {
+    api: async (): Promise<ShowUserResponse> => await useRequest.get({
+      url: UserRequestURL.showMe
+    })
+  },
+  updatePassword: {
+    api: async (payload: UpdatePasswordPayload) => await useRequest.patch({
+      url: UserRequestURL.updatePassword,
+      data: payload
+    })
+  }
 }
