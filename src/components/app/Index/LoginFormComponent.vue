@@ -63,7 +63,7 @@ const rules: FormRules = {
   * Login api
 */
 const { mutate, isPending } = useMutation({
-	mutationFn: async () => await useAuthApi.login({
+	mutationFn: async () => await useAuthApi.login.api({
 		email: state.value.data.email,
 		password: state.value.data.password
 	}),

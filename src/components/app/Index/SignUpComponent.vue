@@ -95,7 +95,7 @@ const rules: FormRules = {
 	* 註冊API
 */
 const { mutate, isPending } = useMutation({
-	mutationFn: () => useAuthApi.userRegister({
+	mutationFn: () => useAuthApi.userRegister.api({
 		name: state.value.data[FormKey.name],
 		email: state.value.data[FormKey.email],
 		password: state.value.data[FormKey.password],

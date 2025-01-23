@@ -45,7 +45,7 @@ const checkEmailVerify = async () => {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const { mutate, isPending } = useMutation({
-	mutationFn: async () => await useAuthApi.verifyEmail({
+	mutationFn: async () => await useAuthApi.verifyEmail.api({
 		OTP: state.value.data.verifyCode
 	}),
 	onSuccess: () => {

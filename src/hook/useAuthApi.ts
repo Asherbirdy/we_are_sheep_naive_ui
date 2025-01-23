@@ -1,32 +1,50 @@
 import useRequest from './http'
-import type { LoginPayload, LoginResponse, UserRegisterPayload, UserRegisterResponse } from '@/types'
+import type { LoginPayload, LoginResponse, RequestSchema, UserRegisterPayload, UserRegisterResponse } from '@/types'
 
-export const useAuthApi = {
+enum AuthRequestURL {
+  login = '/auth/login',
+  userRegister = '/auth/userRegister',
+  sendOTP = '/auth/sendOTP',
+  bindOTPEmail = '/auth/bindOTPEmail'
+}
+
+export const useAuthApi: RequestSchema = {
   /*
     * Login
   */
-  login: async (payload: LoginPayload): Promise<LoginResponse> => await useRequest.post({
-    url: '/auth/login',
-    data: payload
-  }),
+  login: {
+    api: async (payload: LoginPayload): Promise<LoginResponse> => await useRequest.post({
+      url: AuthRequestURL.login,
+      data: payload
+    })
+  },
   /*
     * Register
   */
-  userRegister: async (payload: UserRegisterPayload): Promise<UserRegisterResponse> => await useRequest.post({
-    url: '/auth/userRegister',
-    data: payload
-  }),
+  userRegister: {
+    api: async (payload: UserRegisterPayload): Promise<UserRegisterResponse> => await useRequest.post({
+      url: AuthRequestURL.userRegister,
+      data: payload
+    }),
+    queryKey: AuthRequestURL.userRegister
+  },
   /*
     * Send Verify Email
   */
-  sendVerifyEmail: async () => await useRequest.get({
-    url: '/auth/sendOTP'
-  }),
+  sendVerifyEmail: {
+    api: async () => await useRequest.get({
+      url: AuthRequestURL.sendOTP
+    }),
+    queryKey: AuthRequestURL.sendOTP
+  },
   /*
     * Verify Email
   */
-  verifyEmail: async (payload: { OTP: string }) => await useRequest.post({
-    url: '/auth/bindOTPEmail',
-    data: payload
-  })
+  verifyEmail: {
+    api: async (payload: { OTP: string }) => await useRequest.post({
+      url: AuthRequestURL.bindOTPEmail,
+      data: payload
+    }),
+    queryKey: AuthRequestURL.bindOTPEmail
+  }
 }

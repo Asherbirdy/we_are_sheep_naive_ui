@@ -25,7 +25,7 @@ const { pause, resume } = useIntervalFn(() => {
 
 // 發送驗證碼
 const sendEmailVerification = async (sec: number) => {
-	await useAuthApi.sendVerifyEmail()
+	await useAuthApi.sendVerifyEmail.api()
 	state.value.countDown = sec
 	countdownInLocalStorage.value = sec
 	resume()
