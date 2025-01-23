@@ -45,7 +45,7 @@ const {
 	mutate: handelAddSheep,
 	isPending: isAddSheepPending
 } = useMutation({
-	mutationFn: () => useSheepApi.createSheep(state.value.data),
+	mutationFn: () => useSheepApi.createSheep.api(state.value.data),
 	onSuccess: () => state.value.status.drawer = false,
 	onSettled: async () => await queryClient.invalidateQueries({
 		queryKey: [QueryKeyEnum.sheepList]

@@ -65,7 +65,7 @@ interface UpdatePasswordResponse {
 }
 
 const { mutate: handleUpdatePassword, isPending } = useMutation({
-	mutationFn: async () => await useUserApi.updatePassword({
+	mutationFn: async () => await useUserApi.updatePassword.api({
 		oldPassword: state.value.data.changePassword.currentPassword,
 		newPassword: state.value.data.changePassword.newPassword
 	}),

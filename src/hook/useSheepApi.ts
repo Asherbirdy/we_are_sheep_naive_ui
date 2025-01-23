@@ -1,31 +1,46 @@
 import useRequest from './http'
-import type { CreateSheepPayload, GetSheepListResponse, EditSheepPayload } from '@/types'
+import type { CreateSheepPayload, GetSheepListResponse, EditSheepPayload, RequestSchema } from '@/types'
 
-export const useSheepApi = {
+enum SheepRequestURL {
+  createSheep = '/sheep/create',
+  getSheepList = '/sheep/list',
+  editSheep = '/sheep/edit',
+  deleteSheep = '/sheep/delete'
+}
+
+export const useSheepApi: RequestSchema = {
   /*
     * Create Sheep
   */
-  createSheep: async (payload: CreateSheepPayload) => await useRequest.post({
-    url: '/sheep/create',
-    data: payload
-  }),
+  createSheep: {
+    api: async (payload: CreateSheepPayload) => await useRequest.post({
+      url: SheepRequestURL.createSheep,
+      data: payload
+    })
+  },
   /*
     * Get Sheep List
   */
-  getSheepList: async (): Promise<GetSheepListResponse> => await useRequest.get({
-    url: '/sheep/list'
-  }),
+  getSheepList: {
+    api: async (): Promise<GetSheepListResponse> => await useRequest.get({
+      url: SheepRequestURL.getSheepList
+    })
+  },
   /*
     * Edit Sheep
   */
-  editSheep: async (payload: EditSheepPayload) => await useRequest.patch({
-    url: `/sheep/edit?sheepId=${payload.sheepId}`,
-    data: payload.data
-  }),
+  editSheep: {
+    api: async (payload: EditSheepPayload) => await useRequest.patch({
+      url: `${SheepRequestURL.editSheep}?sheepId=${payload.sheepId}`,
+      data: payload.data
+    })
+  },
   /*
     * Delete Sheep
   */
-  deleteSheep: async (sheepId: string) => await useRequest.delete({
-    url: `/sheep/delete?sheepId=${sheepId}`
-  })
+  deleteSheep: {
+    api: async (sheepId: string) => await useRequest.delete({
+      url: `${SheepRequestURL.deleteSheep}?sheepId=${sheepId}`
+    })
+  }
 }

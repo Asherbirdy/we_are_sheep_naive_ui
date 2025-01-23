@@ -95,7 +95,7 @@ const rules: FormRules = {
 	* 註冊API
 */
 const { mutate, isPending } = useMutation({
-	mutationFn: () => useAuthApi.userRegister({
+	mutationFn: () => useAuthApi.userRegister.api({
 		name: state.value.data[FormKey.name],
 		email: state.value.data[FormKey.email],
 		password: state.value.data[FormKey.password],
@@ -107,7 +107,7 @@ const { mutate, isPending } = useMutation({
 		setToken(CookieEnum.refreshToken, data.token.refreshTokenJWT)
 
 		// 存使用者資料
-		const response = await useUserApi.showMe()
+		const response = await useUserApi.showMe.api()
 		userStore.setUser(response.user)
 
 		await new Promise(resolve => setTimeout(resolve, 4000))
