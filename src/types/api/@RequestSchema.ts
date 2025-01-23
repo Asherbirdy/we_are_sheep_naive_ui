@@ -1,6 +1,6 @@
-export type RequestSchema = Record<string, ApiFunction<any, any>>
+export type RequestSchema = Record<string, ApiFunction>
 
-type ApiFunction<T, R> = {
-  api: (payload?: T)=> Promise<R>
+type ApiFunction= {
+  api: (payload?: any)=> Promise<any>
   queryKey?: string
 }
