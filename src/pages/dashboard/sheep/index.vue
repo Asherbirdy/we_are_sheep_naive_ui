@@ -6,7 +6,7 @@ import type { DataTableColumns } from 'naive-ui'
 import type { FormInst,	FormItemRule, FormRules } from 'naive-ui'
 
 import AddSheepBtnComponent from '@/components/app/sheep/AddSheepBtnComponent.vue'
-import { PersonListKey, QueryKeyEnum, ageRangeOptions, focusOptions, statusOptions, tagsOptions } from '@/enums'
+import { PersonListKey, ageRangeOptions, focusOptions, statusOptions, tagsOptions } from '@/enums'
 import { useSheepApi } from '@/hook'
 import type { EditSheepPayload, PersonList } from '@/types'
 
@@ -37,7 +37,7 @@ const state = ref({
 
 // * 取得牧養名單
 const { data: handleSheepList } = useQuery({
-	queryKey: [QueryKeyEnum.sheepList],
+	queryKey: [useSheepApi.getSheepList.queryKey],
 	queryFn: () => useSheepApi.getSheepList.api()
 })
 
@@ -143,7 +143,7 @@ const { mutate: handleUpdateSheep } = useMutation({
 		state.value.status.drawer = false
 	},
 	onSettled: async () => await queryClient.invalidateQueries({
-		queryKey: [QueryKeyEnum.sheepList]
+		queryKey: [useSheepApi.getSheepList.queryKey]
 	})
 })
 
@@ -151,7 +151,7 @@ const { mutate: handleDeleteSheep } = useMutation({
 	mutationFn: () => useSheepApi.deleteSheep.api(state.value.data.details._id),
 	onSuccess: () => state.value.status.drawer = false,
 	onSettled: async () => await queryClient.invalidateQueries({
-		queryKey: [QueryKeyEnum.sheepList]
+		queryKey: [useSheepApi.getSheepList.queryKey]
 	})
 })
 
