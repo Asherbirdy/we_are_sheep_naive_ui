@@ -4,6 +4,7 @@ import { Add } from '@vicons/ionicons5'
 import { NFloatButton, NIcon, NForm, NFormItem, NInput, NButton, NDrawer, NDrawerContent, NSelect } from 'naive-ui'
 import type { FormInst, FormItemRule, FormRules } from 'naive-ui'
 
+import { Identity, identityOptions } from '@/enums'
 import { AgeRange, ageRangeOptions } from '@/enums'
 import { useSheepApi } from '@/hook'
 
@@ -13,7 +14,8 @@ const addFormRef = ref<FormInst | null>(null)
 const state = ref({
 	data: {
 		name: '',
-		ageRange: AgeRange.teenager
+		ageRange: AgeRange.teenager,
+		identity: Identity.Male
 	},
 	status: {
 		drawer: false
@@ -83,7 +85,10 @@ const {
             path="name"
             label="姓名"
           >
-            <n-input v-model:value="state.data.name" />
+            <n-input
+              v-model:value="state.data.name"
+              placeholder="請輸入姓名"
+            />
           </n-form-item>
           <n-form-item
             path="ageRange"
@@ -92,6 +97,15 @@ const {
             <n-select
               v-model:value="state.data.ageRange"
               :options="ageRangeOptions"
+            />
+          </n-form-item>
+          <n-form-item
+            path="identity"
+            label="身分"
+          >
+            <n-select
+              v-model:value="state.data.identity"
+              :options="identityOptions"
             />
           </n-form-item>
         </n-form>

@@ -2,8 +2,9 @@ export enum PersonListKey {
   personStatus = 'personStatus',
   _id = '_id',
   name = 'name',
+	weekInviteTag = 'weekInviteTag',
   ageRange = 'ageRange',
-  tags = 'tags',
+	identity = 'identity',
   focusPerson = 'focusPerson',
   userId = 'userId',
   note = 'note',
@@ -16,6 +17,20 @@ export enum AgeRange {
   middleAge = 'middleAge',
   elder = 'elder'
 }
+
+export enum Identity {
+	'Male' = 'M',
+	'Female' = 'F',
+	'Brother' = 'B',
+	'Sister' = 'S'
+}
+
+export const identityOptions = [
+	{ label: '男(福音朋友)', value: Identity.Male },
+	{ label: '女(福音朋友)', value: Identity.Female },
+	{ label: '弟兄', value: Identity.Brother },
+	{ label: '姊妹', value: Identity.Sister }
+]
 
 export const ageRangeToText = (ageRange: AgeRange) => {
 	switch (ageRange) {

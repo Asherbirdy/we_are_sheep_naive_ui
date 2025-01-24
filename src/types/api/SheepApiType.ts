@@ -1,4 +1,4 @@
-import type { PersonListKey } from '@/enums'
+import type { Identity, PersonListKey } from '@/enums'
 
 // * Create Sheep
 export interface CreateSheepPayload {
@@ -22,7 +22,8 @@ export interface PersonList {
   [PersonListKey._id]: string
   [PersonListKey.name]: string
   [PersonListKey.ageRange]: string
-  [PersonListKey.tags]: string[]
+  [PersonListKey.identity]: Identity
+  [PersonListKey.weekInviteTag]: string[]
   [PersonListKey.focusPerson]: string
   [PersonListKey.userId]: string
   [PersonListKey.note]: string
@@ -36,7 +37,8 @@ export interface EditSheepPayload {
   sheepId: string
   data: {
     ageRange: string
-    tags: string[]
+    weekInviteTag: string[]
+    identity: string
     focusPerson: string
     personStatus: string
     note: string

@@ -6,7 +6,7 @@ import type { DataTableColumns } from 'naive-ui'
 import type { FormInst,	FormItemRule, FormRules } from 'naive-ui'
 
 import AddSheepBtnComponent from '@/components/app/sheep/AddSheepBtnComponent.vue'
-import { PersonListKey, ageRangeOptions, focusOptions, statusOptions, tagsOptions } from '@/enums'
+import { Identity, PersonListKey, ageRangeOptions, focusOptions, identityOptions, statusOptions, tagsOptions } from '@/enums'
 import { useSheepApi } from '@/hook'
 import type { EditSheepPayload, PersonList } from '@/types'
 
@@ -20,11 +20,12 @@ const state = ref({
 			[PersonListKey._id]: '',
 			[PersonListKey.name]: '',
 			[PersonListKey.ageRange]: '',
-			[PersonListKey.tags]: [],
+			[PersonListKey.identity]: Identity.Brother, // 修正 identity 的類型
 			[PersonListKey.focusPerson]: '',
 			[PersonListKey.userId]: '',
 			[PersonListKey.personStatus]: '',
 			[PersonListKey.note]: '',
+			[PersonListKey.weekInviteTag]: [], // 指定 weekInviteTag 的類型
 			createdAt: '',
 			updatedAt: '',
 			__v: 0
@@ -51,9 +52,9 @@ const createColumns = (): DataTableColumns<PersonList> => {
 		},
 		{
 			title: '此週邀約',
-			key: 'tags',
+			key: 'weekInviteTag',
 			render (row) {
-				const tags = row.tags.map((tagKey) => {
+				const tags = row.weekInviteTag.map((tagKey) => {
 					return h(
 						NTag,
 						{
@@ -87,7 +88,7 @@ const createColumns = (): DataTableColumns<PersonList> => {
 								details.name = row.name
 								details.ageRange = row.ageRange
 								details.personStatus = row.personStatus
-								details.tags = row.tags
+								details.identity = row.identity
 								details.focusPerson = row.focusPerson
 								details.note = row.note
 								details._id = row._id
@@ -131,7 +132,8 @@ const { mutate: handleUpdateSheep } = useMutation({
 			sheepId: state.value.data.details._id,
 			data: {
 				ageRange: state.value.data.details.ageRange,
-				tags: state.value.data.details.tags,
+				weekInviteTag: state.value.data.details.weekInviteTag,
+				identity: state.value.data.details.identity,
 				focusPerson: state.value.data.details.focusPerson,
 				personStatus: state.value.data.details.personStatus,
 				note: state.value.data.details.note
@@ -197,8 +199,8 @@ const handleNegativeClick = () => {
           />
         </n-tab-pane>
         <n-tab-pane
-          name="common"
-          tab="共同小羊"
+          name="districtSheepList"
+          tab="區重點名單"
         >
           開發中
         </n-tab-pane>
@@ -229,6 +231,15 @@ const handleNegativeClick = () => {
             />
           </n-form-item>
           <n-form-item
+            :path="PersonListKey.identity"
+            label="定位"
+          >
+            <n-select
+              v-model:value="state.data.details[PersonListKey.identity]"
+              :options="identityOptions"
+            />
+          </n-form-item>
+          <n-form-item
             :path="PersonListKey.focusPerson"
             label="分類"
           >
@@ -256,11 +267,11 @@ const handleNegativeClick = () => {
             />
           </n-form-item>
           <n-form-item
-            :path="PersonListKey.note"
+            :path="PersonListKey.weekInviteTag"
             label="這週邀約請形"
           >
             <n-select
-              v-model:value="state.data.details[PersonListKey.tags]"
+              v-model:value="state.data.details[PersonListKey.weekInviteTag]"
               multiple
               :options="tagsOptions"
             />
