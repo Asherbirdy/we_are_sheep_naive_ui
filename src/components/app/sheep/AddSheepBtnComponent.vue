@@ -4,7 +4,7 @@ import { Add } from '@vicons/ionicons5'
 import { NFloatButton, NIcon, NForm, NFormItem, NInput, NButton, NDrawer, NDrawerContent, NSelect } from 'naive-ui'
 import type { FormInst, FormItemRule, FormRules } from 'naive-ui'
 
-import { AgeRange, QueryKeyEnum, ageRangeOptions } from '@/enums'
+import { AgeRange, ageRangeOptions } from '@/enums'
 import { useSheepApi } from '@/hook'
 
 const queryClient = useQueryClient()
@@ -48,7 +48,7 @@ const {
 	mutationFn: () => useSheepApi.createSheep.api(state.value.data),
 	onSuccess: () => state.value.status.drawer = false,
 	onSettled: async () => await queryClient.invalidateQueries({
-		queryKey: [QueryKeyEnum.sheepList]
+		queryKey: [useSheepApi.getSheepList.queryKey]
 	})
 })
 
