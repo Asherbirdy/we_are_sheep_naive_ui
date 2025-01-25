@@ -88,7 +88,6 @@ const createColumns = (): DataTableColumns<PersonList> => {
 								details.name = row.name
 								details.ageRange = row.ageRange
 								details.personStatus = row.personStatus
-
 								details.weekInviteTag = row.weekInviteTag
 								details.identity = row.identity
 								details.focusPerson = row.focusPerson
