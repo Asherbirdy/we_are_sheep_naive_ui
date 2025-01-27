@@ -3,6 +3,7 @@ import { useMutation } from '@tanstack/vue-query'
 import { NSpace, NForm, NFormItem, NInput, NButton, NA, NPopover, NP } from 'naive-ui'
 import type { FormRules } from 'naive-ui'
 
+import { config } from '@/config'
 import { CookieEnum, DashboardRoutes } from '@/enums'
 import { useAuthApi, useUserApi } from '@/hook'
 import { useUserStore } from '@/stores/common/UserStore'
@@ -23,7 +24,7 @@ const notification = useNotification()
 */
 const state = ref({
 	data: {
-		[FormKey.email]: '',
+		[FormKey.email]: config.test.email,
 		[FormKey.password]: ''
 	},
 	loading: {
