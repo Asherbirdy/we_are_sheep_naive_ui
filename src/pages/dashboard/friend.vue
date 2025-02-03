@@ -1,11 +1,14 @@
 <script lang="ts" setup>
+import { useQuery } from '@tanstack/vue-query'
 import type { DataTableColumns } from 'naive-ui'
 import { NButton, NDataTable, NDrawer, NDrawerContent, NInput, NTabs, NTabPane, NCard } from 'naive-ui'
-import { storeToRefs } from 'pinia'
 
-import { useUserStore } from '@/stores'
-const userStore = useUserStore()
-const { getUser } = storeToRefs(userStore)
+import { useUserApi } from '@/hook'
+
+const { data: getUser } = useQuery({
+	queryKey: [useUserApi.showMe.queryKey],
+	queryFn: () => useUserApi.showMe.api()
+})
 const notification = useNotification()
 interface rowType {
 	name: string
@@ -49,7 +52,7 @@ const data: rowType[] = [
 ]
 
 const onCopyId = () => {
-	navigator.clipboard.writeText(getUser.value?._id || '')
+	navigator.clipboard.writeText(getUser.value?.user?.id || '')
 	notification.success({
 		content: '複製成功',
 		duration: 2500,
@@ -112,7 +115,7 @@ const onCopyId = () => {
             tab="My ID"
           >
             <n-card>
-              {{ getUser?._id }}
+              {{ getUser?.user?.id }}
             </n-card>
             <n-button
               block
