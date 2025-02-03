@@ -5,7 +5,6 @@ export enum Routes {
 
 // Dashboard
 export enum DashboardRoutes {
-  'home' = '/dashboard',
   'sheep' = '/dashboard/sheep',
   'districtSheep' = '/dashboard/districtSheep',
   'friend' = '/dashboard/friend',

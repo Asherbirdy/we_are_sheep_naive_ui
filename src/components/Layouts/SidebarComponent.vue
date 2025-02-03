@@ -2,7 +2,6 @@
 import { NLayoutSider, NMenu } from 'naive-ui'
 import { storeToRefs } from 'pinia'
 
-import { DashboardRoutes } from '@/enums'
 import { useMenuStore } from '@/stores'
 
 const menuStore = useMenuStore()
@@ -16,11 +15,11 @@ const state = ref({
 })
 
 // 監聽路由變化，更新 selectedKey
-watch(() => route.path,
-	(routePath: string) => {
-		const isDashboardSlash = routePath === '/dashboard/' ? DashboardRoutes.home : routePath
-		state.value.menu.selectedKey = isDashboardSlash
-	}, { immediate: true })
+// watch(() => route.path,
+// 	(routePath: string) => {
+// 		const isDashboardSlash = routePath === '/dashboard/' ? DashboardRoutes.home : routePath
+// 		state.value.menu.selectedKey = isDashboardSlash
+// 	}, { immediate: true })
 
 </script>
 
