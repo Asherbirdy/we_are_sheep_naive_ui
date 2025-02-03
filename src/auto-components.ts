@@ -11,6 +11,8 @@ declare module 'vue' {
     EmailVerifyComponent: typeof import('./components/app/dashboard/profile/EmailVerifyComponent.vue')['default']
     LocalePopselectComponent: typeof import('./components/common/LocalePopselectComponent.vue')['default']
     LoginFormComponent: typeof import('./components/app/Index/LoginFormComponent.vue')['default']
+    LogoutBtnForWeb: typeof import('./components/common/LogoutBtnForWeb.vue')['default']
+    LogoutBtnForWebComponent: typeof import('./components/common/LogoutBtnForWebComponent.vue')['default']
     MenubarComponent: typeof import('./components/common/MenubarComponent.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

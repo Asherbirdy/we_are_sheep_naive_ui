@@ -1,11 +1,11 @@
 <script setup lang='ts'>
-
 import { useMutation } from '@tanstack/vue-query'
 import { Menu2 as MenuIcon } from '@vicons/tabler'
 import { NIcon, NDrawer, NDrawerContent, NMenu, NDropdown, NSpace, NButton } from 'naive-ui'
 import type { DropdownProps } from 'naive-ui'
 import { storeToRefs } from 'pinia'
 
+import LogoutBtnForWebComponent from './LogoutBtnForWebComponent.vue'
 import ThemeSwichComponent from './ThemeSwichComponent.vue'
 import { Routes } from '@/enums'
 import { useAuthApi } from '@/hook'
@@ -33,8 +33,8 @@ const dropdownOptions = [
 		key: 'Theme'
 	},
 	{
-		label: '登出',
-		key: '登出'
+		label: 'Logout',
+		key: 'Logout'
 	}
 ]
 
@@ -43,6 +43,8 @@ const dropdownLabel: DropdownProps['renderLabel'] = (dropdownOptions) => {
 	switch (dropdownOptions.key) {
 		case 'Theme':
 			return h(ThemeSwichComponent)
+		case 'Logout':
+			return h(LogoutBtnForWebComponent)
 		default:
 			return dropdownOptions.label as string
 	}
