@@ -65,7 +65,7 @@ const { data: handleDistrictSheepList } = useQuery({
       >
         <n-tab-pane
           name="male"
-          tab="男介"
+          tab="區重點牧養(男介)"
         >
           <n-data-table
             :bordered="false"
@@ -76,7 +76,7 @@ const { data: handleDistrictSheepList } = useQuery({
         </n-tab-pane>
         <n-tab-pane
           name="female"
-          tab="女介"
+          tab="區重點牧養(女介)"
         >
           <n-data-table
             :bordered="false"
