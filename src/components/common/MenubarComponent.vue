@@ -1,15 +1,20 @@
 <script setup lang='ts'>
 
+import { useMutation } from '@tanstack/vue-query'
 import { Menu2 as MenuIcon } from '@vicons/tabler'
-import { NIcon, NDrawer, NDrawerContent, NMenu, NDropdown, NSpace } from 'naive-ui'
+import { NIcon, NDrawer, NDrawerContent, NMenu, NDropdown, NSpace, NButton } from 'naive-ui'
 import type { DropdownProps } from 'naive-ui'
 import { storeToRefs } from 'pinia'
 
 import ThemeSwichComponent from './ThemeSwichComponent.vue'
+import { Routes } from '@/enums'
+import { useAuthApi } from '@/hook'
 import { useMenuStore } from '@/stores'
+import { cookieJs } from '@/utils'
+
 const menuStore = useMenuStore()
 const { menu } = storeToRefs(menuStore)
-
+const router = useRouter()
 // 狀態
 const state = ref({
 	data: {
@@ -42,6 +47,14 @@ const dropdownLabel: DropdownProps['renderLabel'] = (dropdownOptions) => {
 			return dropdownOptions.label as string
 	}
 }
+
+const { mutate: handleLogout } = useMutation({
+	mutationFn: () => useAuthApi.logout.api(),
+	onSuccess: () => {
+		cookieJs.clearToken()
+		router.push(Routes.login)
+	}
+})
 
 </script>
 
@@ -101,6 +114,14 @@ const dropdownLabel: DropdownProps['renderLabel'] = (dropdownOptions) => {
           :options="menu"
           :on-update:value="() => state.status.drawer = false"
         />
+        <n-space
+          justify="center"
+          class="my-2"
+        >
+          <n-button @click="handleLogout()">
+            登出
+          </n-button>
+        </n-space>
       </n-drawer-content>
     </n-drawer>
   </div>

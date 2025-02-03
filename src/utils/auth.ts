@@ -9,3 +9,9 @@ export const clearToken = () => {
 	Cookies.remove(CookieEnum.accessToken)
 	Cookies.remove(CookieEnum.refreshToken)
 }
+export const cookieJs = {
+	setToken: setToken,
+	getToken: getToken,
+	removeToken: removeToken,
+	clearToken: clearToken
+}

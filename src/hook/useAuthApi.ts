@@ -61,7 +61,7 @@ export const useAuthApi: RequestSchema = {
     * Logout
   */
   logout: {
-    api: async () => await useRequest.get({
+    api: async () => await useRequest.delete({
       url: AuthRequestURL.logout
     })
   }
