@@ -113,12 +113,6 @@ const rules: FormRules = {
 				if (!value) {
 					return new Error('姓名是必填')
 				}
-				else if (!/^\d*$/.test(value)) {
-					return new Error('姓名應為數字')
-				}
-				else if (Number(value) < 18) {
-					return new Error('姓名應為數字')
-				}
 				return true
 			},
 			trigger: ['input', 'blur']
@@ -175,6 +169,7 @@ const handleNegativeClick = () => {
     <n-space vertical>
       <n-tabs
         type="segment"
+        default-value="non-focus"
         animated
       >
         <n-tab-pane
@@ -198,12 +193,6 @@ const handleNegativeClick = () => {
             :columns="createColumns()"
             :data="handleSheepList?.list.nonFocusPersonList"
           />
-        </n-tab-pane>
-        <n-tab-pane
-          name="districtSheepList"
-          tab="區重點名單"
-        >
-          開發中
         </n-tab-pane>
       </n-tabs>
     </n-space>
