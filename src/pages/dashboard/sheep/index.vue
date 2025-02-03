@@ -199,12 +199,6 @@ const handleNegativeClick = () => {
             :data="handleSheepList?.list.nonFocusPersonList"
           />
         </n-tab-pane>
-        <n-tab-pane
-          name="districtSheepList"
-          tab="區重點名單"
-        >
-          開發中
-        </n-tab-pane>
       </n-tabs>
     </n-space>
     <n-drawer
