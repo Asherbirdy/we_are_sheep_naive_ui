@@ -5,8 +5,7 @@ import type { FormRules } from 'naive-ui'
 
 import { config } from '@/config'
 import { CookieEnum, DashboardRoutes } from '@/enums'
-import { useAuthApi, useUserApi } from '@/hook'
-import { useUserStore } from '@/stores/common/UserStore'
+import { useAuthApi } from '@/hook'
 import type { LoginResponse } from '@/types'
 import { regex, setToken } from '@/utils'
 
@@ -16,7 +15,6 @@ enum FormKey {
 }
 
 const router = useRouter()
-const userStore = useUserStore()
 const notification = useNotification()
 
 /*
@@ -73,17 +71,13 @@ const { mutate, isPending } = useMutation({
 		setToken(CookieEnum.accessToken, data.token.accessTokenJWT)
 		setToken(CookieEnum.refreshToken, data.token.refreshTokenJWT)
 
-		// 存使用者資料
-		const response = await useUserApi.showMe.api()
-		userStore.setUser(response.user)
-
 		await new Promise(resolve => setTimeout(resolve, 4000))
 		// 如果未驗證 跳到 profile
-		if (!response.user.emailVerified) {
+		if (!data.user.emailVerified) {
 			router.push(DashboardRoutes.profile)
 			return
 		}
-		router.push(DashboardRoutes.home)
+		router.push(DashboardRoutes.districtSheep)
 	},
 	onError: async () => {
 		const { data } = state.value
