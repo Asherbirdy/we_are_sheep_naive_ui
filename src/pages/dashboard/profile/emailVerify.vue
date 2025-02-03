@@ -1,16 +1,18 @@
 <script setup lang='ts'>
-import { useMutation } from '@tanstack/vue-query'
+import { useMutation, useQuery } from '@tanstack/vue-query'
 import { NCard, NButton, NSpace, NInput, NInputGroup, NText } from 'naive-ui'
-import { storeToRefs } from 'pinia'
 
 import EmailVerifyComponent from '@/components/app/dashboard/profile/EmailVerifyComponent.vue'
 import { Routes } from '@/enums'
 import { useAuthApi } from '@/hook'
-import { useUserStore } from '@/stores'
+import { useUserApi } from '@/hook'
 import { clearToken } from '@/utils'
 
-const userStore = useUserStore()
-const { getUser } = storeToRefs(userStore)
+const { data: getUser } = useQuery({
+	queryKey: [useUserApi.showMe.queryKey],
+	queryFn: () => useUserApi.showMe.api()
+})
+
 const router = useRouter()
 const dialog = useDialog()
 const notification = useNotification()
@@ -38,7 +40,7 @@ watch(state.value.data, (newVal) => {
 })
 
 const checkEmailVerify = async () => {
-	if (getUser.value?.emailVerified) {
+	if (getUser.value?.user?.emailVerified) {
 		state.value.page.current = Page.emailAlreadyVerify
 	}
 }
@@ -57,6 +59,7 @@ const { mutate, isPending } = useMutation({
 			positiveText: '回首頁',
 			closable: false,
 			onPositiveClick: () => {
+				clearToken()
 				router.push(Routes.login)
 			}
 		})
@@ -89,7 +92,7 @@ onMounted(() => checkEmailVerify())
         class="min-w-[290px]"
       >
         <n-text>
-          {{ `請點擊「傳送驗證碼」，並前往您的Email信箱${getUser?.email}，輸入驗證碼以完成驗證。` }}
+          {{ `請點擊「傳送驗證碼」，並前往您的Email信箱${getUser?.user?.email}，輸入驗證碼以完成驗證。` }}
         </n-text>
         <n-input-group class="mt-2">
           <n-input
@@ -119,7 +122,7 @@ onMounted(() => checkEmailVerify())
         class="min-w-[290px]"
       >
         <n-text>
-          {{ `${getUser?.email}已驗證成功。` }}
+          {{ `${getUser?.user?.email}已驗證成功。` }}
         </n-text>
         <n-button
           class="mt-2"
