@@ -5,7 +5,8 @@ enum SheepRequestURL {
   createSheep = '/sheep/create',
   getSheepList = '/sheep/list',
   editSheep = '/sheep/edit',
-  deleteSheep = '/sheep/delete'
+  deleteSheep = '/sheep/delete',
+  getUserDistrictSheep = '/sheep/user-district-sheep'
 }
 
 export const useSheepApi: RequestSchema = {
@@ -41,6 +42,14 @@ export const useSheepApi: RequestSchema = {
   deleteSheep: {
     api: async (sheepId: string) => await useRequest.delete({
       url: `${SheepRequestURL.deleteSheep}?sheepId=${sheepId}`
+    })
+  },
+  /*
+    * Get Sheep Detail
+  */
+  getUserDistrictSheep: {
+    api: async () => await useRequest.get({
+      url: SheepRequestURL.getUserDistrictSheep
     })
   }
 }

@@ -48,6 +48,12 @@ export const useMenuStore = defineStore<string, MenuStore>('menuStore', () => {
       route: DashboardRoutes.sheep
     },
     {
+      label: '區重點名單',
+      key: DashboardRoutes.districtSheep,
+      icon: markRaw(PeopleOutline),
+      route: DashboardRoutes.districtSheep
+    },
+    {
       label: '好友',
       key: DashboardRoutes.friend,
       icon: markRaw(PeopleOutline),
