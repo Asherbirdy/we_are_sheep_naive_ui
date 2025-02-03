@@ -57,6 +57,9 @@ export const useAuthApi: RequestSchema = {
       url: AuthRequestURL.checkValidToken
     })
   },
+  /*
+    * Logout
+  */
   logout: {
     api: async () => await useRequest.get({
       url: AuthRequestURL.logout
