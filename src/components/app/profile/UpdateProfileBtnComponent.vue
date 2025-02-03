@@ -11,6 +11,7 @@ enum FormKey {
 	reenteredNewPassword = 'reenteredNewPassword'
 }
 const formRef = ref<FormInst | null>(null)
+const nameRef = ref<FormInst | null>(null)
 const message = useMessage()
 // 表單資料
 const state = ref({
@@ -19,13 +20,17 @@ const state = ref({
 			[FormKey.currentPassword]: '',
 			[FormKey.newPassword]: '',
 			[FormKey.reenteredNewPassword]: ''
+		},
+		changeName: {
+			name: ''
 		}
 	},
 	status: {
 		drawer: false
 	},
 	disabled: {
-		updatePasswordBtn: true
+		updatePasswordBtn: true,
+		updateNameBtn: true
 	}
 })
 
@@ -96,6 +101,20 @@ watch(state.value.data.changePassword, () => {
 
 	state.value.disabled.updatePasswordBtn = !check
 })
+
+// --------------------------
+const { mutate: handleUpdateName, isPending: isUpdatingName } = useMutation({
+	mutationFn: async () => await useUserApi.editUserInfo.api({
+		name: state.value.data.changeName.name
+	})
+})
+
+watch(state.value.data.changeName, () => {
+	const { data } = state.value
+	const check = Boolean(data.changeName.name)
+
+	state.value.disabled.updateNameBtn = !check
+})
 </script>
 
 <template>
@@ -123,7 +142,30 @@ watch(state.value.data.changePassword, () => {
             name="profile"
             tab="更改個人資料"
           >
-            開發中...
+            <n-form
+              ref="nameRef"
+              :model="state.data.changeName"
+            >
+              <n-form-item
+                path="name"
+                label="姓名"
+              >
+                <n-input
+                  v-model:value="state.data.changeName.name"
+                  type="text"
+                  @keydown.enter.prevent
+                />
+              </n-form-item>
+            </n-form>
+            <n-button
+              round
+              type="primary"
+              :loading="isUpdatingName"
+              :disabled="state.disabled.updateNameBtn"
+              @click="handleUpdateName()"
+            >
+              更新姓名
+            </n-button>
           </n-tab-pane>
           <n-tab-pane
             name="password"

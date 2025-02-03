@@ -3,7 +3,8 @@ import type { RequestSchema, ShowUserResponse, UpdatePasswordPayload } from '@/t
 
 enum UserRequestURL {
   showMe = '/users/showMe',
-  updatePassword = '/users/updateUserPassword'
+  updatePassword = '/users/updateUserPassword',
+  editUserInfo = '/users/editUserInfo'
 }
 
 export const useUserApi: RequestSchema = {
@@ -15,6 +16,12 @@ export const useUserApi: RequestSchema = {
   updatePassword: {
     api: async (payload: UpdatePasswordPayload) => await useRequest.patch({
       url: UserRequestURL.updatePassword,
+      data: payload
+    })
+  },
+  editUserInfo: {
+    api: async (payload: {name: string}) => await useRequest.put({
+      url: UserRequestURL.editUserInfo,
       data: payload
     })
   }
