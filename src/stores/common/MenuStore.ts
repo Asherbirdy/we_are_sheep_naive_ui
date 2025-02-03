@@ -1,4 +1,4 @@
-import { NewspaperOutline, IdCardOutline, PersonCircleOutline, PeopleOutline } from '@vicons/ionicons5'
+import { IdCardOutline, PersonCircleOutline, PeopleOutline } from '@vicons/ionicons5'
 import type { MenuOption } from 'naive-ui'
 import { defineStore } from 'pinia'
 import type { Component, ComputedRef } from 'vue'
@@ -22,12 +22,6 @@ export const useMenuStore = defineStore<string, MenuStore>('menuStore', () => {
   const router = useRouter()
   // **  State
   const state = ref<Menu[]>([
-    {
-      label: '動態牆',
-      key: DashboardRoutes.home,
-      icon: markRaw(NewspaperOutline),
-      route: DashboardRoutes.home
-    },
     // {
     // 	label: '第二頁',
     // 	key: '第二頁',
@@ -65,12 +59,6 @@ export const useMenuStore = defineStore<string, MenuStore>('menuStore', () => {
       icon: markRaw(PersonCircleOutline),
       route: DashboardRoutes.profile
     }
-    // {
-    //   label: '登出',
-    //   key: Routes.login,
-    //   icon: markRaw(LogOutOutline),
-    //   route: Routes.login
-    // }
   ])
 
   // 將 menu 轉換為 NaiveUI 的 MenuOption

@@ -11,7 +11,8 @@ export const useUserApi: RequestSchema = {
   showMe: {
     api: async (): Promise<ShowUserResponse> => await useRequest.get({
       url: UserRequestURL.showMe
-    })
+    }),
+    queryKey: UserRequestURL.showMe
   },
   updatePassword: {
     api: async (payload: UpdatePasswordPayload) => await useRequest.patch({

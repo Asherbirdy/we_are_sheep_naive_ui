@@ -4,13 +4,11 @@ import { NSpace, NForm, NFormItem, NInput, NButton } from 'naive-ui'
 import type { FormRules } from 'naive-ui'
 
 import { CookieEnum, DashboardRoutes } from '@/enums'
-import { useAuthApi, useUserApi } from '@/hook'
-import { useUserStore } from '@/stores'
+import { useAuthApi } from '@/hook'
 import type { UserRegisterResponse } from '@/types'
 import { regex, setToken } from '@/utils'
 
 const router = useRouter()
-const userStore = useUserStore()
 const notification = useNotification()
 
 /*
@@ -105,10 +103,6 @@ const { mutate, isPending } = useMutation({
 		// 存 token
 		setToken(CookieEnum.accessToken, data.token.accessTokenJWT)
 		setToken(CookieEnum.refreshToken, data.token.refreshTokenJWT)
-
-		// 存使用者資料
-		const response = await useUserApi.showMe.api()
-		userStore.setUser(response.user)
 
 		await new Promise(resolve => setTimeout(resolve, 4000))
 		router.push(DashboardRoutes.profile)
