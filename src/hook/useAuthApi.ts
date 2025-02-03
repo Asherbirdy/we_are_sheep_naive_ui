@@ -6,7 +6,8 @@ enum AuthRequestURL {
   userRegister = '/auth/userRegister',
   sendOTP = '/auth/sendOTP',
   bindOTPEmail = '/auth/bindOTPEmail',
-  checkValidToken = '/auth/checkValidToken'
+  checkValidToken = '/auth/checkValidToken',
+  logout = '/auth/logout'
 }
 
 export const useAuthApi: RequestSchema = {
@@ -54,6 +55,11 @@ export const useAuthApi: RequestSchema = {
   checkValidToken: {
     api: async () => await useRequest.get({
       url: AuthRequestURL.checkValidToken
+    })
+  },
+  logout: {
+    api: async () => await useRequest.get({
+      url: AuthRequestURL.logout
     })
   }
 }
