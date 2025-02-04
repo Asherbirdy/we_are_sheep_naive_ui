@@ -4,6 +4,7 @@ import { NSpace, NTabs, NTabPane, NTag, NDataTable } from 'naive-ui'
 import type { DataTableColumns } from 'naive-ui'
 
 import { useSheepApi } from '@/hook'
+import type { GetUserDistrictSheepResponse } from '@/types'
 
 interface Sheep {
 	name: string
@@ -49,7 +50,21 @@ const createColumns = (): DataTableColumns<Sheep> => {
 	]
 }
 
-const { data: handleDistrictSheepList } = useQuery({
+const createColumns2 = (): DataTableColumns<Sheep> => {
+	return [
+		{
+			title: '姓名',
+			key: 'name',
+			width: '30%'
+		},
+		{
+			title: '照顧者',
+			key: 'userId.name',
+			width: '30%'
+		}
+	]
+}
+const { data: handleDistrictSheepList } = useQuery<GetUserDistrictSheepResponse>({
 	queryKey: [useSheepApi.getUserDistrictSheep.queryKey],
 	queryFn: () => useSheepApi.getUserDistrictSheep.api()
 })
@@ -65,7 +80,7 @@ const { data: handleDistrictSheepList } = useQuery({
       >
         <n-tab-pane
           name="male"
-          tab="區重點牧養(男介)"
+          tab="區重點牧養(男)"
         >
           <n-data-table
             :bordered="false"
@@ -76,13 +91,24 @@ const { data: handleDistrictSheepList } = useQuery({
         </n-tab-pane>
         <n-tab-pane
           name="female"
-          tab="區重點牧養(女介)"
+          tab="區重點牧養(女)"
         >
           <n-data-table
             :bordered="false"
             :single-line="false"
             :columns="createColumns()"
             :data="handleDistrictSheepList?.data.female"
+          />
+        </n-tab-pane>
+        <n-tab-pane
+          name="noFocus"
+          tab="區一般名單"
+        >
+          <n-data-table
+            :bordered="false"
+            :single-line="false"
+            :columns="createColumns2()"
+            :data="handleDistrictSheepList?.data.noFocus"
           />
         </n-tab-pane>
       </n-tabs>

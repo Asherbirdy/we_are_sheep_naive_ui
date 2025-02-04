@@ -1,37 +1,5 @@
 import useRequest from './http'
-import type { CreateSheepPayload, GetSheepListResponse, EditSheepPayload, RequestSchema } from '@/types'
-
-export interface GetUserDistrictSheepResponse {
-  msg: string
-  data: Data
-}
-
-export interface Data {
-  male: Male[]
-  female: any[]
-}
-
-export interface Male {
-  _id: string
-  name: string
-  ageRange: string
-  tags?: string[]
-  focusPerson: string
-  userId: UserId
-  personStatus: string
-  note: string
-  createdAt: string
-  updatedAt: string
-  __v: number
-  district: string
-  weekInviteTag: string[]
-  identity: string
-}
-
-export interface UserId {
-  _id: string
-  name: string
-}
+import type { CreateSheepPayload, GetSheepListResponse, EditSheepPayload, RequestSchema, GetUserDistrictSheepResponse } from '@/types'
 
 enum SheepRequestURL {
   createSheep = '/sheep/create',
