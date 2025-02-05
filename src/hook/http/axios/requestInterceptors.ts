@@ -33,7 +33,7 @@ const _RequstInterceptors: RequstInterceptors = {
       (message) => console.error(message)
     )
 
-    // 響應錯誤 實現 重連功能
+    // // 響應錯誤 實現 重連功能
     return err
   }
 }
