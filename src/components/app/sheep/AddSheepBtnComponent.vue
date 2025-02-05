@@ -10,7 +10,7 @@ import { useSheepApi } from '@/hook'
 
 const queryClient = useQueryClient()
 const addFormRef = ref<FormInst | null>(null)
-
+const message = useMessage()
 const state = ref({
 	data: {
 		name: '',
@@ -42,7 +42,13 @@ const {
 	isPending: isAddSheepPending
 } = useMutation({
 	mutationFn: () => useSheepApi.createSheep.api(state.value.data),
-	onSuccess: () => state.value.status.drawer = false,
+	onSuccess: async (data) => {
+		if (data.response.data.errorCode === 'BAD_REQUEST_SAME_SHEEP'){
+			message.error(`區內名單已經有[${state.value.data.name}]`)
+			return
+		}
+		state.value.status.drawer = false
+	},
 	onSettled: async () => await queryClient.invalidateQueries({
 		queryKey: [useSheepApi.getSheepList.queryKey]
 	})
