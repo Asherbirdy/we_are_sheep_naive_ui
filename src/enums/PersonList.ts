@@ -80,22 +80,41 @@ export const focusOptions = [
 	}
 ]
 
+export enum PersonStatus {
+	none = 'none',
+	normal = 'normal',
+	longTimeNoSee = 'longTimeNoSee',
+	gospelfriend = 'gospelfriend'
+}
+
+export const personStatusToText = (status: PersonStatus) => {
+	switch (status) {
+		case PersonStatus.none:
+			return '無設定'
+		case PersonStatus.normal:
+			return '正常聚會'
+		case PersonStatus.longTimeNoSee:
+			return '久未聚會'
+		case PersonStatus.gospelfriend:
+			return '福音朋友'
+	}
+}
 export const statusOptions = [
 	{
 		label: '無設定',
-		value: 'none'
+		value: PersonStatus.none
 	},
 	{
 		label: '正常聚會',
-		value: 'normal'
+		value: PersonStatus.normal
 	},
 	{
 		label: '久未聚會',
-		value: 'longTimeNoSee'
+		value: PersonStatus.longTimeNoSee
 	},
 	{
 		label: '福音朋友',
-		value: 'gospelfriend'
+		value: PersonStatus.gospelfriend
 	}
 ]
 
