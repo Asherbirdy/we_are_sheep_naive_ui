@@ -42,16 +42,18 @@ const {
 	isPending: isAddSheepPending
 } = useMutation({
 	mutationFn: () => useSheepApi.createSheep.api(state.value.data),
-	onSuccess: async (data) => {
+	onSuccess: (data) => {
 		if (data.response.data.errorCode === 'BAD_REQUEST_SAME_SHEEP'){
 			message.error(`區內名單已經有[${state.value.data.name}]`)
 			return
 		}
-		state.value.status.drawer = false
 	},
-	onSettled: async () => await queryClient.invalidateQueries({
-		queryKey: [useSheepApi.getUserAndDistrictSheep.queryKey]
-	})
+	onSettled: () =>  {
+		queryClient.invalidateQueries({
+			queryKey: [useSheepApi.getUserAndDistrictSheep.queryKey]
+		})
+		state.value.status.drawer = false
+	}
 })
 
 </script>
