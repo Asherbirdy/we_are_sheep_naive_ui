@@ -6,12 +6,14 @@ import type { DataTableColumns } from 'naive-ui'
 import type { FormInst,	FormItemRule, FormRules } from 'naive-ui'
 
 import AddSheepBtnComponent from '@/components/app/sheep/AddSheepBtnComponent.vue'
-import { Identity, PersonListKey, ageRangeOptions, focusOptions, identityOptions, statusOptions, tagsOptions } from '@/enums'
+import { Identity, PersonListKey, ageRangeOptions, focusOptions, identityOptions, identityToText, statusOptions, tagsOptions } from '@/enums'
 import { useSheepApi } from '@/hook'
-import type { EditSheepPayload, PersonList } from '@/types'
+import type { EditSheepPayload, PersonList, UserAndDistrictSheepResponse } from '@/types'
 
 const formRef = ref<FormInst | null>(null)
 const queryClient = useQueryClient()
+
+const message = useMessage()
 
 // * 頁面狀態
 const state = ref({
@@ -20,16 +22,16 @@ const state = ref({
 			[PersonListKey._id]: '',
 			[PersonListKey.name]: '',
 			[PersonListKey.ageRange]: '',
-			[PersonListKey.identity]: Identity.Brother, // 修正 identity 的類型
+			[PersonListKey.identity]: Identity.Brother,
 			[PersonListKey.focusPerson]: '',
 			[PersonListKey.userId]: '',
 			[PersonListKey.personStatus]: '',
 			[PersonListKey.note]: '',
-			[PersonListKey.weekInviteTag]: [], // 指定 weekInviteTag 的類型
+			[PersonListKey.weekInviteTag]: [] as string[],
 			createdAt: '',
 			updatedAt: '',
 			__v: 0
-		} as PersonList
+		}
 	},
 	status: {
 		drawer: false
@@ -37,22 +39,22 @@ const state = ref({
 })
 
 // * 取得牧養名單
-const { data: handleSheepList } = useQuery({
-	queryKey: [useSheepApi.getSheepList.queryKey],
-	queryFn: () => useSheepApi.getSheepList.api()
+const { data: handleSheepList } = useQuery<UserAndDistrictSheepResponse>({
+	queryKey: [useSheepApi.getUserAndDistrictSheep.queryKey],
+	queryFn: () => useSheepApi.getUserAndDistrictSheep.api()
 })
 
 // * 建立表格欄位
-const createColumns = (): DataTableColumns<PersonList> => {
+const personalColumns = (): DataTableColumns<PersonList> => {
 	return [
 		{
 			title: '姓名',
-			key: 'name',
+			key: PersonListKey.name,
 			width: '30%'
 		},
 		{
 			title: '此週邀約',
-			key: 'weekInviteTag',
+			key: PersonListKey.weekInviteTag,
 			render (row) {
 				const tags = row.weekInviteTag.map((tagKey) => {
 					return h(
@@ -104,6 +106,49 @@ const createColumns = (): DataTableColumns<PersonList> => {
 	]
 }
 
+const districtColumns = (): DataTableColumns<PersonList> => {
+	return [
+		{
+			title: '姓名',
+			key: PersonListKey.name,
+			width: '30%'
+		},
+		{
+			title: '身份',
+			key: PersonListKey.identity,
+			width: '30%',
+			render: (row) => identityToText(row.identity)
+		},
+		{
+			title: '此週邀約',
+			key: PersonListKey.weekInviteTag,
+			render (row) {
+				const tags = row.weekInviteTag.map((tagKey) => h(
+					NTag,
+					{
+						style: {
+							marginRight: '6px'
+						},
+						type: 'info',
+						bordered: false,
+						size: 'small'
+					},
+					{
+						default: () => tagKey
+					}
+				)
+				)
+				return tags
+			}
+		},
+		{
+			title: '聯絡人',
+			key: 'userId.name',
+			width: '30%'
+		}
+	]
+}
+
 // * 驗證規則
 const rules: FormRules = {
 	[PersonListKey.name]: [
@@ -140,24 +185,26 @@ const { mutate: handleUpdateSheep } = useMutation({
 		state.value.status.drawer = false
 	},
 	onSettled: async () => await queryClient.invalidateQueries({
-		queryKey: [useSheepApi.getSheepList.queryKey]
+		queryKey: [useSheepApi.getUserAndDistrictSheep.queryKey]
 	})
 })
 
+// * 刪除
 const { mutate: handleDeleteSheep } = useMutation({
 	mutationFn: () => useSheepApi.deleteSheep.api(state.value.data.details._id),
 	onSuccess: () => state.value.status.drawer = false,
 	onSettled: async () => await queryClient.invalidateQueries({
-		queryKey: [useSheepApi.getSheepList.queryKey]
+		queryKey: [useSheepApi.getUserAndDistrictSheep.queryKey]
 	})
 })
 
-const message = useMessage()
-
+// * 確定刪除
 const handlePositiveClick = () => {
 	handleDeleteSheep()
 	message.info('刪除成功')
 }
+
+// * 取消刪除
 const handleNegativeClick = () => {
 	message.info('取消刪除')
 }
@@ -167,35 +214,41 @@ const handleNegativeClick = () => {
 <template>
   <div>
     <n-space vertical>
+      <!--
+        Tabs
+      -->
       <n-tabs
         type="segment"
-        default-value="non-focus"
+        default-value="personal"
         animated
       >
         <n-tab-pane
-          name="focus"
-          tab="重點牧養"
+          name="personal"
+          tab="個人名單"
         >
           <n-data-table
             :bordered="false"
             :single-line="false"
-            :columns="createColumns()"
-            :data="handleSheepList?.list.focusPersonList"
+            :columns="personalColumns()"
+            :data="handleSheepList?.data.personal"
           />
         </n-tab-pane>
         <n-tab-pane
-          name="non-focus"
-          tab="其他名單"
+          name="district"
+          tab="區裡名單"
         >
           <n-data-table
             :bordered="false"
             :single-line="false"
-            :columns="createColumns()"
-            :data="handleSheepList?.list.nonFocusPersonList"
+            :columns="districtColumns()"
+            :data="handleSheepList?.data.district"
           />
         </n-tab-pane>
       </n-tabs>
     </n-space>
+    <!--
+      Drawer
+    -->
     <n-drawer
       v-model:show="state.status.drawer"
       default-height="600px"

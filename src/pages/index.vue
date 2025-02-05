@@ -18,7 +18,7 @@ const { t } = useI18n()
 const init = async () => {
 	const res = await useAuthApi.checkValidToken.api()
 	if (res.msg === 'Token is valid') {
-		router.push(DashboardRoutes.districtSheep)
+		router.push(DashboardRoutes.sheep)
 	}
 }
 

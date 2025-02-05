@@ -77,7 +77,7 @@ const { mutate, isPending } = useMutation({
 			router.push(DashboardRoutes.profile)
 			return
 		}
-		router.push(DashboardRoutes.districtSheep)
+		router.push(DashboardRoutes.sheep)
 	},
 	onError: async () => {
 		const { data } = state.value
