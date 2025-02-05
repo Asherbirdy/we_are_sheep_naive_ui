@@ -6,7 +6,7 @@ import type { DataTableColumns } from 'naive-ui'
 import type { FormInst,	FormItemRule, FormRules } from 'naive-ui'
 
 import AddSheepBtnComponent from '@/components/app/sheep/AddSheepBtnComponent.vue'
-import { Identity, PersonListKey, ageRangeOptions, focusOptions, identityOptions, identityToText, statusOptions, tagsOptions } from '@/enums'
+import { AgeRange, Identity, PersonListKey, PersonStatus, ageRangeOptions, ageRangeToText, focusOptions, identityOptions, identityToText, personStatusToText, statusOptions, tagsOptions } from '@/enums'
 import { useSheepApi } from '@/hook'
 import type { EditSheepPayload, PersonList, UserAndDistrictSheepResponse } from '@/types'
 
@@ -34,9 +34,23 @@ const state = ref({
 		}
 	},
 	status: {
-		drawer: false
+		editDrawer: false,
+		viewDrawer: false
 	}
 })
+
+// * 刷新資料
+const refreshCurrentData = (row: PersonList) => {
+	const { details } = state.value.data
+	details.name = row.name
+	details.ageRange = row.ageRange
+	details.personStatus = row.personStatus
+	details.weekInviteTag = row.weekInviteTag
+	details.identity = row.identity
+	details.focusPerson = row.focusPerson
+	details.note = row.note
+	details._id = row._id
+}
 
 // * 取得牧養名單
 const { data: handleSheepList } = useQuery<UserAndDistrictSheepResponse>({
@@ -85,18 +99,8 @@ const personalColumns = (): DataTableColumns<PersonList> => {
 					{
 						size: 'tiny',
 						onClick: () => {
-							const { details } = state.value.data
-							nextTick(() => {
-								details.name = row.name
-								details.ageRange = row.ageRange
-								details.personStatus = row.personStatus
-								details.weekInviteTag = row.weekInviteTag
-								details.identity = row.identity
-								details.focusPerson = row.focusPerson
-								details.note = row.note
-								details._id = row._id
-								state.value.status.drawer = true
-							})
+							refreshCurrentData(row)
+							state.value.status.editDrawer = true
 						}
 					},
 					{ default: () => '詳細' }
@@ -106,6 +110,7 @@ const personalColumns = (): DataTableColumns<PersonList> => {
 	]
 }
 
+// * 區裡名單表格欄位
 const districtColumns = (): DataTableColumns<PersonList> => {
 	return [
 		{
@@ -149,6 +154,17 @@ const districtColumns = (): DataTableColumns<PersonList> => {
 	]
 }
 
+// * 點擊行 並打開詳細資料 Drawer
+const onRowClick = (row: PersonList) => {
+	return {
+		style: 'cursor: pointer;',
+		onClick: () => {
+			refreshCurrentData(row)
+			state.value.status.viewDrawer = true
+		}
+	}
+}
+
 // * 驗證規則
 const rules: FormRules = {
 	[PersonListKey.name]: [
@@ -168,21 +184,23 @@ const rules: FormRules = {
 // * 更新
 const { mutate: handleUpdateSheep } = useMutation({
 	mutationFn: () => {
+		const { details } = state.value.data
 		const payload: EditSheepPayload = {
-			sheepId: state.value.data.details._id,
+			sheepId: details._id,
 			data: {
-				ageRange: state.value.data.details.ageRange,
-				weekInviteTag: state.value.data.details.weekInviteTag,
-				identity: state.value.data.details.identity,
-				focusPerson: state.value.data.details.focusPerson,
-				personStatus: state.value.data.details.personStatus,
-				note: state.value.data.details.note
+				ageRange: details.ageRange,
+				weekInviteTag: details.weekInviteTag,
+				identity: details.identity,
+				focusPerson: details.focusPerson,
+				personStatus: details.personStatus,
+				note: details.note
 			}
 		}
 		return useSheepApi.editSheep.api(payload)
 	},
 	onSuccess: () => {
-		state.value.status.drawer = false
+		state.value.status.editDrawer = false
+		message.info('更新成功')
 	},
 	onSettled: async () => await queryClient.invalidateQueries({
 		queryKey: [useSheepApi.getUserAndDistrictSheep.queryKey]
@@ -192,7 +210,7 @@ const { mutate: handleUpdateSheep } = useMutation({
 // * 刪除
 const { mutate: handleDeleteSheep } = useMutation({
 	mutationFn: () => useSheepApi.deleteSheep.api(state.value.data.details._id),
-	onSuccess: () => state.value.status.drawer = false,
+	onSuccess: () => state.value.status.editDrawer = false,
 	onSettled: async () => await queryClient.invalidateQueries({
 		queryKey: [useSheepApi.getUserAndDistrictSheep.queryKey]
 	})
@@ -202,11 +220,6 @@ const { mutate: handleDeleteSheep } = useMutation({
 const handlePositiveClick = () => {
 	handleDeleteSheep()
 	message.info('刪除成功')
-}
-
-// * 取消刪除
-const handleNegativeClick = () => {
-	message.info('取消刪除')
 }
 
 </script>
@@ -239,6 +252,7 @@ const handleNegativeClick = () => {
           tab="區裡名單"
         >
           <n-data-table
+            :row-props="onRowClick"
             size="small"
             :bordered="false"
             :single-line="false"
@@ -249,10 +263,10 @@ const handleNegativeClick = () => {
       </n-tabs>
     </n-space>
     <!--
-      Drawer
+      可以編輯 Drawer
     -->
     <n-drawer
-      v-model:show="state.status.drawer"
+      v-model:show="state.status.editDrawer"
       default-height="600px"
       placement="bottom"
     >
@@ -341,7 +355,7 @@ const handleNegativeClick = () => {
           </n-button>
           <n-popconfirm
             @positive-click="handlePositiveClick"
-            @negative-click="handleNegativeClick"
+            @negative-click="message.info('取消刪除')"
           >
             <template #trigger>
               <n-button
@@ -356,6 +370,35 @@ const handleNegativeClick = () => {
             確定要刪除嗎？
           </n-popconfirm>
         </n-space>
+      </n-drawer-content>
+    </n-drawer>
+    <!--
+      不可以編輯 Drawer
+    -->
+    <n-drawer
+      v-model:show="state.status.viewDrawer"
+      default-height="600px"
+      placement="bottom"
+    >
+      <n-drawer-content
+        :title="state.data.details?.name"
+        closable
+      >
+        <p>年齡: {{ ageRangeToText(state.data.details?.ageRange as AgeRange) }}</p>
+        <p>身份: {{ identityToText(state.data.details?.identity) }}</p>
+        <p>狀態: {{ personStatusToText(state.data.details?.personStatus as PersonStatus) }}</p>
+        <p>這週邀約請形:</p>
+        <div>
+          <n-tag
+            v-for="tag in state.data.details?.weekInviteTag"
+            :key="tag"
+            type="primary"
+          >
+            {{ tag }}
+          </n-tag>
+        </div>
+        <p>備註: </p>
+        <p>{{ state.data.details?.note }}</p>
       </n-drawer-content>
     </n-drawer>
     <AddSheepBtnComponent />
