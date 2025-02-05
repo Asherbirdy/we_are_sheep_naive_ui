@@ -1,4 +1,4 @@
-import { IdCardOutline, PersonCircleOutline } from '@vicons/ionicons5'
+import { IdCardOutline, PersonCircleOutline, PeopleOutline } from '@vicons/ionicons5'
 import type { MenuOption } from 'naive-ui'
 import { defineStore } from 'pinia'
 import type { Component, ComputedRef } from 'vue'
@@ -41,18 +41,12 @@ export const useMenuStore = defineStore<string, MenuStore>('menuStore', () => {
       icon: markRaw(IdCardOutline),
       route: DashboardRoutes.sheep
     },
-    // {
-    //   label: '區重點名單',
-    //   key: DashboardRoutes.districtSheep,
-    //   icon: markRaw(PeopleOutline),
-    //   route: DashboardRoutes.districtSheep
-    // },
-    // {
-    //   label: '好友',
-    //   key: DashboardRoutes.friend,
-    //   icon: markRaw(PeopleOutline),
-    //   route: DashboardRoutes.friend
-    // },
+    {
+      label: '開戶',
+      key: DashboardRoutes.createAccount,
+      icon: markRaw(PeopleOutline),
+      route: DashboardRoutes.createAccount
+    },
     {
       label: '個人資料',
       key: DashboardRoutes.profile,

@@ -11,6 +11,8 @@ export enum DashboardRoutes {
   'profile' = '/dashboard/profile',
   'profileEmailVerify' = '/dashboard/profile/emailVerify',
 
+  'createAccount' = '/dashboard/createAccount',
+
   // 管理員
   'admin' = '/dashboard/admin',
   'adminDistrict' = '/dashboard/admin/district',
