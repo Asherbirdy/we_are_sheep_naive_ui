@@ -2,7 +2,17 @@
 import { NLayout, NLayoutHeader, NSpace, NFlex, NP } from 'naive-ui'
 
 import MenubarComponent from '@/components/common/MenubarComponent.vue'
+import { DashboardRoutes } from '@/enums'
+const router = useRouter()
 
+const clicks = ref(0)
+const handleGoToAdmin = () => {
+	clicks.value++
+	if (clicks.value === 5) {
+		router.push(DashboardRoutes.admin)
+		clicks.value = 0
+	}
+}
 </script>
 
 <template>
@@ -13,7 +23,10 @@ import MenubarComponent from '@/components/common/MenubarComponent.vue'
           justify="space-between"
           align="center"
         >
-          <n-p width="150">
+          <n-p
+            width="150"
+            @click="handleGoToAdmin"
+          >
             測試環境
           </n-p>
           <n-flex

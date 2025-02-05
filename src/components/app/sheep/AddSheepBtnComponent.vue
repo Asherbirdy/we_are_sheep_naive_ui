@@ -50,7 +50,7 @@ const {
 		state.value.status.drawer = false
 	},
 	onSettled: async () => await queryClient.invalidateQueries({
-		queryKey: [useSheepApi.getSheepList.queryKey]
+		queryKey: [useSheepApi.getUserAndDistrictSheep.queryKey]
 	})
 })
 

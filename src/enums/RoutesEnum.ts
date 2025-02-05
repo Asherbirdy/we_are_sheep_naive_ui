@@ -10,4 +10,9 @@ export enum DashboardRoutes {
   // 個人資料
   'profile' = '/dashboard/profile',
   'profileEmailVerify' = '/dashboard/profile/emailVerify',
+
+  // 管理員
+  'admin' = '/dashboard/admin',
+  'adminDistrict' = '/dashboard/admin/district',
+  'adminSerialNumber' = '/dashboard/admin/serialNumber'
 }
