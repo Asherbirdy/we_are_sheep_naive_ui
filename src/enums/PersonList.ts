@@ -32,6 +32,21 @@ export const identityOptions = [
 	{ label: '姊妹', value: Identity.Sister }
 ]
 
+export const identityToText = (identity: Identity) => {
+	switch (identity) {
+		case Identity.Brother:
+			return '弟兄'
+		case Identity.Sister:
+			return '姊妹'
+		case Identity.Male:
+			return '男福音朋友'
+		case Identity.Female:
+			return '女福音朋友'
+		default:
+			return ''
+	}
+}
+
 export const ageRangeToText = (ageRange: AgeRange) => {
 	switch (ageRange) {
 		case AgeRange.teenager:

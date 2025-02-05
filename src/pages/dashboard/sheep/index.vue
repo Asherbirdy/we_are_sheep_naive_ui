@@ -6,7 +6,7 @@ import type { DataTableColumns } from 'naive-ui'
 import type { FormInst,	FormItemRule, FormRules } from 'naive-ui'
 
 import AddSheepBtnComponent from '@/components/app/sheep/AddSheepBtnComponent.vue'
-import { Identity, PersonListKey, ageRangeOptions, focusOptions, identityOptions, statusOptions, tagsOptions } from '@/enums'
+import { Identity, PersonListKey, ageRangeOptions, focusOptions, identityOptions, identityToText, statusOptions, tagsOptions } from '@/enums'
 import { useSheepApi } from '@/hook'
 import type { EditSheepPayload, PersonList, UserAndDistrictSheepResponse } from '@/types'
 
@@ -104,6 +104,52 @@ const createColumns = (): DataTableColumns<PersonList> => {
 	]
 }
 
+const createColumns2 = (): DataTableColumns<PersonList> => {
+	return [
+		{
+			title: '姓名',
+			key: 'name',
+			width: '30%'
+		},
+		{
+			title: '身份',
+			key: 'identity',
+			width: '30%',
+			render (row) {
+				return identityToText(row.identity)
+			}
+		},
+		{
+			title: '此週邀約',
+			key: 'weekInviteTag',
+			render (row) {
+				const tags = row.weekInviteTag.map((tagKey) => {
+					return h(
+						NTag,
+						{
+							style: {
+								marginRight: '6px'
+							},
+							type: 'info',
+							bordered: false,
+							size: 'small'
+						},
+						{
+							default: () => tagKey
+						}
+					)
+				})
+				return tags
+			}
+		},
+		{
+			title: '聯絡人',
+			key: 'userId.name',
+			width: '30%'
+		}
+	]
+}
+
 // * 驗證規則
 const rules: FormRules = {
 	[PersonListKey.name]: [
@@ -193,7 +239,7 @@ const handleNegativeClick = () => {
           <n-data-table
             :bordered="false"
             :single-line="false"
-            :columns="createColumns()"
+            :columns="createColumns2()"
             :data="handleSheepList?.data.district"
           />
         </n-tab-pane>
