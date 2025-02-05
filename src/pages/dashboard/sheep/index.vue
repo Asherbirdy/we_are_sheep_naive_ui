@@ -8,7 +8,7 @@ import type { FormInst,	FormItemRule, FormRules } from 'naive-ui'
 import AddSheepBtnComponent from '@/components/app/sheep/AddSheepBtnComponent.vue'
 import { Identity, PersonListKey, ageRangeOptions, focusOptions, identityOptions, statusOptions, tagsOptions } from '@/enums'
 import { useSheepApi } from '@/hook'
-import type { EditSheepPayload, PersonList } from '@/types'
+import type { EditSheepPayload, PersonList, UserAndDistrictSheepResponse } from '@/types'
 
 const formRef = ref<FormInst | null>(null)
 const queryClient = useQueryClient()
@@ -20,12 +20,12 @@ const state = ref({
 			[PersonListKey._id]: '',
 			[PersonListKey.name]: '',
 			[PersonListKey.ageRange]: '',
-			[PersonListKey.identity]: Identity.Brother, // 修正 identity 的類型
+			[PersonListKey.identity]: Identity.Brother,
 			[PersonListKey.focusPerson]: '',
 			[PersonListKey.userId]: '',
 			[PersonListKey.personStatus]: '',
 			[PersonListKey.note]: '',
-			[PersonListKey.weekInviteTag]: [], // 指定 weekInviteTag 的類型
+			[PersonListKey.weekInviteTag]: [],
 			createdAt: '',
 			updatedAt: '',
 			__v: 0
@@ -37,9 +37,9 @@ const state = ref({
 })
 
 // * 取得牧養名單
-const { data: handleSheepList } = useQuery({
-	queryKey: [useSheepApi.getSheepList.queryKey],
-	queryFn: () => useSheepApi.getSheepList.api()
+const { data: handleSheepList } = useQuery<UserAndDistrictSheepResponse>({
+	queryKey: [useSheepApi.getUserAndDistrictSheep.queryKey],
+	queryFn: () => useSheepApi.getUserAndDistrictSheep.api()
 })
 
 // * 建立表格欄位
@@ -140,7 +140,7 @@ const { mutate: handleUpdateSheep } = useMutation({
 		state.value.status.drawer = false
 	},
 	onSettled: async () => await queryClient.invalidateQueries({
-		queryKey: [useSheepApi.getSheepList.queryKey]
+		queryKey: [useSheepApi.getUserAndDistrictSheep.queryKey]
 	})
 })
 
@@ -148,7 +148,7 @@ const { mutate: handleDeleteSheep } = useMutation({
 	mutationFn: () => useSheepApi.deleteSheep.api(state.value.data.details._id),
 	onSuccess: () => state.value.status.drawer = false,
 	onSettled: async () => await queryClient.invalidateQueries({
-		queryKey: [useSheepApi.getSheepList.queryKey]
+		queryKey: [useSheepApi.getUserAndDistrictSheep.queryKey]
 	})
 })
 
@@ -167,35 +167,41 @@ const handleNegativeClick = () => {
 <template>
   <div>
     <n-space vertical>
+      <!--
+        Tabs
+      -->
       <n-tabs
         type="segment"
-        default-value="non-focus"
+        default-value="personal"
         animated
       >
         <n-tab-pane
-          name="focus"
-          tab="重點牧養"
+          name="personal"
+          tab="個人名單"
         >
           <n-data-table
             :bordered="false"
             :single-line="false"
             :columns="createColumns()"
-            :data="handleSheepList?.list.focusPersonList"
+            :data="handleSheepList?.data.personal"
           />
         </n-tab-pane>
         <n-tab-pane
-          name="non-focus"
-          tab="其他名單"
+          name="district"
+          tab="區裡名單"
         >
           <n-data-table
             :bordered="false"
             :single-line="false"
             :columns="createColumns()"
-            :data="handleSheepList?.list.nonFocusPersonList"
+            :data="handleSheepList?.data.district"
           />
         </n-tab-pane>
       </n-tabs>
     </n-space>
+    <!--
+      Drawer
+    -->
     <n-drawer
       v-model:show="state.status.drawer"
       default-height="600px"
