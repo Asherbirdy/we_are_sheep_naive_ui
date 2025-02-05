@@ -1,7 +1,7 @@
 <script setup lang='ts'>
 import { useMutation, useQueryClient } from '@tanstack/vue-query'
 import { Add } from '@vicons/ionicons5'
-import { NFloatButton, NIcon, NForm, NFormItem, NInput, NButton, NDrawer, NDrawerContent, NSelect } from 'naive-ui'
+import { NFloatButton, NIcon, NForm, NFormItem, NInput, NButton, NDrawer, NDrawerContent, NSelect, NCard } from 'naive-ui'
 import type { FormInst, FormItemRule, FormRules } from 'naive-ui'
 
 import { Identity, identityOptions } from '@/enums'
@@ -77,6 +77,9 @@ const {
         title="新增"
         closable
       >
+        <n-card class="mb-4">
+          [注意] 只能新增來過會所的朋友
+        </n-card>
         <n-form
           ref="addFormRef"
           :model="state.data"
