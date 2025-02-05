@@ -227,6 +227,7 @@ const handleNegativeClick = () => {
           tab="個人名單"
         >
           <n-data-table
+            size="small"
             :bordered="false"
             :single-line="false"
             :columns="personalColumns()"
@@ -238,6 +239,7 @@ const handleNegativeClick = () => {
           tab="區裡名單"
         >
           <n-data-table
+            size="small"
             :bordered="false"
             :single-line="false"
             :columns="districtColumns()"
