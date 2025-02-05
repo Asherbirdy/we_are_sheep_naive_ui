@@ -1,12 +1,13 @@
 import useRequest from './http'
-import type { CreateSheepPayload, GetSheepListResponse, EditSheepPayload, RequestSchema, GetUserDistrictSheepResponse } from '@/types'
+import type { CreateSheepPayload, GetSheepListResponse, EditSheepPayload, RequestSchema, GetUserDistrictSheepResponse, UserAndDistrictSheepResponse } from '@/types'
 
 enum SheepRequestURL {
   createSheep = '/sheep/create',
   getSheepList = '/sheep/list',
   editSheep = '/sheep/edit',
   deleteSheep = '/sheep/delete',
-  getUserDistrictSheep = '/sheep/user-district-sheep'
+  getUserDistrictSheep = '/sheep/user-district-sheep',
+  userAndDistrictSheep = '/sheep/user-and-district-sheep'
 }
 
 export const useSheepApi: RequestSchema = {
@@ -52,5 +53,14 @@ export const useSheepApi: RequestSchema = {
       url: SheepRequestURL.getUserDistrictSheep
     }),
     queryKey: SheepRequestURL.getUserDistrictSheep
+  },
+  /*
+    * Get Sheep List with user and district
+  */
+  getUserAndDistrictSheep: {
+    api: async (): Promise<UserAndDistrictSheepResponse> => await useRequest.get({
+      url: SheepRequestURL.userAndDistrictSheep
+    }),
+    queryKey: SheepRequestURL.userAndDistrictSheep
   }
 }

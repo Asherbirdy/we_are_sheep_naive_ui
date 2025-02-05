@@ -59,7 +59,6 @@ export interface DistrictSheep {
   _id: string
   name: string
   ageRange: string
-  tags?: string[]
   focusPerson: string
   userId: {
     _id: string
@@ -73,4 +72,13 @@ export interface DistrictSheep {
   district: string
   weekInviteTag: string[]
   identity: string
+}
+
+// * Get User and District Sheep
+export interface UserAndDistrictSheepResponse {
+  msg: string
+  data: {
+    personal: DistrictSheep[]
+    district: DistrictSheep[]
+  }
 }
