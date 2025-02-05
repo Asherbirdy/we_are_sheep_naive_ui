@@ -13,6 +13,8 @@ import type { EditSheepPayload, PersonList, UserAndDistrictSheepResponse } from 
 const formRef = ref<FormInst | null>(null)
 const queryClient = useQueryClient()
 
+const message = useMessage()
+
 // * 頁面狀態
 const state = ref({
 	data: {
@@ -25,11 +27,11 @@ const state = ref({
 			[PersonListKey.userId]: '',
 			[PersonListKey.personStatus]: '',
 			[PersonListKey.note]: '',
-			[PersonListKey.weekInviteTag]: [],
+			[PersonListKey.weekInviteTag]: [] as string[],
 			createdAt: '',
 			updatedAt: '',
 			__v: 0
-		} as PersonList
+		}
 	},
 	status: {
 		drawer: false
@@ -43,16 +45,16 @@ const { data: handleSheepList } = useQuery<UserAndDistrictSheepResponse>({
 })
 
 // * 建立表格欄位
-const createColumns = (): DataTableColumns<PersonList> => {
+const personalColumns = (): DataTableColumns<PersonList> => {
 	return [
 		{
 			title: '姓名',
-			key: 'name',
+			key: PersonListKey.name,
 			width: '30%'
 		},
 		{
 			title: '此週邀約',
-			key: 'weekInviteTag',
+			key: PersonListKey.weekInviteTag,
 			render (row) {
 				const tags = row.weekInviteTag.map((tagKey) => {
 					return h(
@@ -104,41 +106,38 @@ const createColumns = (): DataTableColumns<PersonList> => {
 	]
 }
 
-const createColumns2 = (): DataTableColumns<PersonList> => {
+const districtColumns = (): DataTableColumns<PersonList> => {
 	return [
 		{
 			title: '姓名',
-			key: 'name',
+			key: PersonListKey.name,
 			width: '30%'
 		},
 		{
 			title: '身份',
-			key: 'identity',
+			key: PersonListKey.identity,
 			width: '30%',
-			render (row) {
-				return identityToText(row.identity)
-			}
+			render: (row) => identityToText(row.identity)
 		},
 		{
 			title: '此週邀約',
-			key: 'weekInviteTag',
+			key: PersonListKey.weekInviteTag,
 			render (row) {
-				const tags = row.weekInviteTag.map((tagKey) => {
-					return h(
-						NTag,
-						{
-							style: {
-								marginRight: '6px'
-							},
-							type: 'info',
-							bordered: false,
-							size: 'small'
+				const tags = row.weekInviteTag.map((tagKey) => h(
+					NTag,
+					{
+						style: {
+							marginRight: '6px'
 						},
-						{
-							default: () => tagKey
-						}
-					)
-				})
+						type: 'info',
+						bordered: false,
+						size: 'small'
+					},
+					{
+						default: () => tagKey
+					}
+				)
+				)
 				return tags
 			}
 		},
@@ -190,6 +189,7 @@ const { mutate: handleUpdateSheep } = useMutation({
 	})
 })
 
+// * 刪除
 const { mutate: handleDeleteSheep } = useMutation({
 	mutationFn: () => useSheepApi.deleteSheep.api(state.value.data.details._id),
 	onSuccess: () => state.value.status.drawer = false,
@@ -198,12 +198,13 @@ const { mutate: handleDeleteSheep } = useMutation({
 	})
 })
 
-const message = useMessage()
-
+// * 確定刪除
 const handlePositiveClick = () => {
 	handleDeleteSheep()
 	message.info('刪除成功')
 }
+
+// * 取消刪除
 const handleNegativeClick = () => {
 	message.info('取消刪除')
 }
@@ -228,7 +229,7 @@ const handleNegativeClick = () => {
           <n-data-table
             :bordered="false"
             :single-line="false"
-            :columns="createColumns()"
+            :columns="personalColumns()"
             :data="handleSheepList?.data.personal"
           />
         </n-tab-pane>
@@ -239,7 +240,7 @@ const handleNegativeClick = () => {
           <n-data-table
             :bordered="false"
             :single-line="false"
-            :columns="createColumns2()"
+            :columns="districtColumns()"
             :data="handleSheepList?.data.district"
           />
         </n-tab-pane>
