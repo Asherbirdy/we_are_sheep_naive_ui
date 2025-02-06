@@ -1,17 +1,25 @@
 <script setup lang='ts'>
-import { NButton, NTabs, NTabPane, NModal, NCarousel, NInput } from 'naive-ui'
+import { useMutation, useQuery } from '@tanstack/vue-query'
+import { NButton, NTabs, NTabPane, NModal, NInput } from 'naive-ui'
+
+import { Role } from '@/enums/RoleEnum'
+import { useUserApi } from '@/hook'
+import type { LeaderCreateSerialNumberResponse } from '@/types'
 
 const message = useMessage()
 
 const state = ref({
 	data: {
 		note: ''
-		// age: 18
+	},
+	api: {
+		createAccount: null
 	},
 	url: 'https://www.asdasasas.com',
 	status: {
 		modal: false,
-		isInput: true
+		isInput: true,
+		submitDisabled: true
 	}
 })
 
@@ -23,11 +31,38 @@ const onPositiveClick = () => {
 const onCreateAccount = () => {
 	state.value.status.modal = true
 }
+
+const { data: handleGetUser } = useQuery({
+	queryKey: [useUserApi.showMe.queryKey],
+	queryFn: () => useUserApi.showMe.api()
+})
+
+const role = computed(() => handleGetUser.value?.user?.role)
+
+watch(state.value.data, (newVal) => {
+	const check = Boolean(newVal.note)
+	state.value.status.submitDisabled = !check
+})
+
+const {
+	mutate: handleCreateAccount,
+	isPending: isCreateAccountPending
+} = useMutation({
+	mutationFn: async () => await useUserApi.createAccount.api({
+		note: state.value.data.note
+	}),
+	onSuccess: (data: LeaderCreateSerialNumberResponse) => {
+		state.value.status.isInput = false
+		state.value.url = data.serialNumber.serialNumber
+	}
+})
+
 </script>
 
 <template>
   <div>
     <n-tabs
+      v-if="role === Role.districtLeader || role === Role.admin || role === Role.dev"
       type="segment"
       animated
     >
@@ -35,30 +70,8 @@ const onCreateAccount = () => {
         name="createAccount"
         tab="開戶"
       >
-        <p class="text-center font-bold">
-          開戶規則
-        </p>
-        <n-carousel show-arrow>
-          <img
-            class="w-full h-60 object-cover"
-            src="https://naive-ui.oss-cn-beijing.aliyuncs.com/carousel-img/carousel1.jpeg"
-          >
-          <img
-            class="w-full h-60 object-cover"
-            src="https://naive-ui.oss-cn-beijing.aliyuncs.com/carousel-img/carousel2.jpeg"
-          >
-          <img
-            class="w-full h-60 object-cover"
-            src="https://naive-ui.oss-cn-beijing.aliyuncs.com/carousel-img/carousel3.jpeg"
-          >
-          <img
-            class="w-full h-60 object-cover"
-            src="https://naive-ui.oss-cn-beijing.aliyuncs.com/carousel-img/carousel4.jpeg"
-          >
-        </n-carousel>
         <n-button
           type="primary"
-          block
           @click="onCreateAccount"
         >
           開戶
@@ -71,22 +84,28 @@ const onCreateAccount = () => {
         Hey Jude
       </n-tab-pane>
     </n-tabs>
+    <div v-else>
+      無權限開戶
+    </div>
     <n-modal
       v-model:show="state.status.modal"
       :mask-closable="false"
       preset="dialog"
-      title="Dialog"
+      title="開戶"
       content="Are you sure?"
     >
       <div v-if="state.status.isInput">
         <n-input
           v-model:value="state.data.note"
-          placeholder="要開戶給哪位朋友"
+          class="my-5"
+          placeholder="請輸入開戶的名字"
         />
         <n-button
           type="primary"
           block
-          @click="state.status.isInput = false"
+          :disabled="state.status.submitDisabled"
+          :loading="isCreateAccountPending"
+          @click="handleCreateAccount()"
         >
           開戶
         </n-button>
@@ -96,7 +115,7 @@ const onCreateAccount = () => {
           將網址傳給對方就能開戶
         </p>
         <p>
-          網址：https://www.google.com
+          網址：{{ state.url }}
         </p>
         <n-button
           type="primary"
