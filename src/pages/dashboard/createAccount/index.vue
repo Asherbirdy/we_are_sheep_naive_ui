@@ -4,10 +4,10 @@ import { NButton, NTabs, NTabPane, NModal, NInput } from 'naive-ui'
 
 import { Role } from '@/enums/RoleEnum'
 import { useUserApi } from '@/hook'
+import { useUserSerialNumberApi } from '@/hook/useUserSerialNumberApi'
 import type { LeaderCreateSerialNumberResponse } from '@/types'
 
 const message = useMessage()
-
 const state = ref({
 	data: {
 		note: ''
@@ -15,7 +15,8 @@ const state = ref({
 	api: {
 		createAccount: null
 	},
-	url: 'https://www.asdasasas.com',
+	serialNumber: '',
+	url: '',
 	status: {
 		modal: false,
 		isInput: true,
@@ -48,12 +49,13 @@ const {
 	mutate: handleCreateAccount,
 	isPending: isCreateAccountPending
 } = useMutation({
-	mutationFn: async () => await useUserApi.createAccount.api({
-		note: state.value.data.note
+	mutationFn: async () => await useUserSerialNumberApi.leaderCreateSerialNumber.api({
+		notes: state.value.data.note
 	}),
 	onSuccess: (data: LeaderCreateSerialNumberResponse) => {
 		state.value.status.isInput = false
-		state.value.url = data.serialNumber.serialNumber
+		state.value.serialNumber = data.serialNumber.serialNumber
+		state.value.url = `${window.location.origin}/C/?serialNumber=${data.serialNumber.serialNumber}`
 	}
 })
 
@@ -102,7 +104,6 @@ const {
         />
         <n-button
           type="primary"
-          block
           :disabled="state.status.submitDisabled"
           :loading="isCreateAccountPending"
           @click="handleCreateAccount()"

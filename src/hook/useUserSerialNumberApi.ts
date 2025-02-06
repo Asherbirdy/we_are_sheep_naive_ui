@@ -11,8 +11,11 @@ export const useUserSerialNumberApi: RequestSchema = {
     * 區負責創建序列號
   */
   leaderCreateSerialNumber: {
-    api: async (): Promise<LeaderCreateSerialNumberResponse> => await useRequest.post({
-      url: UserSerialNumberRequestURL.leaderCreateSerialNumber
+    api: async (payload: { notes: string }): Promise<LeaderCreateSerialNumberResponse> => await useRequest.post({
+      url: UserSerialNumberRequestURL.leaderCreateSerialNumber,
+      data: {
+        notes: payload.notes
+      }
     }),
     queryKey: UserSerialNumberRequestURL.leaderCreateSerialNumber
   },
