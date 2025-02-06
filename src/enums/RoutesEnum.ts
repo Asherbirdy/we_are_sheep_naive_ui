@@ -16,5 +16,6 @@ export enum DashboardRoutes {
   // 管理員
   'admin' = '/dashboard/admin',
   'adminDistrict' = '/dashboard/admin/district',
-  'adminSerialNumber' = '/dashboard/admin/serialNumber'
+  'adminSerialNumber' = '/dashboard/admin/serialNumber',
+  'adminUsers' = '/dashboard/admin/users'
 }
