@@ -55,7 +55,7 @@ const {
 	onSuccess: (data: LeaderCreateSerialNumberResponse) => {
 		state.value.status.isInput = false
 		state.value.serialNumber = data.serialNumber.serialNumber
-		state.value.url = `${window.location.origin}/C/?serialNumber=${data.serialNumber.serialNumber}&tab=register`
+		state.value.url = `${window.location.origin}/C/?serialNumber=${data.serialNumber.serialNumber}&tab=註冊`
 	}
 })
 
@@ -64,7 +64,11 @@ const {
 <template>
   <div>
     <n-tabs
-      v-if="role === Role.districtLeader || role === Role.admin || role === Role.dev"
+      v-if="(
+        role === Role.districtLeader ||
+        role === Role.admin ||
+        role === Role.dev
+      )"
       type="segment"
       animated
     >
