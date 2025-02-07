@@ -1,6 +1,6 @@
 <script setup lang='ts'>
-import { useMutation, useQuery } from '@tanstack/vue-query'
-import { NButton, NTabs, NTabPane, NModal, NInput, NDataTable, NDrawer, NDrawerContent, NP } from 'naive-ui'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
+import { NButton, NTabs, NTabPane, NModal, NInput, NDataTable, NDrawer, NDrawerContent, NP, NQrCode, NSpace } from 'naive-ui'
 import type {  DataTableColumns } from 'naive-ui'
 
 import { Role } from '@/enums/RoleEnum'
@@ -8,6 +8,7 @@ import { useUserApi } from '@/hook'
 import { useUserSerialNumberApi } from '@/hook/useUserSerialNumberApi'
 import type { LeaderCreateSerialNumberResponse } from '@/types'
 
+const queryClient = useQueryClient()
 const message = useMessage()
 const state = ref({
 	data: {
@@ -60,6 +61,10 @@ const {
 		state.value.status.isInput = false
 		state.value.serialNumber = data.serialNumber.serialNumber
 		state.value.url = `${window.location.origin}/C/?serialNumber=${data.serialNumber.serialNumber}&tab=註冊`
+
+		queryClient.invalidateQueries({
+			queryKey: [useUserSerialNumberApi.leaderGetUserSerialNumber.queryKey]
+		})
 	}
 })
 
@@ -169,6 +174,16 @@ const personalColumns = (): DataTableColumns<any> => {
         <p>
           網址：{{ state.url }}
         </p>
+        <n-space
+          justify="center"
+          align="center"
+        >
+          <n-qr-code
+            :size="200"
+            :value="state.url"
+            class="my-5"
+          />
+        </n-space>
         <n-button
           type="primary"
           block
@@ -181,17 +196,29 @@ const personalColumns = (): DataTableColumns<any> => {
     <n-drawer
       v-model:show="state.status.drawer"
       placement="bottom"
+      :height="500"
     >
-      <n-drawer-content title="Stoner">
+      <n-drawer-content>
         <n-p>
           名字：{{ state.drawerData.notes }}
         </n-p>
         <n-p>
           編號：{{ state.drawerData.serialNumber }}
         </n-p>
+        <n-space
+          justify="center"
+          align="center"
+        >
+          <n-qr-code
+            :size="200"
+            :value="state.drawerData.url"
+            class="my-5"
+          />
+        </n-space>
         <n-button
           v-if="!state.drawerData.isUsed"
           block
+          type="primary"
           @click="onPositiveClick(state.drawerData.url)"
         >
           複製註冊網址
@@ -200,3 +227,8 @@ const personalColumns = (): DataTableColumns<any> => {
     </n-drawer>
   </div>
 </template>
+<!-- <style scoped>
+* {
+  outline: 1px solid red;
+}
+</style> -->
