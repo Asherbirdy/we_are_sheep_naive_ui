@@ -5,17 +5,34 @@
 </route>
 
 <script setup lang='ts'>
-import { NSpace, NImage, NCard, NTabPane, NTabs } from 'naive-ui'
+import { NSpace, NImage, NCard, NTabs, NTabPane } from 'naive-ui'
 import { useI18n } from 'vue-i18n'
 
 import WelcomeImage from '@/assets/image/login/welcome.png'
 import { DashboardRoutes } from '@/enums'
 import { useAuthApi } from '@/hook'
 const router = useRouter()
+const route = useRoute()
 // eslint-disable-next-line @typescript-eslint/no-unused-vars, unused-imports/no-unused-vars
 const { t } = useI18n()
 
+enum Tab {
+	login = '登入',
+	register = '註冊'
+}
+
+const state = ref({
+	data: {
+		tab: Tab.login
+	},
+	tabs: [Tab.login, Tab.register]
+})
+
 const init = async () => {
+	if (route.query.tab === Tab.register) {
+		state.value.data.tab = Tab.register
+		return
+	}
 	const res = await useAuthApi.checkValidToken.api()
 	if (res.msg === 'Token is valid') {
 		router.push(DashboardRoutes.sheep)
@@ -37,19 +54,19 @@ onMounted(() => init())
     />
     <n-card title="登入">
       <n-tabs
+        v-model:value="state.data.tab"
         class="w-full md:w-450px"
-        default-value="登入"
         size="large"
         animated
       >
         <n-tab-pane
-          name="登入"
+          :name="Tab.login"
           tab="登入"
         >
           <LoginFormComponent />
         </n-tab-pane>
         <n-tab-pane
-          name="註冊"
+          :name="Tab.register"
           tab="註冊"
         >
           <SignUpComponent />
