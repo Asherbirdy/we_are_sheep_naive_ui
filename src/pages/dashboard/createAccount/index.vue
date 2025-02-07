@@ -55,7 +55,7 @@ const {
 	onSuccess: (data: LeaderCreateSerialNumberResponse) => {
 		state.value.status.isInput = false
 		state.value.serialNumber = data.serialNumber.serialNumber
-		state.value.url = `${window.location.origin}/C/?serialNumber=${data.serialNumber.serialNumber}`
+		state.value.url = `${window.location.origin}/C/?serialNumber=${data.serialNumber.serialNumber}&tab=register`
 	}
 })
 
