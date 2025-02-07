@@ -1,6 +1,7 @@
 <script setup lang='ts'>
 import { useMutation, useQuery } from '@tanstack/vue-query'
-import { NButton, NTabs, NTabPane, NModal, NInput } from 'naive-ui'
+import { NButton, NTabs, NTabPane, NModal, NInput, NDataTable, NDrawer, NDrawerContent, NP } from 'naive-ui'
+import type {  DataTableColumns } from 'naive-ui'
 
 import { Role } from '@/enums/RoleEnum'
 import { useUserApi } from '@/hook'
@@ -20,17 +21,20 @@ const state = ref({
 	status: {
 		modal: false,
 		isInput: true,
-		submitDisabled: true
+		submitDisabled: true,
+		drawer: false
+	},
+	drawerData: {
+		notes: '',
+		serialNumber: '',
+		url: '',
+		isUsed: false
 	}
 })
 
-const onPositiveClick = () => {
-	navigator.clipboard.writeText(state.value.url)
+const onPositiveClick = (payload: string) => {
+	navigator.clipboard.writeText(payload)
 	message.success('複製網址成功')
-}
-
-const onCreateAccount = () => {
-	state.value.status.modal = true
 }
 
 const { data: handleGetUser } = useQuery({
@@ -59,6 +63,43 @@ const {
 	}
 })
 
+const { data: handleGetUserSerialNumber } = useQuery({
+	queryKey: [useUserSerialNumberApi.leaderGetUserSerialNumber.queryKey],
+	queryFn: () => useUserSerialNumberApi.leaderGetUserSerialNumber.api()
+})
+
+const personalColumns = (): DataTableColumns<any> => {
+	return [
+		{
+			title: 'note',
+			key: 'notes',
+			width: '30%'
+		},
+		{
+			title: 'isUsed',
+			key: 'isUsed',
+			render: (row) => row.isUsed ? '已使用' : '未使用'
+		},
+		{
+			title: '',
+			key: 'action',
+			render: (row) => h(
+				NButton,
+				{
+					onClick: () => {
+						const { drawerData } = state.value
+						drawerData.notes = row.notes
+						drawerData.serialNumber = row.serialNumber
+						drawerData.url = `${window.location.origin}/C/?serialNumber=${row.serialNumber}&tab=註冊`
+						drawerData.isUsed = row.isUsed
+						state.value.status.drawer = true
+					}
+				},
+				{ default: () => '詳細' }
+			)
+		}
+	]
+}
 </script>
 
 <template>
@@ -78,7 +119,7 @@ const {
       >
         <n-button
           type="primary"
-          @click="onCreateAccount"
+          @click="state.status.modal = true"
         >
           開戶
         </n-button>
@@ -87,7 +128,13 @@ const {
         name="createAccountStatus"
         tab="開戶狀態"
       >
-        Hey Jude
+        <n-data-table
+          size="small"
+          :bordered="false"
+          :single-line="false"
+          :columns="personalColumns()"
+          :data="handleGetUserSerialNumber?.data"
+        />
       </n-tab-pane>
     </n-tabs>
     <div v-else>
@@ -125,11 +172,31 @@ const {
         <n-button
           type="primary"
           block
-          @click="onPositiveClick"
+          @click="onPositiveClick(state.url)"
         >
           複製網址
         </n-button>
       </div>
     </n-modal>
+    <n-drawer
+      v-model:show="state.status.drawer"
+      placement="bottom"
+    >
+      <n-drawer-content title="Stoner">
+        <n-p>
+          名字：{{ state.drawerData.notes }}
+        </n-p>
+        <n-p>
+          編號：{{ state.drawerData.serialNumber }}
+        </n-p>
+        <n-button
+          v-if="!state.drawerData.isUsed"
+          block
+          @click="onPositiveClick(state.drawerData.url)"
+        >
+          複製註冊網址
+        </n-button>
+      </n-drawer-content>
+    </n-drawer>
   </div>
 </template>
