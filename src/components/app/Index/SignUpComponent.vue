@@ -10,7 +10,7 @@ import { regex, setToken } from '@/utils'
 
 const router = useRouter()
 const notification = useNotification()
-
+const route = useRoute()
 /*
 	* 表單資料名稱
 */
@@ -131,6 +131,13 @@ watch(state.value.data, (newVal) => {
 	state.value.disabled.signUp = !check
 })
 
+const init = () => {
+	nextTick(() => {
+		state.value.data.serialNumber = route.query.serialNumber as string
+	})
+}
+
+onMounted(() => init())
 </script>
 <template>
   <n-form

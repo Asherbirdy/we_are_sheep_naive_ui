@@ -50,7 +50,7 @@ export default defineConfig(({ mode }) => {
     },
     server: {
       cors: true,
-      open: true,
+      // open: true,
       port: Number(env.VITE_PORT) || 5173,
       proxy: {
         '/api': {
