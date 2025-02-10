@@ -1,6 +1,7 @@
   // 登入頁
 export enum Routes {
   'login' = '/',
+  'forgetPassword' = '/forgetPassword'
 }
 
 // Dashboard
