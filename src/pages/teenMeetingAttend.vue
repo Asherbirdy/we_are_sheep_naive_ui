@@ -5,7 +5,7 @@
 </route>
 <script setup lang='ts'>
 import { useMutation } from '@tanstack/vue-query'
-import { NCard, NInput, NButton } from 'naive-ui'
+import { NCard, NInput, NButton, NTag } from 'naive-ui'
 
 import { useTeenMeetingAttendApi } from '@/hook'
 import type { TeenMeetingAttendApiGetResponse } from '@/hook'
@@ -85,18 +85,21 @@ const date = computed(() => {
         確認
       </n-button>
     </n-card>
-    <div v-if="state.current.page === Page.dataPage">
+    <div
+      v-if="state.current.page === Page.dataPage"
+      class="mt-20"
+    >
       <p class="text-lg font-bold">
         28會所專項報名情形：
       </p>
       <p>
-        資料更新日期：{{ date }}
+        資料更新日期：{{ date }} (每天晚上20:00 - 23:00 間更新資料)
       </p>
       <template
         v-for="(group, label) in ageGroups"
         :key="label"
       >
-        <p class="text-lg font-bold">
+        <p class="text-md font-bold">
           {{ label }}
         </p>
         <span
@@ -104,7 +107,12 @@ const date = computed(() => {
           :key="item._id"
           class="text-sm mx-1"
         >
-          {{ item.name }},
+          <n-tag
+            size="small"
+            :bordered="false"
+          >
+            {{ item.name }}
+          </n-tag>
         </span>
       </template>
     </div>
