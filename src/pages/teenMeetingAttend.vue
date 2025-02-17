@@ -68,8 +68,10 @@ const date = computed(() => {
 </script>
 <template>
   <div>
+
     <n-card
       v-if="state.current.page === Page.password"
+      class="max-w-[300px]"
       title="密碼"
     >
       <n-input
@@ -90,10 +92,10 @@ const date = computed(() => {
       class="mt-5"
     >
       <span class="text-sm font-bold">
-        28會所報名情形：(每天晚上20:00後更新資料)
+        28會所青年特會報名情形：
       </span>
-      <p class="text-[8px]">
-        資料更新日期：{{ date }}
+      <p class="text-[10px]">
+        資料更新日期：{{ date }} (每天晚上20:00後更新資料)
       </p>
       <n-tabs
         type="line"
@@ -136,6 +138,13 @@ const date = computed(() => {
           tab="大專青少邀約"
         >
           大專青少年 （開發中）
+        </n-tab-pane>
+        <n-tab-pane
+          name="福音朋友"
+          tab="福音朋友"
+        >
+
+          會前來的 福音朋友 （開發中）
         </n-tab-pane>
       </n-tabs>
     </div>
