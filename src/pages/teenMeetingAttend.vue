@@ -5,7 +5,7 @@
 </route>
 <script setup lang='ts'>
 import { useMutation } from '@tanstack/vue-query'
-import { NCard, NInput, NButton, NTag } from 'naive-ui'
+import { NCard, NInput, NButton, NTag, NTabs, NTabPane } from 'naive-ui'
 
 import { useTeenMeetingAttendApi } from '@/hook'
 import type { TeenMeetingAttendApiGetResponse } from '@/hook'
@@ -89,32 +89,55 @@ const date = computed(() => {
       v-if="state.current.page === Page.dataPage"
       class="mt-20"
     >
-      <p class="text-lg font-bold">
-        28會所專項報名情形：
+      <span class="text-sm font-bold">
+        28會所報名情形：(每天晚上20:00後更新資料)
+      </span>
+      <p class="text-[8px]">
+        資料更新日期：{{ date }}
       </p>
-      <p>
-        資料更新日期：{{ date }} (每天晚上20:00 - 23:00 間更新資料)
-      </p>
-      <template
-        v-for="(group, label) in ageGroups"
-        :key="label"
+      <n-tabs
+        type="line"
+        animated
+        default-value="專項"
       >
-        <p class="text-md font-bold">
-          {{ label }}
-        </p>
-        <span
-          v-for="item in group"
-          :key="item._id"
-          class="text-sm mx-1"
+        <n-tab-pane
+          name="專項"
+          tab="專項"
         >
-          <n-tag
-            size="small"
-            :bordered="false"
+          <template
+            v-for="(group, label) in ageGroups"
+            :key="label"
           >
-            {{ item.name }}
-          </n-tag>
-        </span>
-      </template>
+            <p class="text-md font-bold">
+              {{ label }}
+            </p>
+            <span
+              v-for="item in group"
+              :key="item._id"
+              class="text-sm mx-1"
+            >
+              <n-tag
+                size="small"
+                :bordered="false"
+              >
+                {{ item.name }}
+              </n-tag>
+            </span>
+          </template>
+        </n-tab-pane>
+        <n-tab-pane
+          name="青職邀約"
+          tab="青職邀約"
+        >
+          青職邀約 （開發中）
+        </n-tab-pane>
+        <n-tab-pane
+          name="大專青少年"
+          tab="大專青少年"
+        >
+          大專青少年 （開發中）
+        </n-tab-pane>
+      </n-tabs>
     </div>
   </div>
 </template>
