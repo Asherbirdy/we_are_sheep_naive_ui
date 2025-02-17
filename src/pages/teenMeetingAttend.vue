@@ -8,6 +8,7 @@ import { useMutation } from '@tanstack/vue-query'
 import { NCard, NInput, NButton } from 'naive-ui'
 
 import { useTeenMeetingAttendApi } from '@/hook'
+import type { TeenMeetingAttendApiGetResponse } from '@/hook'
 
 enum Page {
 	password = 'password',
@@ -19,7 +20,7 @@ const message = useMessage()
 const state = ref(
 	{
 		api: {
-			getTeenMeetingAttend: null
+			getTeenMeetingAttend: null as TeenMeetingAttendApiGetResponse | null
 		},
 		data: {
 			password: ''
@@ -52,6 +53,18 @@ watch(state.value.data, (val) => {
 	}
 })
 
+const ageGroups = computed(() => ({
+	'青職': state.value.api.getTeenMeetingAttend?.data.ageRange.youth.data || [],
+	'大專': state.value.api.getTeenMeetingAttend?.data.ageRange.college.data || [],
+	'青少年': state.value.api.getTeenMeetingAttend?.data.ageRange.teenager.data || [],
+	'兒童1': state.value.api.getTeenMeetingAttend?.data.ageRange.child1.data || [],
+	'兒童2': state.value.api.getTeenMeetingAttend?.data.ageRange.child2.data || [],
+	'兒童3': state.value.api.getTeenMeetingAttend?.data.ageRange.child3.data || []
+}))
+
+const date = computed(() => {
+	return state.value.api.getTeenMeetingAttend?.data.ageRange.youth.data[0]?.updatedAt ? new Date(state.value.api.getTeenMeetingAttend.data.ageRange.youth.data[0].updatedAt).toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' }) : '無更新資料'
+})
 </script>
 <template>
   <div>
@@ -59,7 +72,10 @@ watch(state.value.data, (val) => {
       v-if="state.current.page === Page.password"
       title="密碼"
     >
-      <n-input v-model:value="state.data.password" />
+      <n-input
+        v-model:value="state.data.password"
+        class="mb-2"
+      />
       <n-button
         :disabled="state.isDisabled"
         type="primary"
@@ -70,7 +86,27 @@ watch(state.value.data, (val) => {
       </n-button>
     </n-card>
     <div v-if="state.current.page === Page.dataPage">
-      {{ state.api.getTeenMeetingAttend }}
+      <p class="text-lg font-bold">
+        28會所專項報名情形：
+      </p>
+      <p>
+        資料更新日期：{{ date }}
+      </p>
+      <template
+        v-for="(group, label) in ageGroups"
+        :key="label"
+      >
+        <p class="text-lg font-bold">
+          {{ label }}
+        </p>
+        <span
+          v-for="item in group"
+          :key="item._id"
+          class="text-sm mx-1"
+        >
+          {{ item.name }},
+        </span>
+      </template>
     </div>
   </div>
 </template>

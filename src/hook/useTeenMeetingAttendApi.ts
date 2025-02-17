@@ -6,14 +6,19 @@ export interface TeenMeetingAttendApiGetResponse {
 
 export interface Data {
   ageRange: {
-    nonSelected: Daum
-    teenager: Daum
-    college: Daum
-    youth: Daum
-    child1: Daum
-    child2: Daum
-    child3: Daum
+    nonSelected: Detail
+    teenager: Detail
+    college: Detail
+    youth: Detail
+    child1: Detail
+    child2: Detail
+    child3: Detail
   }
+}
+
+interface Detail {
+  data: Daum[]
+  count: number
 }
 
 export interface Daum {
