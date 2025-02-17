@@ -1,7 +1,7 @@
 <route lang="yaml">
   name: 'teenMeetingAttend'
   meta:
-    layout: login
+    layout: none
 </route>
 <script setup lang='ts'>
 import { useMutation } from '@tanstack/vue-query'
@@ -87,7 +87,7 @@ const date = computed(() => {
     </n-card>
     <div
       v-if="state.current.page === Page.dataPage"
-      class="mt-20"
+      class="mt-5"
     >
       <span class="text-sm font-bold">
         28會所報名情形：(每天晚上20:00後更新資料)
@@ -132,8 +132,8 @@ const date = computed(() => {
           青職邀約 （開發中）
         </n-tab-pane>
         <n-tab-pane
-          name="大專青少年"
-          tab="大專青少年"
+          name="大專青少邀約"
+          tab="大專青少邀約"
         >
           大專青少年 （開發中）
         </n-tab-pane>
