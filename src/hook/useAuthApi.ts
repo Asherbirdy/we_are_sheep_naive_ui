@@ -7,7 +7,9 @@ enum AuthRequestURL {
   sendOTP = '/auth/sendOTP',
   bindOTPEmail = '/auth/bindOTPEmail',
   checkValidToken = '/auth/checkValidToken',
-  logout = '/auth/logout'
+  logout = '/auth/logout',
+  forgetPassword = '/auth/forgetPasswordEmailOTP',
+  verifyForgetPassword = '/auth/changePasswordWithOTP'
 }
 
 export const useAuthApi: RequestSchema = {
@@ -63,6 +65,24 @@ export const useAuthApi: RequestSchema = {
   logout: {
     api: async () => await useRequest.delete({
       url: AuthRequestURL.logout
+    })
+  },
+    /*
+    * Forget Password
+  */
+  forgetPassword: {
+    api: async (payload: { email: string }) => await useRequest.post({
+      url: AuthRequestURL.forgetPassword,
+      data: payload
+    })
+  },
+  /*
+    * Verify Forget Password
+  */
+  changePasswordWithOTP: {
+    api: async (payload: { email: string, OTP: string, newPassword: string }) => await useRequest.post({
+      url: AuthRequestURL.verifyForgetPassword,
+      data: payload
     })
   }
 }

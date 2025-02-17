@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { useMutation } from '@tanstack/vue-query'
-import { NSpace, NForm, NFormItem, NInput, NButton, NA, NPopover, NP } from 'naive-ui'
+import { NSpace, NForm, NFormItem, NInput, NButton, NA } from 'naive-ui'
 import type { FormRules } from 'naive-ui'
 
 import { config } from '@/config'
-import { CookieEnum, DashboardRoutes } from '@/enums'
+import { CookieEnum, DashboardRoutes, Routes } from '@/enums'
 import { useAuthApi } from '@/hook'
 import type { LoginResponse } from '@/types'
 import { regex, setToken } from '@/utils'
@@ -135,17 +135,11 @@ watch(state.value.data, (newVal) => {
       justify="space-between"
       align="baseline"
     >
-      <n-popover trigger="hover">
-        <template #trigger>
-          <n-a>
-            忘記密碼
-          </n-a>
-        </template>
-        <n-p>
-          聯絡開發者並給他您帳號的Email，<br>
-          他幫您處理
-        </n-p>
-      </n-popover>
+      <router-link :to="Routes.forgetPassword">
+        <n-a>
+          忘記密碼
+        </n-a>
+      </router-link>
 
       <n-button
         round
