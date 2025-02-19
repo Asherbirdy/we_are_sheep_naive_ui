@@ -13,6 +13,7 @@ export interface Data {
     child1: Detail
     child2: Detail
     child3: Detail
+    other: Detail
   }
 }
 

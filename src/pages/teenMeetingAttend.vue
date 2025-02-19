@@ -43,7 +43,6 @@ const { mutate: handleGetTeenMeetingAttend, isPending } = useMutation({
 
 		state.value.current.page = Page.dataPage
 		state.value.api.getTeenMeetingAttend = data
-		console.log('state.value.api.getTeenMeetingAttend', state.value.api.getTeenMeetingAttend)
 	}
 })
 
@@ -57,6 +56,7 @@ const ageGroups = computed(() => ({
 	'青職': state.value.api.getTeenMeetingAttend?.data.ageRange.youth.data || [],
 	'大專': state.value.api.getTeenMeetingAttend?.data.ageRange.college.data || [],
 	'青少年': state.value.api.getTeenMeetingAttend?.data.ageRange.teenager.data || [],
+	'其他': state.value.api.getTeenMeetingAttend?.data.ageRange.other.data || [],
 	'兒童1': state.value.api.getTeenMeetingAttend?.data.ageRange.child1.data || [],
 	'兒童2': state.value.api.getTeenMeetingAttend?.data.ageRange.child2.data || [],
 	'兒童3': state.value.api.getTeenMeetingAttend?.data.ageRange.child3.data || []
@@ -91,6 +91,7 @@ const date = computed(() => {
       v-if="state.current.page === Page.dataPage"
       class="mt-5"
     >
+
       <span class="text-sm font-bold">
         28會所青年特會報名情形：
       </span>
@@ -100,11 +101,11 @@ const date = computed(() => {
       <n-tabs
         type="line"
         animated
-        default-value="專項"
+        default-value="會所報名情形"
       >
         <n-tab-pane
-          name="專項"
-          tab="專項"
+          name="會所報名情形"
+          tab="會所報名情形"
         >
           <template
             v-for="(group, label) in ageGroups"
@@ -128,24 +129,12 @@ const date = computed(() => {
           </template>
         </n-tab-pane>
         <n-tab-pane
-          name="青職邀約"
-          tab="青職邀約"
+          name="數據"
+          tab="數據"
         >
-          青職邀約 （開發中）
+          數據
         </n-tab-pane>
-        <n-tab-pane
-          name="大專青少邀約"
-          tab="大專青少邀約"
-        >
-          大專青少年 （開發中）
-        </n-tab-pane>
-        <n-tab-pane
-          name="福音朋友"
-          tab="福音朋友"
-        >
 
-          會前來的 福音朋友 （開發中）
-        </n-tab-pane>
       </n-tabs>
     </div>
   </div>
