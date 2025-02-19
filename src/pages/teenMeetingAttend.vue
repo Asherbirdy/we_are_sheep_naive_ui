@@ -91,6 +91,7 @@ const date = computed(() => {
       v-if="state.current.page === Page.dataPage"
       class="mt-5"
     >
+
       <span class="text-sm font-bold">
         28會所青年特會報名情形：
       </span>
