@@ -62,9 +62,26 @@ const ageGroups = computed(() => ({
 	'兒童3': state.value.api.getTeenMeetingAttend?.data.ageRange.child3.data || []
 }))
 
+// 合併所有報名資料
+const allData = computed(() => [
+	...(state.value.api.getTeenMeetingAttend?.data.ageRange.youth.data || []),
+	...(state.value.api.getTeenMeetingAttend?.data.ageRange.college.data || []),
+	...(state.value.api.getTeenMeetingAttend?.data.ageRange.teenager.data || []),
+	...(state.value.api.getTeenMeetingAttend?.data.ageRange.other.data || []),
+	...(state.value.api.getTeenMeetingAttend?.data.ageRange.child1.data || []),
+	...(state.value.api.getTeenMeetingAttend?.data.ageRange.child2.data || []),
+	...(state.value.api.getTeenMeetingAttend?.data.ageRange.child3.data || [])
+])
+
+const gospelFriends = computed(() => {
+	return allData.value.filter((item) => item.meetingStatus === '福音朋友')
+})
+
+// 計算資料更新日期
 const date = computed(() => {
 	return state.value.api.getTeenMeetingAttend?.data.ageRange.youth.data[0]?.updatedAt ? new Date(state.value.api.getTeenMeetingAttend.data.ageRange.youth.data[0].updatedAt).toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' }) : '無更新資料'
 })
+
 </script>
 <template>
   <div>
@@ -92,17 +109,53 @@ const date = computed(() => {
       class="mt-5"
     >
 
-      <span class="text-sm font-bold">
+      <span class="text-lg font-bold">
         28會所青年特會報名情形：
       </span>
-      <p class="text-[10px]">
-        資料更新日期：{{ date }} (每天晚上20:00後更新資料)
+      <p style="margin: 0;">
+        更新日期：
+      </p>
+      <p style="margin: 0;">
+        {{ date }} (每天晚上20:00後更新資料)
       </p>
       <n-tabs
         type="line"
         animated
-        default-value="會所報名情形"
+        default-value="數據"
       >
+        <n-tab-pane
+          name="數據"
+          tab="數據"
+        >
+          <p style="margin: 0;">
+            {{ new Date().toLocaleDateString('zh-TW', { year: 'numeric', month: '2-digit', day: '2-digit' }) }}
+          </p>
+          <p style="margin: 0;">
+            28會所 青年特會報名情形：
+          </p>
+          <p style="margin: 0;">
+            大會負擔：一人邀約一位
+          </p>
+          <p style="margin: 0;">
+            會所總目標： 180人
+          </p>
+          <p style="margin: 0;">
+            目前已報名人數：{{ allData.length }}人
+          </p>
+
+          <br>
+
+          <p style="margin: 0;">
+            確定參加的福音朋友（{{ gospelFriends.length }}人）：
+          </p>
+          <span
+            v-for="(item, index) in gospelFriends"
+            :key="item._id"
+          >
+            {{ index + 1 }}. {{ item.name }} (照顧者：{{ item.sheepherd }})<br>
+          </span>
+
+        </n-tab-pane>
         <n-tab-pane
           name="會所報名情形"
           tab="會所報名情形"
@@ -112,7 +165,7 @@ const date = computed(() => {
             :key="label"
           >
             <p class="text-md font-bold">
-              {{ label }}
+              {{ label }}（{{ group.length }}人）
             </p>
             <span
               v-for="item in group"
@@ -127,12 +180,6 @@ const date = computed(() => {
               </n-tag>
             </span>
           </template>
-        </n-tab-pane>
-        <n-tab-pane
-          name="數據"
-          tab="數據"
-        >
-          數據
         </n-tab-pane>
 
       </n-tabs>
