@@ -55,11 +55,11 @@ watch(state.value.data, (val) => {
 const ageGroups = computed(() => ({
 	'青職': state.value.api.getTeenMeetingAttend?.data.ageRange.youth.data || [],
 	'大專': state.value.api.getTeenMeetingAttend?.data.ageRange.college.data || [],
-	'青少年': state.value.api.getTeenMeetingAttend?.data.ageRange.teenager.data || [],
-	'其他': state.value.api.getTeenMeetingAttend?.data.ageRange.other.data || [],
-	'兒童1': state.value.api.getTeenMeetingAttend?.data.ageRange.child1.data || [],
-	'兒童2': state.value.api.getTeenMeetingAttend?.data.ageRange.child2.data || [],
-	'兒童3': state.value.api.getTeenMeetingAttend?.data.ageRange.child3.data || []
+	// '青少年': state.value.api.getTeenMeetingAttend?.data.ageRange.teenager.data || [],
+	'其他': state.value.api.getTeenMeetingAttend?.data.ageRange.other.data || []
+	// '兒童1': state.value.api.getTeenMeetingAttend?.data.ageRange.child1.data || [],
+	// '兒童2': state.value.api.getTeenMeetingAttend?.data.ageRange.child2.data || [],
+	// '兒童3': state.value.api.getTeenMeetingAttend?.data.ageRange.child3.data || []
 }))
 
 const date = computed(() => {
@@ -112,7 +112,7 @@ const date = computed(() => {
             :key="label"
           >
             <p class="text-md font-bold">
-              {{ label }}
+              {{ label }} ({{ group.length }}位)
             </p>
             <span
               v-for="item in group"
@@ -120,6 +120,7 @@ const date = computed(() => {
               class="text-sm mx-1"
             >
               <n-tag
+                class="mb-1"
                 size="small"
                 :bordered="false"
               >
