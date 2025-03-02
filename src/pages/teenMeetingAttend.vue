@@ -67,6 +67,33 @@ const ageGroups = computed(() => ({
 const date = computed(() => {
 	return state.value.api.getTeenMeetingAttend?.data.ageRange.youth.data[0]?.updatedAt ? new Date(state.value.api.getTeenMeetingAttend.data.ageRange.youth.data[0].updatedAt).toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' }) : '無更新資料'
 })
+
+// 四區
+const allData = computed(() => {
+	return [
+		...(state.value.api.getTeenMeetingAttend?.data.ageRange.youth.data || []),
+		...(state.value.api.getTeenMeetingAttend?.data.ageRange.college.data || []),
+		...(state.value.api.getTeenMeetingAttend?.data.ageRange.teenager.data || []),
+		...(state.value.api.getTeenMeetingAttend?.data.ageRange.other.data || [])
+	]
+})
+
+const oneAreas = computed(() => {
+	return allData.value.filter((item) => item.district === '一區')
+})
+
+const twoAreas = computed(() => {
+	return allData.value.filter((item) => item.district === '二區')
+})
+
+const threeAreas = computed(() => {
+	return allData.value.filter((item) => item.district === '三區')
+})
+
+const fourAreas = computed(() => {
+	return allData.value.filter((item) => item.district === '四區')
+})
+
 </script>
 <template>
   <div>
@@ -132,12 +159,85 @@ const date = computed(() => {
           </template>
         </n-tab-pane>
         <n-tab-pane
-          name="數據"
-          tab="數據"
+          name="一區"
+          tab="一區"
         >
-          數據
+          <div class="text-md font-bold text-[16px]">
+            一區代禱名單:
+          </div>
+          <div
+            v-for="item in oneAreas.filter((item) => item.inviteList !== '無')"
+            :key="item._id"
+          >
+            <span class="text-md font-extrabold">
+              {{ item.name }}：
+            </span>
+            <br>
+            <div class="text-sm mb-2">
+              {{ item.inviteList }}
+            </div>
+          </div>
         </n-tab-pane>
-
+        <n-tab-pane
+          name="二區"
+          tab="二區"
+        >
+          <div class="text-md font-bold text-[16px]">
+            二區代禱名單:
+          </div>
+          <div
+            v-for="item in twoAreas.filter((item) => item.inviteList !== '無')"
+            :key="item._id"
+          >
+            <span class="text-md font-extrabold">
+              {{ item.name }}：
+            </span>
+            <br>
+            <div class="text-sm mb-2">
+              {{ item.inviteList }}
+            </div>
+          </div>
+        </n-tab-pane>
+        <n-tab-pane
+          name="三區"
+          tab="三區"
+        >
+          <div class="text-md font-bold text-[16px]">
+            三區代禱名單:
+          </div>
+          <div
+            v-for="item in threeAreas.filter((item) => item.inviteList !== '無')"
+            :key="item._id"
+          >
+            <span class="text-md font-extrabold">
+              {{ item.name }}：
+            </span>
+            <br>
+            <div class="text-sm mb-2">
+              {{ item.inviteList }}
+            </div>
+          </div>
+        </n-tab-pane>
+        <n-tab-pane
+          name="四區"
+          tab="四區"
+        >
+          <div class="text-md font-bold text-[16px]">
+            四區代禱名單:
+          </div>
+          <div
+            v-for="item in fourAreas.filter((item) => item.inviteList !== '無')"
+            :key="item._id"
+          >
+            <span class="text-md font-extrabold">
+              {{ item.name }}：
+            </span>
+            <br>
+            <div class="text-sm mb-2">
+              {{ item.inviteList }}
+            </div>
+          </div>
+        </n-tab-pane>
       </n-tabs>
     </div>
   </div>
