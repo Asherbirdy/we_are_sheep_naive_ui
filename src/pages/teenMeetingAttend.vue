@@ -54,8 +54,10 @@ watch(state.value.data, (val) => {
 
 const ageGroups = computed(() => ({
 	'青職_目標28位': state.value.api.getTeenMeetingAttend?.data.ageRange.youth.data || [],
-	'大專': state.value.api.getTeenMeetingAttend?.data.ageRange.college.data || [],
-	'青少年': state.value.api.getTeenMeetingAttend?.data.ageRange.teenager.data || [],
+	'大專/青少年_目標16位': [
+		...(state.value.api.getTeenMeetingAttend?.data.ageRange.college.data || []),
+		...(state.value.api.getTeenMeetingAttend?.data.ageRange.teenager.data || [])
+	],
 	'其他': state.value.api.getTeenMeetingAttend?.data.ageRange.other.data || []
 	// '兒童1': state.value.api.getTeenMeetingAttend?.data.ageRange.child1.data || [],
 	// '兒童2': state.value.api.getTeenMeetingAttend?.data.ageRange.child2.data || [],
@@ -112,7 +114,7 @@ const date = computed(() => {
             :key="label"
           >
             <p class="text-md font-bold">
-              {{ label }} (報名{{ group.length }}位)
+              {{ label }} (已報名{{ group.length }}位)
             </p>
             <span
               v-for="item in group"
@@ -127,12 +129,6 @@ const date = computed(() => {
                 {{ item.name }}
               </n-tag>
             </span>
-            <p
-              v-if="label === '青少年'"
-              class="text-xs"
-            >
-              備注：青少年港湖有自己的表單，實際人數以港湖表單為主
-            </p>
           </template>
         </n-tab-pane>
         <n-tab-pane
