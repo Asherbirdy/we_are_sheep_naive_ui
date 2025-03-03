@@ -11,9 +11,3 @@ export interface UserInfoData {
   emailVerified: boolean
   role: string
 }
-
-// 更新密碼
-export interface UpdatePasswordPayload {
-  oldPassword: string
-  newPassword: string
-}
