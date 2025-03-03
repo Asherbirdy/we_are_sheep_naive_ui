@@ -58,10 +58,12 @@ const ageGroups = computed(() => ({
 		...(state.value.api.getTeenMeetingAttend?.data.ageRange.college.data || []),
 		...(state.value.api.getTeenMeetingAttend?.data.ageRange.teenager.data || [])
 	],
+	'兒童': [
+		...(state.value.api.getTeenMeetingAttend?.data.ageRange.child1.data || []),
+		...(state.value.api.getTeenMeetingAttend?.data.ageRange.child2.data || []),
+		...(state.value.api.getTeenMeetingAttend?.data.ageRange.child3.data || [])
+	],
 	'其他': state.value.api.getTeenMeetingAttend?.data.ageRange.other.data || []
-	// '兒童1': state.value.api.getTeenMeetingAttend?.data.ageRange.child1.data || [],
-	// '兒童2': state.value.api.getTeenMeetingAttend?.data.ageRange.child2.data || [],
-	// '兒童3': state.value.api.getTeenMeetingAttend?.data.ageRange.child3.data || []
 }))
 
 const date = computed(() => {
@@ -74,6 +76,9 @@ const allData = computed(() => {
 		...(state.value.api.getTeenMeetingAttend?.data.ageRange.youth.data || []),
 		...(state.value.api.getTeenMeetingAttend?.data.ageRange.college.data || []),
 		...(state.value.api.getTeenMeetingAttend?.data.ageRange.teenager.data || []),
+		...(state.value.api.getTeenMeetingAttend?.data.ageRange.child1.data || []),
+		...(state.value.api.getTeenMeetingAttend?.data.ageRange.child2.data || []),
+		...(state.value.api.getTeenMeetingAttend?.data.ageRange.child3.data || []),
 		...(state.value.api.getTeenMeetingAttend?.data.ageRange.other.data || [])
 	]
 })
@@ -106,6 +111,7 @@ const fourAreas = computed(() => {
       <n-input
         v-model:value="state.data.password"
         class="mb-2"
+        placeholder="請輸入密碼"
       />
       <n-button
         :disabled="state.isDisabled"
@@ -122,10 +128,10 @@ const fourAreas = computed(() => {
     >
 
       <span class="text-sm font-bold">
-        28會所青年特會報名情形：
+        28會所青年大會報名情形：
       </span>
       <p class="text-[10px]">
-        資料更新日期：{{ date }} (每天晚上20:00後更新資料)
+        資料日期：{{ date }}
       </p>
       <n-tabs
         type="line"
@@ -157,6 +163,22 @@ const fourAreas = computed(() => {
               </n-tag>
             </span>
           </template>
+        </n-tab-pane>
+        <n-tab-pane
+          name="福音朋友"
+          tab="福音朋友"
+        >
+          <div class="text-md font-bold text-[16px]">
+            已報名福音朋友:
+          </div>
+          <div
+            v-for="(item,i) in allData.filter((item) => item.meetingStatus === '福音朋友')"
+            :key="item._id"
+          >
+            <span>
+              {{ i + 1 }}. {{ item.name }} 邀者：{{ item.sheepherd }}
+            </span>
+          </div>
         </n-tab-pane>
         <n-tab-pane
           name="一區"
