@@ -3,9 +3,9 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 import { NButton, NTabs, NTabPane, NModal, NInput, NDataTable, NDrawer, NDrawerContent, NP, NQrCode, NSpace } from 'naive-ui'
 import type {  DataTableColumns } from 'naive-ui'
 
-import { Role } from '@/enums/RoleEnum'
 import { useUserApi } from '@/hook'
 import { useUserSerialNumberApi } from '@/hook/useUserSerialNumberApi'
+import { Role } from '@/types'
 import type { LeaderCreateSerialNumberResponse } from '@/types'
 
 const queryClient = useQueryClient()

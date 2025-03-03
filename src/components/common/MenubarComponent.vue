@@ -7,9 +7,9 @@ import { storeToRefs } from 'pinia'
 
 import LogoutBtnForWebComponent from './LogoutBtnForWebComponent.vue'
 import ThemeSwichComponent from './ThemeSwichComponent.vue'
-import { Routes } from '@/enums'
 import { useAuthApi } from '@/hook'
 import { useMenuStore } from '@/stores'
+import { Routes } from '@/types'
 import { cookieJs } from '@/utils'
 
 const menuStore = useMenuStore()

@@ -3,9 +3,9 @@ import { useMutation, useQuery } from '@tanstack/vue-query'
 import { NCard, NButton, NSpace, NInput, NInputGroup, NText } from 'naive-ui'
 
 import EmailVerifyComponent from '@/components/app/dashboard/profile/EmailVerifyComponent.vue'
-import { Routes } from '@/enums'
 import { useAuthApi } from '@/hook'
 import { useUserApi } from '@/hook'
+import { Routes } from '@/types'
 import { clearToken } from '@/utils'
 
 const { data: getUser } = useQuery({

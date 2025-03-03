@@ -1,7 +1,7 @@
 <script setup lang='ts'>
 import { NButton } from 'naive-ui'
 
-import { DashboardRoutes } from '@/enums'
+import { DashboardRoutes } from '@/types'
 
 const router = useRouter()
 const handleGoToSerialNumber = () => {

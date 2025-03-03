@@ -10,7 +10,7 @@ import type {
 import AbortAxios from './AbortAxios'
 import type { AxiosOptions, RequstInterceptors, Response } from './type'
 import config from '../config'
-import { CookieEnum } from '@/enums'
+import { CookieEnum } from '@/types'
 import { getToken, setToken, removeToken } from '@/utils'
 
 class Axios {

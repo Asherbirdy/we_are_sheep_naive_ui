@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie'
 
-import { CookieEnum } from '@/enums'
+import { CookieEnum } from '@/types'
 
 export const cookieJs = {
 	setToken: setToken,

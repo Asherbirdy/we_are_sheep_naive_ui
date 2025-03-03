@@ -4,7 +4,7 @@ import { defineStore } from 'pinia'
 import type { Component, ComputedRef } from 'vue'
 import { markRaw } from 'vue'
 
-import { DashboardRoutes, Routes } from '@/enums'
+import { DashboardRoutes, Routes } from '@/types'
 import { renderIcon } from '@/utils'
 interface Menu {
   label: string

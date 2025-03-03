@@ -4,9 +4,8 @@ import { NSpace, NForm, NFormItem, NInput, NButton, NA } from 'naive-ui'
 import type { FormRules } from 'naive-ui'
 
 import { config } from '@/config'
-import { CookieEnum, DashboardRoutes, Routes } from '@/enums'
 import { useAuthApi } from '@/hook'
-import type { LoginResponse } from '@/types'
+import { CookieEnum, Routes, DashboardRoutes, type LoginResponse } from '@/types'
 import { regex, setToken } from '@/utils'
 
 enum FormKey {

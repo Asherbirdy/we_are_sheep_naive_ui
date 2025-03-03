@@ -15,7 +15,7 @@ declare module 'vue' {
     MenubarComponent: typeof import('./components/common/MenubarComponent.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    SidebarComponent: typeof import('./components/Layouts/SidebarComponent.vue')['default']
+    SidebarComponent: typeof import('./components/layout/SidebarComponent.vue')['default']
     SignUpComponent: typeof import('./components/app/Index/SignUpComponent.vue')['default']
     ThemeSwichComponent: typeof import('./components/common/ThemeSwichComponent.vue')['default']
     UpdateProfileBtnComponent: typeof import('./components/app/profile/UpdateProfileBtnComponent.vue')['default']

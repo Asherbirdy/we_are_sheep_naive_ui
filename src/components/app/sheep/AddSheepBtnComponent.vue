@@ -4,9 +4,8 @@ import { Add } from '@vicons/ionicons5'
 import { NFloatButton, NIcon, NForm, NFormItem, NInput, NButton, NDrawer, NDrawerContent, NSelect, NCard } from 'naive-ui'
 import type { FormInst, FormItemRule, FormRules } from 'naive-ui'
 
-import { Identity, identityOptions } from '@/enums'
-import { AgeRange, ageRangeOptions } from '@/enums'
 import { useSheepApi } from '@/hook'
+import { AgeRange, ageRangeOptions, Identity, identityOptions } from '@/types'
 
 const queryClient = useQueryClient()
 const addFormRef = ref<FormInst | null>(null)

@@ -7,8 +7,8 @@ import {
 } from 'naive-ui'
 import { useI18n } from 'vue-i18n'
 
-import { i18n } from '@/enums'
 import { useThemeStore } from '@/stores'
+import { i18n } from '@/types'
 
 const themeStore = useThemeStore()
 const { handleChangeLocales } = themeStore
