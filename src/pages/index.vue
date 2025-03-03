@@ -9,8 +9,8 @@ import { NSpace, NImage, NCard, NTabs, NTabPane } from 'naive-ui'
 import { useI18n } from 'vue-i18n'
 
 import WelcomeImage from '@/assets/image/login/welcome.png'
-import { DashboardRoutes } from '@/enums'
 import { useAuthApi } from '@/hook'
+import { DashboardRoutes } from '@/types'
 const router = useRouter()
 const route = useRoute()
 // eslint-disable-next-line @typescript-eslint/no-unused-vars, unused-imports/no-unused-vars

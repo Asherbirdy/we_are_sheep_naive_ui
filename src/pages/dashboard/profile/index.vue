@@ -4,8 +4,8 @@ import { MailOutline, PersonOutline } from '@vicons/ionicons5'
 import { NH2, NCard, NText, NButton, NSpace, NIcon, NFlex } from 'naive-ui'
 
 import UpdateProfileBtnComponent from '@/components/app/profile/UpdateProfileBtnComponent.vue'
-import { DashboardRoutes } from '@/enums'
 import { useUserApi } from '@/hook'
+import { DashboardRoutes } from '@/types'
 
 const router = useRouter()
 const { data: handleGetUser } = useQuery({

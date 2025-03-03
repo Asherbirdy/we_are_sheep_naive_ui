@@ -2,7 +2,7 @@
 import { NLayout, NLayoutHeader, NSpace, NFlex, NP } from 'naive-ui'
 
 import MenubarComponent from '@/components/common/MenubarComponent.vue'
-import { DashboardRoutes } from '@/enums'
+import { DashboardRoutes } from '@/types'
 const router = useRouter()
 
 const clicks = ref(0)

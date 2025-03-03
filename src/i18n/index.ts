@@ -2,7 +2,7 @@ import { createI18n } from 'vue-i18n'
 
 import en from './en-US.json'
 import zhTW from './zh-TW.json'
-import { i18n } from '@/enums'
+import { i18n } from '@/types'
 
 type MessageSchema = typeof zhTW
 

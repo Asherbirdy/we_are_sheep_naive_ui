@@ -2,8 +2,8 @@
 import { useMutation } from '@tanstack/vue-query'
 import { NButton } from 'naive-ui'
 
-import { Routes } from '@/enums'
 import { useAuthApi } from '@/hook'
+import { Routes } from '@/types'
 import { cookieJs } from '@/utils'
 const router = useRouter()
 

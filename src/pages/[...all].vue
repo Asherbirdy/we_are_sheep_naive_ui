@@ -10,7 +10,7 @@ import {
 	NImage
 } from 'naive-ui'
 
-import { Routes } from '@/enums'
+import { Routes } from '@/types'
 
 const router = useRouter()
 </script>

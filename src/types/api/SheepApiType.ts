@@ -1,4 +1,4 @@
-import type { Identity, PersonListKey } from '@/enums'
+import type { Identity, PersonListKey } from '@/types'
 
 // * Create Sheep
 export interface CreateSheepPayload {

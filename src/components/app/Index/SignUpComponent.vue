@@ -3,9 +3,9 @@ import { useMutation } from '@tanstack/vue-query'
 import { NSpace, NForm, NFormItem, NInput, NButton } from 'naive-ui'
 import type { FormRules } from 'naive-ui'
 
-import { CookieEnum, DashboardRoutes } from '@/enums'
 import { useAuthApi } from '@/hook'
-import type { UserRegisterResponse } from '@/types'
+import { DashboardRoutes } from '@/types'
+import { CookieEnum, type UserRegisterResponse } from '@/types'
 import { regex, setToken } from '@/utils'
 
 const router = useRouter()

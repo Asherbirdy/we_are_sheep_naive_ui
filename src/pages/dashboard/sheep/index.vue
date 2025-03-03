@@ -6,8 +6,8 @@ import type { DataTableColumns } from 'naive-ui'
 import type { FormInst,	FormItemRule, FormRules } from 'naive-ui'
 
 import AddSheepBtnComponent from '@/components/app/sheep/AddSheepBtnComponent.vue'
-import { AgeRange, Identity, PersonListKey, PersonStatus, ageRangeOptions, ageRangeToText, focusOptions, identityOptions, identityToText, personStatusToText, statusOptions, tagsOptions } from '@/enums'
 import { useSheepApi } from '@/hook'
+import { AgeRange, Identity, PersonListKey, PersonStatus, ageRangeOptions, ageRangeToText, focusOptions, identityOptions, identityToText, personStatusToText, statusOptions, tagsOptions } from '@/types'
 import type { EditSheepPayload, PersonList, UserAndDistrictSheepResponse } from '@/types'
 
 const formRef = ref<FormInst | null>(null)
