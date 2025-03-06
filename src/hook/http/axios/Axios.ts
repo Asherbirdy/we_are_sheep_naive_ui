@@ -35,16 +35,19 @@ class Axios {
 
     // 檢查是否有 refreshToken
     const refreshToken = getToken(CookieEnum.refreshToken)
+
     if (!refreshToken) {
       // 如果沒有 refreshToken,則直接導航到登入頁面
-      // router.push("/login")
+      if (window.location.pathname !== import.meta.env.VITE_BASE) {
+        window.location.href = import.meta.env.VITE_BASE
+      }
       return false
     }
 
     try {
       // 嘗試刷新 accessToken
       const response = await axios.get(
-        `${config.baseUrl}auth/refreshToken`,
+        `${config.baseUrl}/auth/refreshToken`,
         {
           headers: {
             Authorization: `Bearer ${refreshToken}`
