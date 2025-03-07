@@ -3,10 +3,9 @@ import { useMutation } from '@tanstack/vue-query'
 import { NSpace, NForm, NFormItem, NInput, NButton, NA } from 'naive-ui'
 import type { FormRules } from 'naive-ui'
 
-import { config } from '@/config'
 import { useAuthApi } from '@/hook'
 import { CookieEnum, Routes, DashboardRoutes, type LoginResponse } from '@/types'
-import { regex, setToken } from '@/utils'
+import { cookieJs, regex, setToken } from '@/utils'
 
 enum FormKey {
 	email = 'email',
@@ -21,7 +20,7 @@ const notification = useNotification()
 */
 const state = ref({
 	data: {
-		[FormKey.email]: config.test.email,
+		[FormKey.email]: '',
 		[FormKey.password]: ''
 	},
 	loading: {
@@ -76,6 +75,14 @@ const { mutate, isPending } = useMutation({
 			router.push(DashboardRoutes.profile)
 			return
 		}
+
+		// 存 username
+		cookieJs.setTokenWithExpiration(
+			'username',
+			state.value.data.email,
+			1000 * 60 * 60 * 24 * 30 // 30 天
+		)
+
 		router.push(DashboardRoutes.sheep)
 	},
 	onError: async () => {
@@ -101,6 +108,12 @@ watch(state.value.data, (newVal) => {
 	)
 	state.value.disabled.submit = !check
 })
+
+const init = () => {
+	state.value.data.email = cookieJs.getToken('username') || ''
+}
+
+onMounted(() => init())
 
 </script>
 <template>
