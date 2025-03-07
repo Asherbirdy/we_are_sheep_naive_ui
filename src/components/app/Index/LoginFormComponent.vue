@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { useMutation } from '@tanstack/vue-query'
-import { NSpace, NForm, NFormItem, NInput, NButton, NA } from 'naive-ui'
+import { NSpace, NForm, NFormItem, NInput, NButton, NPopover, NA } from 'naive-ui'
 import type { FormRules } from 'naive-ui'
 
 import { useAuthApi } from '@/hook'
-import { CookieEnum, Routes, DashboardRoutes, type LoginResponse } from '@/types'
+import { CookieEnum, DashboardRoutes, type LoginResponse } from '@/types'
 import { cookieJs, regex, setToken } from '@/utils'
 
 enum FormKey {
@@ -147,12 +147,21 @@ onMounted(() => init())
       justify="space-between"
       align="baseline"
     >
-      <router-link :to="Routes.forgetPassword">
+      <!-- <router-link :to="Routes.forgetPassword">
         <n-a>
           忘記密碼
         </n-a>
-      </router-link>
-
+      </router-link> -->
+      <n-popover trigger="hover">
+        <template #trigger>
+          <n-a>
+            忘記密碼
+          </n-a>
+        </template>
+        <span>
+          請連絡管理員，並提供電子信箱
+        </span>
+      </n-popover>
       <n-button
         round
         type="primary"
