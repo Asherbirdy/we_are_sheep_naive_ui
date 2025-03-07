@@ -4,6 +4,7 @@ import { CookieEnum } from '@/types'
 
 export const cookieJs = {
 	setToken: setToken,
+	setTokenWithExpiration: setTokenWithExpiration,
 	getToken: getToken,
 	removeToken: removeToken,
 	clearToken: clearToken
@@ -11,6 +12,10 @@ export const cookieJs = {
 
 export function setToken (name: string, token: string) {
 	Cookies.set(name, token)
+}
+
+export function setTokenWithExpiration (name: string, token: string, expiration: number) {
+	Cookies.set(name, token, { expires: expiration })
 }
 
 export function getToken (name: string) {
