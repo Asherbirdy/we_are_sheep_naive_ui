@@ -1,14 +1,17 @@
 <route lang="yaml">
-  name: 'Index'
+  name: 'forgetPassword'
   meta:
     layout: login
 </route>
 
 <script setup lang="ts">
+import { useMutation } from '@tanstack/vue-query'
 import { useMediaQuery } from '@vueuse/core'
 import { NSpace, NForm, NFormItem, NInput, NButton, NH3 } from 'naive-ui'
 import type { FormRules } from 'naive-ui'
 
+import { useAuthApi } from '@/hook'
+import { Routes } from '@/types'
 import { regex } from '@/utils'
 
 enum FormKey {
@@ -84,11 +87,45 @@ const rules: FormRules = {
   * 監聽表單資料 來決定是否 disabled 登入按鈕
 */
 watch(state.value.data, (newVal) => {
-	const check = Boolean(
+	const check = (
 		newVal.email &&
-			regex.email.test(newVal.email)
+		newVal.newPassword &&
+		newVal.newPasswordConfirm &&
+		newVal.newPassword === newVal.newPasswordConfirm &&
+		newVal.OTP &&
+
+		// 驗證電子信箱格式
+		regex.email.test(newVal.email)
 	)
 	state.value.disabled.submit = !check
+})
+
+// api
+const { mutate: handleForgetPassword, isPending } = useMutation({
+	mutationFn: async () => await useAuthApi.changePasswordWithOTP.api({
+		email: state.value.data[FormKey.email],
+		newPassword: state.value.data[FormKey.newPassword],
+		newPasswordConfirm: state.value.data[FormKey.newPasswordConfirm],
+		OTP: state.value.data[FormKey.OTP]
+	}),
+	onSuccess: async (data) => {
+		if (
+			data?.response?.status === 400 || data?.response?.status === 401 || data?.response?.status === 404
+		) {
+			notification.error({
+				content: '輸入錯誤'
+			})
+			state.value.data[FormKey.OTP] = ''
+			state.value.data[FormKey.newPassword] = ''
+			state.value.data[FormKey.newPasswordConfirm] = ''
+			return
+		}
+
+		notification.success({
+			content: '密碼重置成功'
+		})
+		router.push(Routes.login)
+	}
 })
 
 </script>
@@ -153,6 +190,8 @@ watch(state.value.data, (newVal) => {
           round
           type="primary"
           :disabled="state.disabled.submit"
+          :loading="isPending"
+          @click="handleForgetPassword()"
         >
           確認
         </n-button>
