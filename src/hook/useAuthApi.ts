@@ -81,7 +81,7 @@ export const useAuthApi: RequestSchema = {
   */
   changePasswordWithOTP: {
     api: async (payload: { email: string, OTP: string, newPassword: string }) => await useRequest.post({
-      url: AuthRequestURL.verifyForgetPassword,
+      url: '/auth/changePasswordWithOTP',
       data: payload
     })
   }

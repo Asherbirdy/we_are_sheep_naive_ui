@@ -38,7 +38,10 @@ class Axios {
 
     if (!refreshToken) {
       // 如果沒有 refreshToken,則直接導航到登入頁面
-      if (window.location.pathname !== import.meta.env.VITE_BASE) {
+      if (
+        window.location.pathname !== import.meta.env.VITE_BASE &&
+        window.location.pathname !== `${import.meta.env.VITE_BASE}forgetPassword`) {
+        // 導航到登入頁面
         window.location.href = import.meta.env.VITE_BASE
       }
       return false
