@@ -110,7 +110,9 @@ const { mutate: handleForgetPassword, isPending } = useMutation({
 	}),
 	onSuccess: async (data) => {
 		if (
-			data?.response?.status === 400 || data?.response?.status === 401 || data?.response?.status === 404
+			data?.response?.status === 400 ||
+			data?.response?.status === 401 ||
+			data?.response?.status === 404
 		) {
 			notification.error({
 				content: '輸入錯誤'

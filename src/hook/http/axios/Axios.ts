@@ -38,11 +38,11 @@ class Axios {
 
     if (!refreshToken) {
       // 如果沒有 refreshToken,則直接導航到登入頁面
-      if (window.location.pathname !== import.meta.env.VITE_BASE && window.location.pathname !== `${import.meta.env.VITE_BASE}forgetPassword`) {
-        console.log('window.location.pathname', window.location.pathname)
-        console.log('import.meta.env.VITE_BASE', import.meta.env.VITE_BASE)
-        console.log('${import.meta.env.VITE_BASE_URL}/forgetPassword', `${import.meta.env.VITE_BASE}forgetPassword`)
-        // window.location.href = import.meta.env.VITE_BASE
+      if (
+        window.location.pathname !== import.meta.env.VITE_BASE &&
+        window.location.pathname !== `${import.meta.env.VITE_BASE}forgetPassword`) {
+        // 導航到登入頁面
+        window.location.href = import.meta.env.VITE_BASE
       }
       return false
     }
