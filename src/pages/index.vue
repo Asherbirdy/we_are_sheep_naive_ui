@@ -52,7 +52,7 @@ onMounted(() => init())
       width="400"
       :src="WelcomeImage"
     />
-    <n-card title="登入">
+    <n-card>
       <n-tabs
         v-model:value="state.data.tab"
         class="w-full md:w-450px"
