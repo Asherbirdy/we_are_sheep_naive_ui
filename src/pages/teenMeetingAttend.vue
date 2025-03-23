@@ -53,17 +53,20 @@ watch(state.value.data, (val) => {
 })
 
 const ageGroups = computed(() => ({
-	'青職_目標28位': state.value.api.getTeenMeetingAttend?.data.ageRange.youth.data.filter((item) => item.participation !== '未確定出席_但先印名片') || [],
+	'青職_目標28位': state.value.api.getTeenMeetingAttend?.data.ageRange.youth.data
+		.filter((item) => item.participation !== '未確定出席_但先印名片')
+		.filter((item) => item.participation !== '不參加')
+		|| [],
 	'大專/青少年_目標16位': [
-		...(state.value.api.getTeenMeetingAttend?.data.ageRange.college.data.filter((item) => item.participation !== '未確定出席_但先印名片') || []),
-		...(state.value.api.getTeenMeetingAttend?.data.ageRange.teenager.data.filter((item) => item.participation !== '未確定出席_但先印名片') || [])
+		...(state.value.api.getTeenMeetingAttend?.data.ageRange.college.data.filter((item) => item.participation !== '未確定出席_但先印名片').filter((item) => item.participation !== '不參加') || []),
+		...(state.value.api.getTeenMeetingAttend?.data.ageRange.teenager.data.filter((item) => item.participation !== '未確定出席_但先印名片').filter((item) => item.participation !== '不參加') || [])
 	],
 	'兒童': [
-		...(state.value.api.getTeenMeetingAttend?.data.ageRange.child1.data.filter((item) => item.participation !== '未確定出席_但先印名片') || []),
-		...(state.value.api.getTeenMeetingAttend?.data.ageRange.child2.data.filter((item) => item.participation !== '未確定出席_但先印名片') || []),
-		...(state.value.api.getTeenMeetingAttend?.data.ageRange.child3.data.filter((item) => item.participation !== '未確定出席_但先印名片') || [])
+		...(state.value.api.getTeenMeetingAttend?.data.ageRange.child1.data.filter((item) => item.participation !== '未確定出席_但先印名片').filter((item) => item.participation !== '不參加') || []),
+		...(state.value.api.getTeenMeetingAttend?.data.ageRange.child2.data.filter((item) => item.participation !== '未確定出席_但先印名片').filter((item) => item.participation !== '不參加') || []),
+		...(state.value.api.getTeenMeetingAttend?.data.ageRange.child3.data.filter((item) => item.participation !== '未確定出席_但先印名片').filter((item) => item.participation !== '不參加') || [])
 	],
-	'其他': state.value.api.getTeenMeetingAttend?.data.ageRange.other.data.filter((item) => item.participation !== '未確定出席_但先印名片') || []
+	'其他': state.value.api.getTeenMeetingAttend?.data.ageRange.other.data.filter((item) => item.participation !== '未確定出席_但先印名片').filter((item) => item.participation !== '不參加') || []
 }))
 
 const date = computed(() => {
