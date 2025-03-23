@@ -53,17 +53,17 @@ watch(state.value.data, (val) => {
 })
 
 const ageGroups = computed(() => ({
-	'青職_目標28位': state.value.api.getTeenMeetingAttend?.data.ageRange.youth.data.filter((item) => item.participation !== '不參加') || [],
+	'青職_目標28位': state.value.api.getTeenMeetingAttend?.data.ageRange.youth.data.filter((item) => item.participation !== '未確定出席_但先印名片') || [],
 	'大專/青少年_目標16位': [
-		...(state.value.api.getTeenMeetingAttend?.data.ageRange.college.data.filter((item) => item.participation !== '不參加') || []),
-		...(state.value.api.getTeenMeetingAttend?.data.ageRange.teenager.data.filter((item) => item.participation !== '不參加') || [])
+		...(state.value.api.getTeenMeetingAttend?.data.ageRange.college.data.filter((item) => item.participation !== '未確定出席_但先印名片') || []),
+		...(state.value.api.getTeenMeetingAttend?.data.ageRange.teenager.data.filter((item) => item.participation !== '未確定出席_但先印名片') || [])
 	],
 	'兒童': [
-		...(state.value.api.getTeenMeetingAttend?.data.ageRange.child1.data.filter((item) => item.participation !== '不參加') || []),
-		...(state.value.api.getTeenMeetingAttend?.data.ageRange.child2.data.filter((item) => item.participation !== '不參加') || []),
-		...(state.value.api.getTeenMeetingAttend?.data.ageRange.child3.data.filter((item) => item.participation !== '不參加') || [])
+		...(state.value.api.getTeenMeetingAttend?.data.ageRange.child1.data.filter((item) => item.participation !== '未確定出席_但先印名片') || []),
+		...(state.value.api.getTeenMeetingAttend?.data.ageRange.child2.data.filter((item) => item.participation !== '未確定出席_但先印名片') || []),
+		...(state.value.api.getTeenMeetingAttend?.data.ageRange.child3.data.filter((item) => item.participation !== '未確定出席_但先印名片') || [])
 	],
-	'其他': state.value.api.getTeenMeetingAttend?.data.ageRange.other.data.filter((item) => item.participation !== '不參加') || []
+	'其他': state.value.api.getTeenMeetingAttend?.data.ageRange.other.data.filter((item) => item.participation !== '未確定出席_但先印名片') || []
 }))
 
 const date = computed(() => {
@@ -142,6 +142,16 @@ const fourAreas = computed(() => {
           name="會所報名情形"
           tab="會所報名情形"
         >
+          <p class="text-sm">
+          <div class="text-md font-bold">
+            青年特會 報名情形：          <span class="text-md text-red-500">
+              注意! 特會需要名牌才能入場!！
+            </span>
+          </div>
+          請大家這<span class="text-red-500">
+            週四(3/27)
+          </span>前確認出席人數，並填到會所表單，方便服事人員印製名牌，謝謝！
+          </p>
           <template
             v-for="(group, label) in ageGroups"
             :key="label"
@@ -176,9 +186,138 @@ const fourAreas = computed(() => {
             :key="item._id"
           >
             <span>
-              {{ i + 1 }}. {{ item.name }} 邀者：{{ item.sheepherd }}
+              {{ i + 1 }}. {{ item.name }}({{ item.ageRange }}) 邀者：{{ item.sheepherd }}
             </span>
           </div>
+        </n-tab-pane>
+        <n-tab-pane
+          name="各天報名"
+          tab="各天報名"
+        >
+          <div>
+            各天報名統計：
+          </div>
+          <div class="text-md font-bold text-[16px]">
+            03/29 {{ allData.filter((item) => item.participation === '只參加3/29特會' || item.participation === '兩天都參加').length }}位:
+          </div>
+          <span>一區:</span><br>
+          <n-tag
+            v-for="item in allData
+              .filter((item) => item.participation === '只參加3/29特會' || item.participation === '兩天都參加')
+              .filter((item) => item.district === '一區')"
+            :key="item._id"
+            class="mb-1 mr-1"
+            size="tiny"
+          >
+            {{ item.name }}
+          </n-tag>
+          <br>
+          <span>二區:</span><br>
+          <n-tag
+            v-for="item in allData
+              .filter((item) => item.participation === '只參加3/29特會' || item.participation === '兩天都參加')
+              .filter((item) => item.district === '二區')"
+            :key="item._id"
+            class="mb-1 mr-1"
+            size="tiny"
+          >
+            {{ item.name }}
+          </n-tag>
+          <br>
+          <span>三區:</span><br>
+          <n-tag
+            v-for="item in allData
+              .filter((item) =>
+                item.participation === '只參加3/29特會' ||
+                item.participation === '兩天都參加')
+              .filter((item) => item.district === '三區')"
+            :key="item._id"
+            class="mb-1 mr-1"
+            size="tiny"
+          >
+            {{ item.name }}
+          </n-tag>
+          <br>
+          <span>四區:</span><br>
+          <n-tag
+            v-for="item in allData
+              .filter((item) =>
+                item.participation === '只參加3/29特會' ||
+                item.participation === '兩天都參加')
+              .filter((item) => item.district === '四區')"
+            :key="item._id"
+            class="mb-1 mr-1"
+            size="tiny"
+          >
+            {{ item.name }}
+          </n-tag>
+          <div class="text-md font-bold text-[16px]">
+            03/30 {{ allData.filter((item) =>
+              item.participation === '只參加3/30主日' ||
+              item.participation === '兩天都參加').length }}位:
+          </div>
+          <span>一區:</span><br>
+          <n-tag
+            v-for="item in allData.filter((item) =>
+              item.participation === '只參加3/30主日' ||
+              item.participation === '兩天都參加')
+              .filter((item) => item.district === '一區')"
+            :key="item._id"
+            class="mb-1 mr-1"
+            size="tiny"
+          >
+            {{ item.name }}
+          </n-tag>
+          <br>
+          <span>二區:</span><br>
+          <n-tag
+            v-for="item in allData.filter((item) =>
+              item.participation === '只參加3/30主日' ||
+              item.participation === '兩天都參加')
+              .filter((item) => item.district === '二區')"
+            :key="item._id"
+            class="mb-1 mr-1"
+            size="tiny"
+          >
+            {{ item.name }}
+          </n-tag>
+          <br>
+          <span>三區:</span><br>
+          <n-tag
+            v-for="item in allData.filter((item) =>
+              item.participation === '只參加3/30主日' ||
+              item.participation === '兩天都參加')
+              .filter((item) => item.district === '三區')"
+            :key="item._id"
+            class="mb-1 mr-1"
+            size="tiny"
+          >
+            {{ item.name }}
+          </n-tag>
+          <br>
+          <span>四區:</span><br>
+          <n-tag
+            v-for="item in allData.filter((item) =>
+              item.participation === '只參加3/30主日' ||
+              item.participation === '兩天都參加')
+              .filter((item) => item.district === '四區')"
+            :key="item._id"
+            class="mb-1 mr-1"
+            size="tiny"
+          >
+            {{ item.name }}
+          </n-tag>
+          <div class="text-md font-bold text-[16px] text-red-500">
+            未勾選參加時間 {{ allData.filter((item) => item.participation === '未選擇').length }}位:
+          </div>
+          <n-tag
+            v-for="item in allData.filter((item) => item.participation === '未選擇')"
+            :key="item._id"
+            class="mb-1 mr-1"
+            size="tiny"
+          >
+            {{ item.name }}
+          </n-tag>
         </n-tab-pane>
         <n-tab-pane
           name="一區"
